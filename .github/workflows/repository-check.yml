@@ -1,0 +1,192 @@
+name: CI Minutrel
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository:
+    name: Documents (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15, windows-2022]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install tzdata==2026.6
+      - run: python scripts/check_repository.py
+      - run: python scripts/check_brand.py
+
+  quality:
+    name: Qualité et tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - run: npm audit --audit-level=high
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: couverture-et-builds
+          path: |
+            coverage/
+            apps/web/dist/
+            apps/api/dist/
+          retention-days: 14
+          if-no-files-found: error
+
+  workflows:
+    name: Validation GitHub Actions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/install_actionlint.py
+      - run: .cache/tools/actionlint -shellcheck=
+
+  desktop:
+    name: Application (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            bundle: deb
+          - os: macos-15
+            bundle: dmg
+          - os: windows-2022
+            bundle: nsis
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Dépendances système Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev librsvg2-dev libayatana-appindicator3-dev libdbus-1-dev libwayland-dev libxkbcommon-dev
+      - run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
+      - run: npm ci --ignore-scripts
+      - run: npm run build:web
+      - run: cargo fmt --manifest-path apps/desktop/src-tauri/Cargo.toml --check
+      - run: cargo test --locked --manifest-path apps/desktop/src-tauri/Cargo.toml
+      - run: cargo clippy --locked --manifest-path apps/desktop/src-tauri/Cargo.toml -- -D warnings
+      - name: Construire un installateur de test non signé
+        run: npm run build --workspace @minutrel/desktop -- --bundles ${{ matrix.bundle }} --ci
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: minutrel-test-${{ matrix.os }}
+          path: apps/desktop/src-tauri/target/release/bundle/
+          if-no-files-found: error
+          retention-days: 14
+
+  containers:
+    name: Conteneurs web et API
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile
+          target: api
+          load: true
+          tags: minutrel-api:ci
+      - uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: infra/docker/Dockerfile
+          target: web
+          load: true
+          tags: minutrel-web:ci
+      - run: docker compose -f infra/docker/compose.ci.yml up -d --wait
+      - name: Vérifier l’API derrière le proxy web
+        run: python3 scripts/check_running_instance.py http://127.0.0.1:8080
+      - name: Vérifier la persistance après redémarrage
+        run: |
+          docker compose -f infra/docker/compose.ci.yml restart api
+          docker compose -f infra/docker/compose.ci.yml up -d --wait
+          python3 scripts/check_running_instance.py http://127.0.0.1:8080 --reuse
+      - name: Vérifier la pile de production sans privilèges
+        env:
+          MINUTREL_PORT: '18081'
+          APP_PUBLIC_URL: http://127.0.0.1:18081
+          APP_SETUP_TOKEN: installation-ci-sans-donnees-reelles
+        run: |
+          docker tag minutrel-api:ci minutrel:0.1.0
+          docker compose -p minutrel-production-ci up -d --no-build --wait
+          python3 scripts/check_running_instance.py http://127.0.0.1:18081
+          docker compose -p minutrel-production-ci exec -T minutrel node scripts/backup.mjs --out /backups/ci
+          docker compose -p minutrel-production-ci exec -T minutrel node scripts/backup.mjs --restore /backups/ci --data /tmp/restauree
+      - name: Fermer les services de test
+        if: always()
+        run: |
+          docker compose -f infra/docker/compose.ci.yml down --volumes
+          docker compose -p minutrel-production-ci down --volumes
+
+  package:
+    name: Archive source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/package_source.py
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: minutrel-sources-et-empreinte
+          path: output/ci/
+          if-no-files-found: error
+          retention-days: 14
+
+  gate:
+    name: CI
+    if: always()
+    needs: [repository, quality, workflows, desktop, containers, package]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/check_ci_results.py
+        env:
+          CI_RESULTS: ${{ toJSON(needs) }}

@@ -1,0 +1,8 @@
+# Exemple de contrat futur : aucun serveur Minutrel MCP n'est encore fourni.
+# Remplacer le domaine réservé, obtenir un jeton personnel limité,
+# puis activer seulement après validation de l'endpoint et des droits.
+[mcp_servers.minutrel]
+url = "https://minutrel.example.com/mcp"
+bearer_token_env_var = "MINUTREL_MCP_TOKEN"
+enabled = false
+enabled_tools = ["minutrel_list_projects", "minutrel_get_my_timer", "minutrel_list_my_times", "minutrel_create_work_note_draft", "minutrel_get_my_work_summary"]

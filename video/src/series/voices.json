@@ -1,0 +1,653 @@
+[
+  {
+    "id": 3,
+    "slug": "mini-timer",
+    "composition": "MinutrelMiniTimerEN",
+    "title": "Keep the timer within reach.",
+    "shortTitle": "The mini timer",
+    "icon": "play",
+    "mode": "native",
+    "intro": "Keep your timer close, without keeping the main window open.",
+    "outro": "One timer. The same project. Always finish when the work is done.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Keep your timer close, without keeping the main window open.",
+        "id": "03-intro",
+        "file": "audio/series-en/03-intro.wav",
+        "duration": 3.406416666666667
+      },
+      {
+        "key": "start",
+        "title": "Start with a project.",
+        "text": "Choose Atlas in Overview and start your session. The mini timer follows this same session; it does not create a second timer.",
+        "id": "03-start",
+        "file": "audio/series-en/03-start.wav",
+        "duration": 8.038416666666667
+      },
+      {
+        "key": "open",
+        "title": "Open the mini timer.",
+        "text": "Click Mini timer. On desktop, the compact window stays above ordinary windows and can be moved to a useful corner.",
+        "id": "03-open",
+        "file": "audio/series-en/03-open.wav",
+        "duration": 8.150375
+      },
+      {
+        "key": "pause",
+        "title": "Pause. Then carry on.",
+        "text": "Pause for a break, then resume from the compact window. The paused time is excluded from your working time.",
+        "id": "03-pause",
+        "file": "audio/series-en/03-pause.wav",
+        "duration": 6.763541666666667
+      },
+      {
+        "key": "finish",
+        "title": "Finish from the mini timer.",
+        "text": "Use the stop button to finish and save. Closing a window only hides it; it does not finish your session.",
+        "id": "03-finish",
+        "file": "audio/series-en/03-finish.wav",
+        "duration": 6.505125
+      },
+      {
+        "key": "outro",
+        "text": "One timer. The same project. Always finish when the work is done.",
+        "id": "03-outro",
+        "file": "audio/series-en/03-outro.wav",
+        "duration": 4.266791666666666
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "slug": "solo",
+    "composition": "MinutrelSoloEN",
+    "title": "Start on your own computer.",
+    "shortTitle": "Work on your own",
+    "icon": "laptop",
+    "mode": "native",
+    "intro": "Start tracking your projects without a server or an online account.",
+    "outro": "Your personal workspace stays on this computer. Joining a team is always optional.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Start tracking your projects without a server or an online account.",
+        "id": "04-intro",
+        "file": "audio/series-en/04-intro.wav",
+        "duration": 3.8208333333333333
+      },
+      {
+        "key": "local",
+        "title": "Choose a personal workspace.",
+        "text": "Open the desktop app and choose Use on this computer. Your personal workspace opens without an email address, password or online service.",
+        "id": "04-local",
+        "file": "audio/series-en/04-local.wav",
+        "duration": 9.216416666666667
+      },
+      {
+        "key": "project",
+        "title": "Create your first project.",
+        "text": "Open Projects and create Atlas concept. Give it a useful description and colour. You are choosing a Minutrel project, never a folder on your disk.",
+        "id": "04-project",
+        "file": "audio/series-en/04-project.wav",
+        "duration": 9.551333333333334
+      },
+      {
+        "key": "track",
+        "title": "Record your first session.",
+        "text": "Return to Overview, add a short work description and click Start. Pause when needed, and click Finish to save the completed session.",
+        "id": "04-track",
+        "file": "audio/series-en/04-track.wav",
+        "duration": 8.411708333333333
+      },
+      {
+        "key": "report",
+        "title": "Review and keep a copy.",
+        "text": "Your time entries and reports are available locally. In Settings, Export local copy prepares a personal backup that also contains your private notes.",
+        "id": "04-report",
+        "file": "audio/series-en/04-report.wav",
+        "duration": 10.113541666666666
+      },
+      {
+        "key": "outro",
+        "text": "Your personal workspace stays on this computer. Joining a team is always optional.",
+        "id": "04-outro",
+        "file": "audio/series-en/04-outro.wav",
+        "duration": 5.111791666666667
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "slug": "team",
+    "composition": "MinutrelTeamEN",
+    "title": "Give the team a shared workspace.",
+    "shortTitle": "Set up your team",
+    "icon": "team",
+    "mode": "web",
+    "intro": "Bring people and projects together, with clear roles and shared time tracking.",
+    "outro": "People, permissions and projects are in place. The team is ready to work.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Bring people and projects together, with clear roles and shared time tracking.",
+        "id": "05-intro",
+        "file": "audio/series-en/05-intro.wav",
+        "duration": 4.642541666666666
+      },
+      {
+        "key": "member",
+        "title": "Create a team account.",
+        "text": "As an administrator, open Team and add a member. Enter their name and email, choose a role, and provide a strong initial password privately.",
+        "id": "05-member",
+        "file": "audio/series-en/05-member.wav",
+        "duration": 9.499916666666667
+      },
+      {
+        "key": "roles",
+        "title": "Give the right level of access.",
+        "text": "Contributors track their own work. Managers handle projects and team time. Administrators also manage accounts, integrations and collective exports. Choose the role that fits.",
+        "id": "05-roles",
+        "file": "audio/series-en/05-roles.wav",
+        "duration": 12.310166666666667
+      },
+      {
+        "key": "project",
+        "title": "Assign people to a project.",
+        "text": "Open Projects, edit Atlas and select the people who should work on it. Contributors see the projects assigned to them, while managers manage the team’s projects.",
+        "id": "05-project",
+        "file": "audio/series-en/05-project.wav",
+        "duration": 10.108291666666666
+      },
+      {
+        "key": "join",
+        "title": "Share one team address.",
+        "visual": "diagram",
+        "bullets": [
+          "Browser: open the team HTTPS address",
+          "Desktop: enter the same server address",
+          "Sign in with your own team account"
+        ],
+        "text": "Give each member the same team HTTPS address and their own account. They can use the browser or connect the desktop app to that server. These are two ways into the same workspace.",
+        "id": "05-join",
+        "file": "audio/series-en/05-join.wav",
+        "duration": 12.008833333333333
+      },
+      {
+        "key": "outro",
+        "text": "People, permissions and projects are in place. The team is ready to work.",
+        "id": "05-outro",
+        "file": "audio/series-en/05-outro.wav",
+        "duration": 4.62
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "slug": "time-entries",
+    "composition": "MinutrelTimeEntriesEN",
+    "title": "Keep your time entries accurate.",
+    "shortTitle": "Add and correct time",
+    "icon": "play",
+    "mode": "web",
+    "intro": "Forgot a timer, or spotted a mistake? Keep the record accurate.",
+    "outro": "Useful descriptions, accurate durations and a clear record of corrections.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Forgot a timer, or spotted a mistake? Keep the record accurate.",
+        "id": "06-intro",
+        "file": "audio/series-en/06-intro.wav",
+        "duration": 4.021875
+      },
+      {
+        "key": "add",
+        "title": "Add a missed duration.",
+        "text": "Open Time entries and choose Add time. Select the project and work date, then enter a duration such as forty-five minutes and describe the work.",
+        "id": "06-add",
+        "file": "audio/series-en/06-add.wav",
+        "duration": 9.774916666666666
+      },
+      {
+        "key": "save",
+        "title": "Save and review.",
+        "text": "Save the entry and check it in your monthly list. Manual durations and recorded sessions both contribute to the totals once they are finalised.",
+        "id": "06-save",
+        "file": "audio/series-en/06-save.wav",
+        "duration": 9.551583333333333
+      },
+      {
+        "key": "edit",
+        "title": "Correct with a reason.",
+        "text": "Use the pencil to correct an entry and enter a reason. Editing only the description preserves the original timing. Change Duration only when the amount of time is wrong.",
+        "id": "06-edit",
+        "file": "audio/series-en/06-edit.wav",
+        "duration": 11.549875
+      },
+      {
+        "key": "audit",
+        "title": "Keep the correction traceable.",
+        "text": "Save the correction and review the updated entry. The previous value and your reason stay in the correction history. Team corrections require a server connection.",
+        "id": "06-audit",
+        "file": "audio/series-en/06-audit.wav",
+        "duration": 10.494083333333334
+      },
+      {
+        "key": "outro",
+        "text": "Useful descriptions, accurate durations and a clear record of corrections.",
+        "id": "06-outro",
+        "file": "audio/series-en/06-outro.wav",
+        "duration": 4.896333333333334
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "slug": "monthly-reports",
+    "composition": "MinutrelMonthlyReportsEN",
+    "title": "Turn the month into a clear report.",
+    "shortTitle": "Monthly reports",
+    "icon": "report",
+    "mode": "web",
+    "intro": "See where the month went, then take a clear report with you.",
+    "outro": "A clear monthly view, ready to read, share or analyse.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "See where the month went, then take a clear report with you.",
+        "id": "07-intro",
+        "file": "audio/series-en/07-intro.wav",
+        "duration": 3.261041666666667
+      },
+      {
+        "key": "period",
+        "title": "Start with the right month.",
+        "text": "Open Reports and select the month you need. The period follows your workspace time zone. Only completed time entries contribute to the final totals.",
+        "id": "07-period",
+        "file": "audio/series-en/07-period.wav",
+        "duration": 9.985666666666667
+      },
+      {
+        "key": "people",
+        "title": "Choose whose work to include.",
+        "text": "An administrator can view the whole team or select individual members. Check the completed time, the project breakdown and each person’s contribution before exporting.",
+        "id": "07-people",
+        "file": "audio/series-en/07-people.wav",
+        "duration": 10.682708333333334
+      },
+      {
+        "key": "context",
+        "title": "Read the work behind the numbers.",
+        "text": "Shared notes and approved monthly summaries add context to the report. Private notes and unapproved drafts are kept out of the team’s shared work summary.",
+        "id": "07-context",
+        "file": "audio/series-en/07-context.wav",
+        "duration": 9.849
+      },
+      {
+        "key": "export",
+        "title": "Choose the format you need.",
+        "text": "Download a PDF for reading, a CSV for analysis, or a ZIP archive. Collective exports require an administrator. Finish any active timers and clear pending synchronisation first.",
+        "id": "07-export",
+        "file": "audio/series-en/07-export.wav",
+        "duration": 13.54575
+      },
+      {
+        "key": "outro",
+        "text": "A clear monthly view, ready to read, share or analyse.",
+        "id": "07-outro",
+        "file": "audio/series-en/07-outro.wav",
+        "duration": 3.551875
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "slug": "work-journal",
+    "composition": "MinutrelWorkJournalEN",
+    "title": "Remember what moved forward.",
+    "shortTitle": "Notes and summaries",
+    "icon": "note",
+    "mode": "web",
+    "intro": "Hours tell you how much. Your work journal explains what happened.",
+    "outro": "Capture the useful details now. Share a summary you have actually reviewed.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Hours tell you how much. Your work journal explains what happened.",
+        "id": "08-intro",
+        "file": "audio/series-en/08-intro.wav",
+        "duration": 3.8982083333333333
+      },
+      {
+        "key": "note",
+        "title": "Write a useful work note.",
+        "text": "Open Work journal and add a note. Choose its project and date, then record a result, a decision or the next step while the details are still fresh.",
+        "id": "08-note",
+        "file": "audio/series-en/08-note.wav",
+        "duration": 9.57575
+      },
+      {
+        "key": "privacy",
+        "title": "Choose what is shared.",
+        "text": "A new note is private by default. Use Review and share to make it available in team reports. Only share the information that is useful to your team.",
+        "id": "08-privacy",
+        "file": "audio/series-en/08-privacy.wav",
+        "duration": 9.63725
+      },
+      {
+        "key": "draft",
+        "title": "Prepare the monthly summary.",
+        "text": "Use Write to prepare a monthly summary in your own words. Save it as a draft. The text adds context; it never changes the recorded time totals.",
+        "id": "08-draft",
+        "file": "audio/series-en/08-draft.wav",
+        "duration": 9.918541666666666
+      },
+      {
+        "key": "approve",
+        "title": "Review before publishing.",
+        "text": "Open Review and approve, correct the wording, and confirm that you have reviewed it. Only approved summaries are included in the shared report.",
+        "id": "08-approve",
+        "file": "audio/series-en/08-approve.wav",
+        "duration": 8.903791666666667
+      },
+      {
+        "key": "outro",
+        "text": "Capture the useful details now. Share a summary you have actually reviewed.",
+        "id": "08-outro",
+        "file": "audio/series-en/08-outro.wav",
+        "duration": 4.584333333333333
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "slug": "offline",
+    "composition": "MinutrelOfflineEN",
+    "title": "Keep working through a connection loss.",
+    "shortTitle": "Work offline",
+    "icon": "laptop",
+    "mode": "native",
+    "intro": "A connection loss does not have to interrupt a desktop time entry.",
+    "outro": "Local first, then checked by the server. Wait for synchronisation before using final team totals.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "A connection loss does not have to interrupt a desktop time entry.",
+        "id": "09-intro",
+        "file": "audio/series-en/09-intro.wav",
+        "duration": 4.113083333333333
+      },
+      {
+        "key": "online",
+        "title": "Connect once while online.",
+        "text": "First sign in to your team from the desktop app. This prepares your permitted projects and current timer. Offline team work needs this initial connection.",
+        "id": "09-online",
+        "file": "audio/series-en/09-online.wav",
+        "duration": 9.891333333333334
+      },
+      {
+        "key": "disconnect",
+        "title": "Your work stays on this computer.",
+        "text": "When the server becomes unreachable, the app shows the connection state. Timer commands and new time entries are saved locally before they can be sent.",
+        "id": "09-disconnect",
+        "file": "audio/series-en/09-disconnect.wav",
+        "duration": 9.34025
+      },
+      {
+        "key": "record",
+        "title": "Finish the session offline.",
+        "text": "Pause, resume and finish as usual. Your changes remain in the local queue. Team administration and corrections to server entries still require a connection.",
+        "id": "09-record",
+        "file": "audio/series-en/09-record.wav",
+        "duration": 11.012291666666666
+      },
+      {
+        "key": "sync",
+        "title": "Reconnect and let it sync.",
+        "text": "When the server returns, the app sends the queued work and the server checks it. Settings offers Synchronise to retry. A conflict stays visible for you to resolve.",
+        "id": "09-sync",
+        "file": "audio/series-en/09-sync.wav",
+        "duration": 10.527125
+      },
+      {
+        "key": "outro",
+        "text": "Local first, then checked by the server. Wait for synchronisation before using final team totals.",
+        "id": "09-outro",
+        "file": "audio/series-en/09-outro.wav",
+        "duration": 6.609166666666667
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "slug": "transfer",
+    "composition": "MinutrelTransferEN",
+    "title": "Bring personal work into the team.",
+    "shortTitle": "Transfer personal time",
+    "icon": "team",
+    "mode": "native",
+    "intro": "Started on your own? Bring completed time into a team deliberately.",
+    "outro": "The selected time is now in your team account. Your original personal work stays local.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Started on your own? Bring completed time into a team deliberately.",
+        "id": "10-intro",
+        "file": "audio/series-en/10-intro.wav",
+        "duration": 4.209666666666666
+      },
+      {
+        "key": "prepare",
+        "title": "Finish the personal work first.",
+        "text": "Finish your personal timers before transferring anything. Personal and team workspaces remain separate; simply opening an account does not merge their data.",
+        "id": "10-prepare",
+        "file": "audio/series-en/10-prepare.wav",
+        "duration": 10.09025
+      },
+      {
+        "key": "read",
+        "title": "Open the transfer tool.",
+        "text": "Sign in to the team, open Settings and choose Transfer my local work. Read your local workspace to see the personal projects available for transfer.",
+        "id": "10-read",
+        "file": "audio/series-en/10-read.wav",
+        "duration": 9.774916666666666
+      },
+      {
+        "key": "map",
+        "title": "Match each project deliberately.",
+        "text": "Choose an existing, authorised team project for each personal project you want to transfer. Projects without a match stay local. No team project is created automatically.",
+        "id": "10-map",
+        "file": "audio/series-en/10-map.wav",
+        "duration": 11.608083333333333
+      },
+      {
+        "key": "send",
+        "title": "Transfer and check the result.",
+        "text": "Transfer the selected completed time and verify it in your team history. Original entries stay on the computer. Private notes are not sent, and repeating the same import does not create duplicates.",
+        "id": "10-send",
+        "file": "audio/series-en/10-send.wav",
+        "duration": 13.279833333333332
+      },
+      {
+        "key": "outro",
+        "text": "The selected time is now in your team account. Your original personal work stays local.",
+        "id": "10-outro",
+        "file": "audio/series-en/10-outro.wav",
+        "duration": 5.636416666666666
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "slug": "assistants",
+    "composition": "MinutrelAssistantsEN",
+    "title": "Connect an assistant on your terms.",
+    "shortTitle": "Connect coding assistants",
+    "icon": "note",
+    "mode": "web",
+    "intro": "Connect a coding assistant with a personal, limited and revocable access token.",
+    "outro": "Your permissions decide the access. Your review decides what gets shared.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Connect a coding assistant with a personal, limited and revocable access token.",
+        "id": "11-intro",
+        "file": "audio/series-en/11-intro.wav",
+        "duration": 5.263458333333333
+      },
+      {
+        "key": "access",
+        "title": "Create a personal access token.",
+        "text": "Open Integrations and create an access token. Give it a recognisable name and an expiry date. Access stays limited to your own Minutrel data, even for an administrator.",
+        "id": "11-access",
+        "file": "audio/series-en/11-access.wav",
+        "duration": 11.960916666666666
+      },
+      {
+        "key": "scope",
+        "title": "Grant only the permissions needed.",
+        "text": "Choose whether the assistant can read your projects, time and work notes, or suggest private drafts. Timer control is a separate permission and is not enabled by default.",
+        "id": "11-scope",
+        "file": "audio/series-en/11-scope.wav",
+        "duration": 11.25625
+      },
+      {
+        "key": "configure",
+        "title": "Use the supplied assistant configuration.",
+        "text": "Store the token privately in MINUTREL_MCP_TOKEN. Set up my assistant shows configurations for Codex and Claude Code using the team MCP endpoint. Keep the secret out of your source repository.",
+        "id": "11-configure",
+        "file": "audio/series-en/11-configure.wav",
+        "duration": 14.352125
+      },
+      {
+        "key": "revoke",
+        "title": "Revoke access when it is no longer needed.",
+        "text": "The access list shows names and expiry dates. Revoke a token to stop its access. The assistant’s proposed notes remain private drafts until you review them.",
+        "id": "11-revoke",
+        "file": "audio/series-en/11-revoke.wav",
+        "duration": 10.815083333333334
+      },
+      {
+        "key": "engines",
+        "title": "AI drafting is optional.",
+        "text": "An administrator can separately configure Ollama, vLLM or Claude for summary drafting. That needs a real configured provider and your consent to send the selected notes. Time tracking works without it.",
+        "id": "11-engines",
+        "file": "audio/series-en/11-engines.wav",
+        "duration": 14.489458333333333
+      },
+      {
+        "key": "outro",
+        "text": "Your permissions decide the access. Your review decides what gets shared.",
+        "id": "11-outro",
+        "file": "audio/series-en/11-outro.wav",
+        "duration": 4.4155
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "slug": "self-host",
+    "composition": "MinutrelSelfHostEN",
+    "title": "Run your own team workspace.",
+    "shortTitle": "Install and self-host",
+    "icon": "laptop",
+    "mode": "guide",
+    "intro": "Run a Minutrel team workspace on infrastructure you control. This guide follows the Node.js installation route.",
+    "outro": "Your server is ready. Give each member their own account and the same HTTPS address.",
+    "steps": [
+      {
+        "key": "intro",
+        "text": "Run a Minutrel team workspace on infrastructure you control. This guide follows the Node.js installation route.",
+        "id": "12-intro",
+        "file": "audio/series-en/12-intro.wav",
+        "duration": 7.697916666666667
+      },
+      {
+        "key": "requirements",
+        "title": "Prepare an application folder.",
+        "visual": "code",
+        "code": ["node --version", "# Use Node.js 24", "npm ci --ignore-scripts"],
+        "text": "Start from a copy of the Minutrel source code in a dedicated application folder. Install Node.js twenty-four, check its version, and install the locked dependencies. Keep real data separate from a temporary demonstration.",
+        "id": "12-requirements",
+        "file": "audio/series-en/12-requirements.wav",
+        "duration": 14.96675
+      },
+      {
+        "key": "build",
+        "title": "Build the web client and server.",
+        "visual": "code",
+        "code": ["npm run build", "# Builds the web client and API"],
+        "text": "Run npm run build. This prepares the web client and the API. The same server serves the browser interface and the team endpoints. It does not require an AI provider or a commercial time tracking service.",
+        "id": "12-build",
+        "file": "audio/series-en/12-build.wav",
+        "duration": 15.327375
+      },
+      {
+        "key": "start",
+        "title": "Start your instance.",
+        "visual": "code",
+        "code": ["npm start", "# Default local address:", "http://127.0.0.1:8081"],
+        "text": "Start the server with npm start and open its local address. By default, the service listens only on this computer. Its persistent data folder contains the database and the key needed to read protected server secrets.",
+        "id": "12-start",
+        "file": "audio/series-en/12-start.wav",
+        "duration": 14.97925
+      },
+      {
+        "key": "setup",
+        "title": "Create the first administrator.",
+        "text": "On first launch, name the workspace, choose its time zone and create the first administrator. Enter the generated setup secret and a strong password privately. There is no default password and no public sign-up.",
+        "id": "12-setup",
+        "file": "audio/series-en/12-setup.wav",
+        "duration": 14.197375
+      },
+      {
+        "key": "https",
+        "title": "Put HTTPS in front of the server.",
+        "visual": "code",
+        "code": [
+          "export APP_PUBLIC_URL=https://time.example.com",
+          "export APP_SECURE_COOKIES=true",
+          "",
+          "# Caddy reverse proxy (example):",
+          "time.example.com {",
+          "    reverse_proxy 127.0.0.1:8081",
+          "}"
+        ],
+        "text": "For remote team access, configure a trusted HTTPS reverse proxy. Set the exact public origin and secure cookies in the server environment. The proxy must forward the API, MCP and hooks paths, and allow long-lived server events. The address shown here is an example.",
+        "id": "12-https",
+        "file": "audio/series-en/12-https.wav",
+        "duration": 20.03475
+      },
+      {
+        "key": "backup",
+        "title": "Back up data and its key together.",
+        "visual": "code",
+        "code": [
+          "npm run backup",
+          "",
+          "# Keep the database and its master key together.",
+          "# Test restoration before you need it."
+        ],
+        "text": "Keep the database and its master key together in backups, and test a restore. Use a single server process for this SQLite workspace. Before updating, back up the current data; do not remove persistent volumes as an update step.",
+        "id": "12-backup",
+        "file": "audio/series-en/12-backup.wav",
+        "duration": 15.804875
+      },
+      {
+        "key": "team",
+        "title": "Create accounts and test the full path.",
+        "text": "Create your team accounts, assign members to projects and test one timer and one report. Browser and desktop clients use the same team address. Desktop HTTP connections are accepted only for a server on the same computer; remote access uses HTTPS.",
+        "id": "12-team",
+        "file": "audio/series-en/12-team.wav",
+        "duration": 19.293625
+      },
+      {
+        "key": "outro",
+        "text": "Your server is ready. Give each member their own account and the same HTTPS address.",
+        "id": "12-outro",
+        "file": "audio/series-en/12-outro.wav",
+        "duration": 6.068375
+      }
+    ]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "name": "@minutrel/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types src/server.ts",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@fastify/cookie": "11.1.5",
+    "@fastify/rate-limit": "11.2.2",
+    "@fastify/static": "10.1.10",
+    "@minutrel/contracts": "0.1.0",
+    "@minutrel/domain": "0.1.0",
+    "@modelcontextprotocol/sdk": "1.32.2",
+    "fastify": "5.12.8",
+    "fflate": "0.8.3",
+    "pdfkit": "0.20.2",
+    "zod": "4.6.7"
+  }
+}

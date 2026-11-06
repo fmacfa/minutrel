@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "snapshot": "2026-11-06",
+  "source_files": 202,
+  "macos": {
+    "filename": "Minutrel_0.1.0_aarch64.dmg",
+    "bytes": 5947932,
+    "sha256": "d3c6a61d6646674bf1af15a9cc4b4bf8fb4430a2d28ebfbdf0a97eec4577c585"
+  }
+}

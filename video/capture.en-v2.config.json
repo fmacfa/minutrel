@@ -1,0 +1,297 @@
+{
+  "url": "http://127.0.0.1:8086",
+  "output": "public/captures/minutrel-tutorial-en-v2.webm",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "locale": "en-GB",
+  "timezoneId": "Europe/Paris",
+  "storageState": ".cache/session-en-v2.json",
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "readyTarget": {
+    "role": "button",
+    "name": "Start",
+    "exact": true
+  },
+  "initialWaitMs": 1000,
+  "finalWaitMs": 850,
+  "cursor": true,
+  "actions": [
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Projects",
+        "exact": true
+      },
+      "label": "Projects",
+      "afterMs": 4382
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/projects.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Overview",
+        "exact": true
+      },
+      "label": "Choose",
+      "afterMs": 900
+    },
+    {
+      "type": "select",
+      "target": {
+        "role": "combobox",
+        "name": "Project to track",
+        "exact": true
+      },
+      "optionLabel": "Atlas",
+      "afterMs": 650
+    },
+    {
+      "type": "select",
+      "target": {
+        "role": "combobox",
+        "name": "Optional task",
+        "exact": true
+      },
+      "optionLabel": "Design & art direction",
+      "afterMs": 2707
+    },
+    {
+      "type": "type",
+      "target": {
+        "role": "textbox",
+        "name": "Work description",
+        "exact": true
+      },
+      "value": "Prepare mockups for Atlas",
+      "typeDelayMs": 42,
+      "label": "Describe",
+      "afterMs": 3238
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/ready.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Start",
+        "exact": true
+      },
+      "label": "Start",
+      "afterMs": 5500
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/timer.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Pause",
+        "exact": true
+      },
+      "label": "Pause",
+      "afterMs": 4374
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Resume",
+        "exact": true
+      },
+      "label": "Resume",
+      "afterMs": 5438
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Finish",
+        "exact": true
+      },
+      "label": "Finish",
+      "afterMs": 5551
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Time entries",
+        "exact": true
+      },
+      "label": "History",
+      "afterMs": 5163
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/history.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Add time",
+        "exact": true
+      },
+      "label": "Manual",
+      "afterMs": 1100
+    },
+    {
+      "type": "fill",
+      "target": {
+        "selector": "dialog input[name='duration']"
+      },
+      "value": "45 min",
+      "afterMs": 1400,
+      "label": "Duration"
+    },
+    {
+      "type": "type",
+      "target": {
+        "selector": "dialog textarea[name='description']"
+      },
+      "value": "Prepare the Atlas team meeting",
+      "typeDelayMs": 35,
+      "afterMs": 3347
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/manual.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Add this time entry",
+        "exact": true
+      },
+      "label": "SaveTime",
+      "afterMs": 3588
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Work journal",
+        "exact": true
+      },
+      "label": "Journal",
+      "afterMs": 4619
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Add a note",
+        "exact": true
+      },
+      "label": "Note",
+      "afterMs": 850
+    },
+    {
+      "type": "type",
+      "target": {
+        "role": "textbox",
+        "name": "Work completed",
+        "exact": true
+      },
+      "value": "Atlas mockups are ready. Navigation is clearer. Next: review the proposals with the team.",
+      "typeDelayMs": 26,
+      "afterMs": 2560,
+      "label": "NoteText"
+    },
+    {
+      "type": "wait",
+      "ms": 2200,
+      "label": "Share"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "checkbox",
+        "name": "Share this note in team reports",
+        "exact": true
+      },
+      "afterMs": 1500
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/note.png"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Save",
+        "exact": true
+      },
+      "label": "SaveNote",
+      "afterMs": 2435
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "Reports",
+        "exact": true
+      },
+      "label": "Reports",
+      "afterMs": 7007
+    },
+    {
+      "type": "screenshot",
+      "path": "public/stills/en-v2/report.png"
+    },
+    {
+      "type": "hover",
+      "target": {
+        "selector": "main input[type='month']"
+      },
+      "afterMs": 1500,
+      "label": "Period"
+    },
+    {
+      "type": "click",
+      "target": {
+        "selector": "main .member-filter > summary"
+      },
+      "afterMs": 2400
+    },
+    {
+      "type": "click",
+      "target": {
+        "selector": "main .member-filter > summary"
+      },
+      "afterMs": 1400
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "button",
+        "name": "PDF",
+        "exact": true
+      },
+      "label": "Export",
+      "afterMs": 6485
+    },
+    {
+      "type": "move",
+      "x": 1180,
+      "y": 650,
+      "durationMs": 500,
+      "afterMs": 600,
+      "label": "End"
+    }
+  ]
+}

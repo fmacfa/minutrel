@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+.sites-runtime/
+.sites-checkout/
+.sites-checkout-*/
+dist/

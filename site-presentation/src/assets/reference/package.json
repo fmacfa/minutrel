@@ -1,0 +1,54 @@
+{
+  "name": "minutrel-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev:web": "npm run dev --workspace @minutrel/web",
+    "dev:api": "npm run dev --workspace @minutrel/api",
+    "dev:desktop": "npm run dev --workspace @minutrel/desktop",
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "npm run build --workspace @minutrel/web",
+    "build:api": "node scripts/build-api.mjs",
+    "build:desktop": "npm run build:web && node scripts/build-desktop.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint apps packages scripts/*.mjs *.mjs",
+    "format:check": "prettier --check apps packages .github scripts/*.mjs *.json *.mjs brand/tokens.css",
+    "format": "prettier --write apps packages .github scripts/*.mjs *.json *.mjs brand/tokens.css",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:coverage && npm run build",
+    "start": "node apps/api/dist/server.js",
+    "backup": "node scripts/backup.mjs",
+    "demo": "npm run build && node scripts/demo.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@tauri-apps/cli": "2.12.4",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "@vitest/coverage-v8": "5.1.0",
+    "eslint": "10.14.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.6",
+    "vitest": "5.1.0",
+    "esbuild": "0.28.2",
+    "@types/pdfkit": "0.17.7"
+  },
+  "overrides": {
+    "minimatch": "11.0.1"
+  }
+}

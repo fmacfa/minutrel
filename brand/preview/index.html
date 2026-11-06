@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minutrel — Identité de marque</title>
+  <link rel="icon" href="../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../tokens.css">
+  <style>
+    @font-face{font-family:Manrope;src:url('../fonts/Manrope-Regular.ttf');font-weight:400;font-display:swap}
+    @font-face{font-family:Manrope;src:url('../fonts/Manrope-ExtraBold.ttf');font-weight:800;font-display:swap}
+    *{box-sizing:border-box}body{margin:0;background:var(--color-canvas);color:var(--color-ink);font:16px/1.65 Manrope,system-ui,sans-serif}main{max-width:1240px;margin:auto;padding:32px}a{color:var(--color-primary)}a:focus-visible{outline:3px solid var(--color-primary);outline-offset:4px}.hero{border-radius:24px;background:var(--color-ink);padding:64px;color:white}.hero img{width:310px;max-width:100%}.hero h1{font-size:clamp(38px,6vw,72px);line-height:1.15;letter-spacing:-.05em;max-width:900px;margin:64px 0 32px}.hero em{color:var(--color-accent);font-style:normal}.hero p{color:#ccd8d8;max-width:620px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase}.section{padding:48px 0 16px}.section h2{font-size:28px;letter-spacing:-.04em}.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}.swatch{height:140px;border-radius:16px;border:1px solid var(--color-border)}.label{display:block;margin-top:12px;font-weight:800}.code{font-size:13px;color:var(--color-muted)}.logos{display:grid;grid-template-columns:1fr 1fr;gap:20px}.logo-card{padding:48px 24px;border:1px solid var(--color-border);border-radius:16px;background:white}.logo-card.dark{background:var(--color-ink)}.logo-card img{width:100%}.demo{display:grid;grid-template-columns:220px 1fr;border:1px solid var(--color-border);border-radius:20px;overflow:hidden;background:white}.sidebar{padding:28px;background:var(--color-ink);color:white}.sidebar img{width:160px}.sidebar p{margin-top:30px;font-size:14px}.sidebar .active{color:var(--color-accent)}.screen{padding:36px}.screen .role{font-size:12px;color:var(--color-muted)}.timer{font-size:clamp(32px,5vw,64px);line-height:1.2;letter-spacing:-.04em;font-weight:800;margin:30px 0}.pill{border-radius:999px;background:var(--color-accent);padding:4px 12px;font-size:12px}.screen button{font:inherit;border-radius:8px;padding:10px 18px;border:0;margin-right:8px;color:white;background:var(--color-primary);opacity:1}.screen button.secondary{background:var(--color-canvas);color:var(--color-ink);border:1px solid var(--color-border)}.screen footer{margin-top:32px;border-top:1px solid var(--color-border);padding-top:20px;color:var(--color-muted);font-size:13px}.downloads{display:flex;flex-wrap:wrap;gap:12px}.downloads a{background:white;border:1px solid var(--color-border);border-radius:8px;padding:10px 16px;text-decoration:none}.note{color:var(--color-muted);font-size:13px}.specimen{font-size:clamp(28px,5vw,58px);font-weight:800;letter-spacing:-.03em}body>footer{padding:24px 32px;text-align:center;color:var(--color-muted);font-size:12px}@media(max-width:700px){main{padding:16px}.hero{padding:32px}.hero h1{margin-top:40px}.palette{grid-template-columns:repeat(2,1fr)}.logos{grid-template-columns:1fr}.demo{grid-template-columns:1fr}.sidebar{display:none}.screen{padding:24px}.swatch{height:100px}}
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <img src="../assets/logos/minutrel-reverse.svg" alt="Minutrel">
+    <h1>Le temps de vos projets,<br><em>ensemble.</em></h1>
+    <p>Une identité pour le suivi du temps en équipe. Libre, autohébergé, présent sur le web et sur vos ordinateurs.</p>
+    <p class="eyebrow">Proposition de marque · 05 novembre 2026</p>
+  </section>
+  <section class="section">
+    <h2>Un repère commun</h2>
+    <p>Deux appuis reliés forment un M ouvert. Le point citron ajoute un repère de temps. Le signe reste simple, du favicon à l’icône d’application.</p>
+    <div class="logos">
+      <div class="logo-card"><img src="../assets/logos/minutrel-primary.svg" alt="Logo sur fond clair"></div>
+      <div class="logo-card dark"><img src="../assets/logos/minutrel-reverse.svg" alt="Logo sur fond sombre"></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>La palette</h2>
+    <div class="palette">
+      <div><div class="swatch" style="background:#142c38"></div><span class="label">Encre</span><span class="code">#142C38</span></div>
+      <div><div class="swatch" style="background:#087f75"></div><span class="label">Vert</span><span class="code">#087F75</span></div>
+      <div><div class="swatch" style="background:#d3ef70"></div><span class="label">Citron</span><span class="code">#D3EF70</span></div>
+      <div><div class="swatch" style="background:#f8f7f3"></div><span class="label">Papier</span><span class="code">#F8F7F3</span></div>
+      <div><div class="swatch" style="background:#536570"></div><span class="label">Ardoise</span><span class="code">#536570</span></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Manrope, une famille libre</h2>
+    <p class="specimen">12 h 45 min<br>Chaque minute trouve sa place.</p>
+    <p>Graisses 400, 600 et 800. Police livrée avec sa licence et servie localement, sans appel à Google Fonts.</p>
+  </section>
+  <section class="section">
+    <h2>Exemple d’interface</h2>
+    <p class="note">Maquette visuelle : les commandes ci-dessous sont désactivées et n’enregistrent aucun temps.</p>
+    <div class="demo">
+      <aside class="sidebar"><img src="../assets/logos/minutrel-reverse.svg" alt="Minutrel"><p class="active">Tableau de bord</p><p>Projets</p><p>Temps</p><p>Rapports</p><p>Membres</p></aside>
+      <div class="screen"><div class="role">Atelier Exemple · Camille · Responsable</div><h3>Site vitrine <span class="pill">En cours</span></h3><p>Préparation des maquettes</p><div class="timer">01:23:17</div><button disabled>Mettre en pause</button><button class="secondary" disabled>Arrêter</button><footer>Même équipe, mêmes projets, sur le web et sur ordinateur.</footer></div>
+    </div>
+  </section>
+  <section class="section">
+    <h2>Ressources</h2>
+    <div class="downloads">
+      <a href="../../output/pdf/minutrel-charte-graphique.pdf">Charte PDF</a>
+      <a href="../assets/logos/minutrel-primary.svg" download>Logo SVG</a>
+      <a href="../assets/icons/app-1024.png" download>Icône 1024 px</a>
+      <a href="../assets/social-preview.png" download>Image de partage</a>
+      <a href="../tokens.json" download>Tokens JSON</a>
+      <a href="../fonts/OFL.txt">Licence des polices</a>
+    </div>
+    <p class="note">Le nom reste une proposition après recherches préliminaires. Voir le rapport de disponibilité dans les documents du dépôt.</p>
+  </section>
+</main>
+<footer>Minutrel · Identité proposée · Code et ressources originales sous AGPL-3.0-or-later · Polices sous OFL-1.1</footer>
+</body>
+</html>

@@ -1,0 +1,182 @@
+{
+  "url": "http://127.0.0.1:8086",
+  "output": "public/captures/minutrel-parcours.webm",
+  "viewport": { "width": 1440, "height": 900 },
+  "locale": "fr-FR",
+  "timezoneId": "Europe/Paris",
+  "storageState": ".cache/session.json",
+  "colorScheme": "light",
+  "reducedMotion": "reduce",
+  "readyTarget": { "role": "button", "name": "Démarrer", "exact": true },
+  "initialWaitMs": 1100,
+  "finalWaitMs": 1200,
+  "cursor": true,
+  "actions": [
+    { "type": "wait", "ms": 2500, "label": "Accueil" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Les projets", "exact": true },
+      "afterMs": 5500,
+      "label": "Projets"
+    },
+    { "type": "screenshot", "path": "public/stills/projets.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Vue d’ensemble", "exact": true },
+      "afterMs": 2000,
+      "label": "Choisir"
+    },
+    {
+      "type": "hover",
+      "target": { "role": "combobox", "name": "Projet à chronométrer", "exact": true },
+      "afterMs": 1000
+    },
+    {
+      "type": "press",
+      "target": { "role": "combobox", "name": "Projet à chronométrer", "exact": true },
+      "key": "Home",
+      "afterMs": 2000,
+      "label": "Projet"
+    },
+    {
+      "type": "hover",
+      "target": { "role": "combobox", "name": "Tâche facultative", "exact": true },
+      "afterMs": 700
+    },
+    {
+      "type": "press",
+      "target": { "role": "combobox", "name": "Tâche facultative", "exact": true },
+      "key": "End",
+      "afterMs": 2000,
+      "label": "Tache"
+    },
+    {
+      "type": "fill",
+      "target": { "role": "textbox", "name": "Description du travail", "exact": true },
+      "value": "Préparer les maquettes du projet Atlas",
+      "afterMs": 4000,
+      "label": "Description"
+    },
+    { "type": "screenshot", "path": "public/stills/pret.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Démarrer", "exact": true },
+      "afterMs": 10500,
+      "label": "Demarrer"
+    },
+    { "type": "screenshot", "path": "public/stills/chrono.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Pause", "exact": true },
+      "afterMs": 5500,
+      "label": "Pause"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Reprendre", "exact": true },
+      "afterMs": 7000,
+      "label": "Reprendre"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Terminer", "exact": true },
+      "afterMs": 4500,
+      "label": "Terminer"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Les temps", "exact": true },
+      "afterMs": 6500,
+      "label": "Historique"
+    },
+    { "type": "screenshot", "path": "public/stills/temps.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Ajouter un temps", "exact": true },
+      "afterMs": 2500,
+      "label": "AjoutManuel"
+    },
+    {
+      "type": "fill",
+      "target": { "selector": "dialog input[name='duration']" },
+      "value": "45 min",
+      "afterMs": 2500,
+      "label": "Duree"
+    },
+    {
+      "type": "fill",
+      "target": { "selector": "dialog textarea[name='description']" },
+      "value": "Préparation de la réunion Atlas",
+      "afterMs": 2000
+    },
+    { "type": "screenshot", "path": "public/stills/manuel.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Ajouter ce temps", "exact": true },
+      "afterMs": 4500,
+      "label": "SauverManuel"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Le fil du travail", "exact": true },
+      "afterMs": 3000,
+      "label": "Notes"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Ajouter une note", "exact": true },
+      "afterMs": 2000,
+      "label": "NouvelleNote"
+    },
+    {
+      "type": "fill",
+      "target": { "role": "textbox", "name": "Le travail effectué", "exact": true },
+      "value": "Maquettes Atlas préparées. La navigation est clarifiée ; prochaine étape : partager les propositions avec l’équipe.",
+      "afterMs": 5000,
+      "label": "TexteNote"
+    },
+    {
+      "type": "click",
+      "target": {
+        "role": "checkbox",
+        "name": "Partager cette note dans les rapports de l’équipe",
+        "exact": true
+      },
+      "afterMs": 3500,
+      "label": "Partager"
+    },
+    { "type": "screenshot", "path": "public/stills/note.png" },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Enregistrer", "exact": true },
+      "afterMs": 4500,
+      "label": "SauverNote"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "Les rapports", "exact": true },
+      "afterMs": 6500,
+      "label": "Rapports"
+    },
+    { "type": "screenshot", "path": "public/stills/rapport.png" },
+    {
+      "type": "hover",
+      "target": { "selector": "main input[type='month']" },
+      "afterMs": 3000,
+      "label": "Periode"
+    },
+    {
+      "type": "hover",
+      "target": { "selector": "main .member-filter > summary" },
+      "afterMs": 2500,
+      "label": "Equipe"
+    },
+    {
+      "type": "click",
+      "target": { "role": "button", "name": "PDF", "exact": true },
+      "afterMs": 6500,
+      "label": "Export"
+    },
+    { "type": "move", "x": 1180, "y": 650, "durationMs": 500, "afterMs": 1000, "label": "Fin" }
+  ]
+}

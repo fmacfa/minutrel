@@ -1,0 +1,33 @@
+name: minutrel
+services:
+  minutrel:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      target: api
+    image: minutrel:0.1.0
+    restart: unless-stopped
+    init: true
+    environment:
+      APP_PUBLIC_URL: ${APP_PUBLIC_URL:-http://127.0.0.1:8080}
+      APP_SECURE_COOKIES: ${APP_SECURE_COOKIES:-false}
+      APP_AI_ALLOWED_HOSTS: ${APP_AI_ALLOWED_HOSTS:-localhost,127.0.0.1,ollama,vllm,api.anthropic.com}
+      APP_SETUP_TOKEN: ${APP_SETUP_TOKEN:-}
+      APP_MASTER_KEY: ${APP_MASTER_KEY:-}
+    ports:
+      - '${MINUTREL_BIND_ADDR:-127.0.0.1}:${MINUTREL_PORT:-8080}:8081'
+    volumes:
+      - minutrel-data:/app/data
+      - minutrel-backups:/backups
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    mem_limit: 768m
+    cpus: 1.0
+volumes:
+  minutrel-data:
+  minutrel-backups:

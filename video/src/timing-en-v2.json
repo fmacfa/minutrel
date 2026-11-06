@@ -1,0 +1,194 @@
+{
+  "trim": 1.286,
+  "duration": 106.3,
+  "intro": 8.3,
+  "outro": 6.433333333333334,
+  "total": 121.03333333333333,
+  "presentationSeconds": 26,
+  "markers": {
+    "Projects": 0.017,
+    "Choose": 5.183,
+    "Describe": 11.339,
+    "Start": 16.305,
+    "Pause": 22.572,
+    "Resume": 27.622,
+    "Finish": 33.739,
+    "History": 40.03,
+    "Manual": 46.266,
+    "Duration": 48.231,
+    "SaveTime": 55.912,
+    "Journal": 60.755,
+    "Note": 66.143,
+    "NoteText": 68.152,
+    "Share": 73.879,
+    "SaveNote": 78.604,
+    "Reports": 81.886,
+    "Period": 89.677,
+    "Export": 97.079,
+    "End": 104.273
+  },
+  "voice": [
+    {
+      "id": "intro",
+      "marker": null,
+      "text": "Minutrel tracks work by project. Use it on your own computer, or with a team on your own server. Let’s record a session.",
+      "file": "audio/en-v2/intro.wav",
+      "duration": 7.6355,
+      "speed": 0.92,
+      "at": 0.2
+    },
+    {
+      "id": "projects",
+      "marker": "Projects",
+      "text": "Projects give every session a home. We’ll use Atlas for this walkthrough.",
+      "file": "audio/en-v2/projects.wav",
+      "duration": 4.146625,
+      "speed": 0.92,
+      "at": 8.387
+    },
+    {
+      "id": "choose",
+      "marker": "Choose",
+      "text": "In Overview, select your project. You can also choose a task if you need one.",
+      "file": "audio/en-v2/choose.wav",
+      "duration": 4.923416666666666,
+      "speed": 0.92,
+      "at": 13.553
+    },
+    {
+      "id": "describe",
+      "marker": "Describe",
+      "text": "Give the session a short description, so you can recognise the work later.",
+      "file": "audio/en-v2/describe.wav",
+      "duration": 4.403791666666667,
+      "speed": 0.92,
+      "at": 19.709000000000003
+    },
+    {
+      "id": "start",
+      "marker": "Start",
+      "text": "Click Start. Minutrel now tracks your time against Atlas while you work.",
+      "file": "audio/en-v2/start.wav",
+      "duration": 3.959208333333333,
+      "speed": 0.92,
+      "at": 24.675
+    },
+    {
+      "id": "pause",
+      "marker": "Pause",
+      "text": "Taking a break? Click Pause. This time won’t count as work.",
+      "file": "audio/en-v2/pause.wav",
+      "duration": 3.8829583333333333,
+      "speed": 0.92,
+      "at": 30.942
+    },
+    {
+      "id": "resume",
+      "marker": "Resume",
+      "text": "Click Resume to continue the same session, with the same project and description.",
+      "file": "audio/en-v2/resume.wav",
+      "duration": 4.881333333333333,
+      "speed": 0.92,
+      "at": 35.992
+    },
+    {
+      "id": "finish",
+      "marker": "Finish",
+      "text": "When you’re done, click Finish to save the session. Closing the window doesn’t stop the timer.",
+      "file": "audio/en-v2/finish.wav",
+      "duration": 5.293208333333333,
+      "speed": 0.92,
+      "at": 42.109
+    },
+    {
+      "id": "history",
+      "marker": "History",
+      "text": "Open Time entries to see your completed sessions for the month you’ve selected.",
+      "file": "audio/en-v2/history.wav",
+      "duration": 4.82475,
+      "speed": 0.92,
+      "at": 48.4
+    },
+    {
+      "id": "manual",
+      "marker": "Manual",
+      "text": "Forgot to start the timer? Add time manually. Choose a project and date, enter forty-five minutes, and describe the work.",
+      "file": "audio/en-v2/manual.wav",
+      "duration": 7.775125,
+      "speed": 0.92,
+      "at": 54.636
+    },
+    {
+      "id": "save-time",
+      "marker": "SaveTime",
+      "text": "Save the entry. It’s now included in your totals.",
+      "file": "audio/en-v2/save-time.wav",
+      "duration": 3.1965833333333333,
+      "speed": 0.92,
+      "at": 64.282
+    },
+    {
+      "id": "journal",
+      "marker": "Journal",
+      "text": "Time shows how much. Your work journal explains what moved forward.",
+      "file": "audio/en-v2/journal.wav",
+      "duration": 4.11725,
+      "speed": 0.92,
+      "at": 69.125
+    },
+    {
+      "id": "note",
+      "marker": "Note",
+      "text": "Add a note for Atlas. Capture a result, a decision, or the next step, while it’s still fresh.",
+      "file": "audio/en-v2/note.wav",
+      "duration": 5.880208333333333,
+      "speed": 0.92,
+      "at": 74.51299999999999
+    },
+    {
+      "id": "share",
+      "marker": "Share",
+      "text": "Notes are private by default. Tick this box to share the note in team reports, then save it.",
+      "file": "audio/en-v2/share.wav",
+      "duration": 5.88,
+      "speed": 0.92,
+      "at": 82.249
+    },
+    {
+      "id": "reports",
+      "marker": "Reports",
+      "text": "Reports bring completed time and shared work together. See where the month went, by project and by person.",
+      "file": "audio/en-v2/reports.wav",
+      "duration": 6.740208333333333,
+      "speed": 0.92,
+      "at": 90.25599999999999
+    },
+    {
+      "id": "period",
+      "marker": "Period",
+      "text": "Choose the month you need. An administrator can filter the team and download a report.",
+      "file": "audio/en-v2/period.wav",
+      "duration": 5.444541666666667,
+      "speed": 0.92,
+      "at": 98.047
+    },
+    {
+      "id": "export",
+      "marker": "Export",
+      "text": "Export a PDF, a CSV, or a ZIP package. Here, we’ll download a PDF.",
+      "file": "audio/en-v2/export.wav",
+      "duration": 6.191625,
+      "speed": 0.92,
+      "at": 105.44899999999998
+    },
+    {
+      "id": "outro",
+      "marker": null,
+      "text": "Choose a project. Track your time. Add context. Review the results. That’s Minutrel.",
+      "file": "audio/en-v2/outro.wav",
+      "duration": 5.550541666666667,
+      "speed": 0.92,
+      "at": 114.8
+    }
+  ]
+}

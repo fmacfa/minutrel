@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "minutrel": {
+      "type": "http",
+      "url": "${MINUTREL_URL}/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MINUTREL_MCP_TOKEN}"
+      }
+    }
+  }
+}

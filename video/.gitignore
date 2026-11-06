@@ -1,0 +1,8 @@
+node_modules/
+.cache/
+out/
+public/captures/
+public/brand/
+public/fonts/
+public/stills/
+public/audio/

@@ -1,0 +1,35 @@
+{
+  "name": "minutrel-videos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.tsx",
+    "compositions": "remotion compositions src/index.tsx",
+    "render:presentation": "remotion render src/index.tsx MinutrelPresentationEN out/minutrel-presentation-en-v2.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=192k --crf=18 --concurrency=2",
+    "render:fonctionnement": "remotion render src/index.tsx MinutrelTutorialEN out/minutrel-tutorial-en-v2.mp4 --codec=h264 --audio-codec=aac --audio-bitrate=192k --crf=18 --concurrency=2",
+    "typecheck": "tsc --noEmit",
+    "verify": "node scripts/verify-en-v2.mjs",
+    "series:voices": "node scripts/synthesize-series.mjs",
+    "series:timeline": "node scripts/build-series.mjs",
+    "series:stills": "node scripts/render-series.mjs --stills",
+    "series:render": "node scripts/render-series.mjs --videos",
+    "series:verify": "node scripts/verify-series.mjs",
+    "series:sample": "node scripts/sample-series.mjs",
+    "series:package": "node scripts/package-series.mjs"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.541",
+    "@remotion/fonts": "4.0.541",
+    "@remotion/media": "4.0.541",
+    "kokoro-js": "1.2.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.541"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "playwright": "1.65.0",
+    "typescript": "6.0.3"
+  }
+}

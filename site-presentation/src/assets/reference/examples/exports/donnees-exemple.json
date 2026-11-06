@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "exported_at": "2026-11-05T12:00:00Z",
+  "workspace": {
+    "id": "10000000-0000-4000-8000-000000000001",
+    "name": "Atelier Exemple",
+    "time_zone": "Europe/Paris",
+    "locale": "fr-FR"
+  },
+  "members": [
+    {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "display_name": "Alex Exemple"
+    },
+    {
+      "id": "20000000-0000-4000-8000-000000000002",
+      "display_name": "Camille Exemple"
+    }
+  ],
+  "projects": [
+    {
+      "id": "30000000-0000-4000-8000-000000000001",
+      "workspace_id": "10000000-0000-4000-8000-000000000001",
+      "name": "Site vitrine",
+      "code": "WEB-001",
+      "client_name": "Client Exemple",
+      "archived_at": null,
+      "version": 1
+    }
+  ],
+  "project_members": [
+    {
+      "project_id": "30000000-0000-4000-8000-000000000001",
+      "member_id": "20000000-0000-4000-8000-000000000001"
+    },
+    {
+      "project_id": "30000000-0000-4000-8000-000000000001",
+      "member_id": "20000000-0000-4000-8000-000000000002"
+    }
+  ],
+  "tasks": [],
+  "time_entries": [
+    {
+      "id": "40000000-0000-4000-8000-000000000001",
+      "workspace_id": "10000000-0000-4000-8000-000000000001",
+      "member_id": "20000000-0000-4000-8000-000000000001",
+      "project_id": "30000000-0000-4000-8000-000000000001",
+      "task_id": null,
+      "kind": "interval",
+      "state": "stopped",
+      "description": "Réunion de lancement",
+      "billable": true,
+      "work_date": null,
+      "time_zone": "Europe/Paris",
+      "duration_seconds": 5400,
+      "version": 1,
+      "created_at": "2026-11-05T08:00:00Z",
+      "updated_at": "2026-11-05T09:30:00Z",
+      "deleted_at": null
+    },
+    {
+      "id": "40000000-0000-4000-8000-000000000002",
+      "workspace_id": "10000000-0000-4000-8000-000000000001",
+      "member_id": "20000000-0000-4000-8000-000000000002",
+      "project_id": "30000000-0000-4000-8000-000000000001",
+      "task_id": null,
+      "kind": "interval",
+      "state": "stopped",
+      "description": "Préparation des maquettes",
+      "billable": true,
+      "work_date": null,
+      "time_zone": "Europe/Paris",
+      "duration_seconds": 2700,
+      "version": 1,
+      "created_at": "2026-11-05T09:45:00Z",
+      "updated_at": "2026-11-05T10:30:00Z",
+      "deleted_at": null
+    }
+  ],
+  "time_segments": [
+    {
+      "id": "50000000-0000-4000-8000-000000000001",
+      "entry_id": "40000000-0000-4000-8000-000000000001",
+      "started_at": "2026-11-05T08:00:00Z",
+      "ended_at": "2026-11-05T09:30:00Z"
+    },
+    {
+      "id": "50000000-0000-4000-8000-000000000002",
+      "entry_id": "40000000-0000-4000-8000-000000000002",
+      "started_at": "2026-11-05T09:45:00Z",
+      "ended_at": "2026-11-05T10:30:00Z"
+    }
+  ]
+}

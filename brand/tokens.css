@@ -1,0 +1,14 @@
+:root {
+  --color-ink: #142c38;
+  --color-primary: #087f75;
+  --color-primary-dark: #05665e;
+  --color-accent: #d3ef70;
+  --color-canvas: #f8f7f3;
+  --color-white: #ffffff;
+  --color-muted: #536570;
+  --color-border: #d7deda;
+  --color-danger: #b93838;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --radius-control: 8px;
+  --radius-card: 16px;
+}

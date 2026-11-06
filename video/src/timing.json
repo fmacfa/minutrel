@@ -1,0 +1,30 @@
+{
+  "trim": 1.387,
+  "duration": 121.1,
+  "markers": {
+    "Accueil": 0.019,
+    "Projets": 2.521,
+    "Choisir": 8.979,
+    "Projet": 13.253,
+    "Tache": 16.536,
+    "Description": 18.546,
+    "Demarrer": 23.224,
+    "Pause": 34.463,
+    "Reprendre": 40.684,
+    "Terminer": 48.376,
+    "Historique": 53.59,
+    "AjoutManuel": 60.968,
+    "Duree": 64.222,
+    "SauverManuel": 70.169,
+    "Notes": 75.41,
+    "NouvelleNote": 79.12,
+    "TexteNote": 81.873,
+    "Partager": 87.566,
+    "SauverNote": 92.022,
+    "Rapports": 97.303,
+    "Periode": 104.581,
+    "Equipe": 108.108,
+    "Export": 111.139,
+    "Fin": 118.316
+  }
+}

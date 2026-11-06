@@ -1,0 +1,50 @@
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.mobileprovision
+
+# Dépendances et constructions
+node_modules/
+.pnpm-store/
+dist/
+build/
+target/
+apps/desktop/src-tauri/gen/
+.vite/
+coverage/
+test-results/
+playwright-report/
+
+# Bases, sauvegardes et exports réels
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.dump
+*.backup
+/data/
+**/data/
+/backups/
+/local-exports/
+
+# Système et outils
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/
+*.pyc
+.venv/
+.cache/
+tmp/
+/output/ci/
+/output/sites/
+site-presentation/.openai/
+.idea/
+.vscode/

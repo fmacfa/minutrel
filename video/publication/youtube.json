@@ -1,0 +1,182 @@
+{
+  "channelId": "UCcJhCgd_1O0jeWqGJZGfjSw",
+  "channelUrl": "https://www.youtube.com/@minutrel",
+  "language": "en",
+  "preparedAt": "2026-11-06T20:26:12.461Z",
+  "videos": [
+    {
+      "id": 1,
+      "title": "Minutrel — Open-source time tracking, by project",
+      "titleFr": "Comprendre Minutrel",
+      "summary": "A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.",
+      "description": "A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Project-based time tracking\n• Work context and monthly reports\n• Personal and self-hosted team workspaces\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 26,
+      "file": "video/out/minutrel-presentation-en-v2.mp4",
+      "subtitle": "video/out/minutrel-presentation-en-v2.srt",
+      "uploadFile": "video/.cache/youtube-upload/01 - Minutrel - Open-source time tracking, by project.mp4",
+      "youtube": {
+        "status": "draft",
+        "id": "q6VeUbyOhn8",
+        "url": "https://youtu.be/q6VeUbyOhn8"
+      }
+    },
+    {
+      "id": 2,
+      "title": "Minutrel — Getting started: track, pause, finish and report",
+      "titleFr": "Premiers pas avec Minutrel",
+      "summary": "Follow a project from selecting it and recording a session to adding time, sharing a note and exporting a report.",
+      "description": "Follow a project from selecting it and recording a session to adding time, sharing a note and exporting a report.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Choose a project and describe your work\n• Start, pause, resume and finish a session\n• Review and add time entries\n• Share a work note and export a report\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 121.03333333333333,
+      "file": "video/out/minutrel-tutorial-en-v2.mp4",
+      "subtitle": "video/out/minutrel-tutorial-en-v2.srt",
+      "uploadFile": "video/.cache/youtube-upload/02 - Minutrel - Getting started - track, pause, finish and report.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 3,
+      "title": "Minutrel — Mini timer: keep your session within reach",
+      "titleFr": "Le mini chrono",
+      "summary": "Keep your timer close, without keeping the main window open.",
+      "description": "Keep your timer close, without keeping the main window open.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Start with a project.\n• Open the mini timer.\n• Pause. Then carry on.\n• Finish from the mini timer.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\nThis desktop guide uses real application screenshots arranged as narrated steps.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 43.13333333333333,
+      "file": "video/out/series-en/minutrel-03-mini-timer.mp4",
+      "subtitle": "video/out/series-en/minutrel-03-mini-timer.srt",
+      "uploadFile": "video/.cache/youtube-upload/03 - Minutrel - Mini timer - keep your session within reach.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 4,
+      "title": "Minutrel — Work on your computer without a server",
+      "titleFr": "Démarrer seul sur son ordinateur",
+      "summary": "Start tracking your projects without a server or an online account.",
+      "description": "Start tracking your projects without a server or an online account.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Choose a personal workspace.\n• Create your first project.\n• Record your first session.\n• Review and keep a copy.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\nThis desktop guide uses real application screenshots arranged as narrated steps.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 52.2,
+      "file": "video/out/series-en/minutrel-04-solo.mp4",
+      "subtitle": "video/out/series-en/minutrel-04-solo.srt",
+      "uploadFile": "video/.cache/youtube-upload/04 - Minutrel - Work on your computer without a server.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Minutrel — Set up your team, roles and project assignments",
+      "titleFr": "Créer son équipe et affecter les projets",
+      "summary": "Bring people and projects together, with clear roles and shared time tracking.",
+      "description": "Bring people and projects together, with clear roles and shared time tracking.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Create a team account.\n• Give the right level of access.\n• Assign people to a project.\n• Share one team address.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 59.53333333333333,
+      "file": "video/out/series-en/minutrel-05-team.mp4",
+      "subtitle": "video/out/series-en/minutrel-05-team.srt",
+      "uploadFile": "video/.cache/youtube-upload/05 - Minutrel - Set up your team, roles and project assignments.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Minutrel — Add time manually and correct time entries",
+      "titleFr": "Ajouter et corriger des temps",
+      "summary": "Forgot a timer, or spotted a mistake? Keep the record accurate.",
+      "description": "Forgot a timer, or spotted a mistake? Keep the record accurate.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Add a missed duration.\n• Save and review.\n• Correct with a reason.\n• Keep the correction traceable.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 56.666666666666664,
+      "file": "video/out/series-en/minutrel-06-time-entries.mp4",
+      "subtitle": "video/out/series-en/minutrel-06-time-entries.srt",
+      "uploadFile": "video/.cache/youtube-upload/06 - Minutrel - Add time manually and correct time entries.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 7,
+      "title": "Minutrel — Monthly reports and PDF, CSV and ZIP exports",
+      "titleFr": "Rapports mensuels et exports",
+      "summary": "See where the month went, then take a clear report with you.",
+      "description": "See where the month went, then take a clear report with you.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Start with the right month.\n• Choose whose work to include.\n• Read the work behind the numbers.\n• Choose the format you need.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 57.233333333333334,
+      "file": "video/out/series-en/minutrel-07-monthly-reports.mp4",
+      "subtitle": "video/out/series-en/minutrel-07-monthly-reports.srt",
+      "uploadFile": "video/.cache/youtube-upload/07 - Minutrel - Monthly reports and PDF, CSV and ZIP exports.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 8,
+      "title": "Minutrel — Work notes, sharing and monthly summaries",
+      "titleFr": "Notes de travail et comptes rendus",
+      "summary": "Hours tell you how much. Your work journal explains what happened.",
+      "description": "Hours tell you how much. Your work journal explains what happened.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Write a useful work note.\n• Choose what is shared.\n• Prepare the monthly summary.\n• Review before publishing.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 52.9,
+      "file": "video/out/series-en/minutrel-08-work-journal.mp4",
+      "subtitle": "video/out/series-en/minutrel-08-work-journal.srt",
+      "uploadFile": "video/.cache/youtube-upload/08 - Minutrel - Work notes, sharing and monthly summaries.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 9,
+      "title": "Minutrel — Track time offline and synchronise later",
+      "titleFr": "Travailler hors connexion",
+      "summary": "A connection loss does not have to interrupt a desktop time entry.",
+      "description": "A connection loss does not have to interrupt a desktop time entry.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Connect once while online.\n• Your work stays on this computer.\n• Finish the session offline.\n• Reconnect and let it sync.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\nThis desktop guide uses real application screenshots arranged as narrated steps.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 57.46666666666667,
+      "file": "video/out/series-en/minutrel-09-offline.mp4",
+      "subtitle": "video/out/series-en/minutrel-09-offline.srt",
+      "uploadFile": "video/.cache/youtube-upload/09 - Minutrel - Track time offline and synchronise later.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 10,
+      "title": "Minutrel — Transfer personal time to a team workspace",
+      "titleFr": "Transférer ses temps personnels vers une équipe",
+      "summary": "Started on your own? Bring completed time into a team deliberately.",
+      "description": "Started on your own? Bring completed time into a team deliberately.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Finish the personal work first.\n• Open the transfer tool.\n• Match each project deliberately.\n• Transfer and check the result.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\nThis desktop guide uses real application screenshots arranged as narrated steps.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 60.56666666666667,
+      "file": "video/out/series-en/minutrel-10-transfer.mp4",
+      "subtitle": "video/out/series-en/minutrel-10-transfer.srt",
+      "uploadFile": "video/.cache/youtube-upload/10 - Minutrel - Transfer personal time to a team workspace.mp4",
+      "youtube": {
+        "status": "prepared"
+      }
+    },
+    {
+      "id": 11,
+      "title": "Minutrel — Connect coding assistants with limited MCP access",
+      "titleFr": "Connecter des assistants avec des droits limités",
+      "summary": "Connect a coding assistant with a personal, limited and revocable access token.",
+      "description": "Connect a coding assistant with a personal, limited and revocable access token.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Create a personal access token.\n• Grant only the permissions needed.\n• Use the supplied assistant configuration.\n• Revoke access when it is no longer needed.\n• AI drafting is optional.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 80.1,
+      "file": "video/out/series-en/minutrel-11-assistants.mp4",
+      "subtitle": "video/out/series-en/minutrel-11-assistants.srt",
+      "uploadFile": "video/.cache/youtube-upload/11 - Minutrel - Connect coding assistants with limited MCP access.mp4",
+      "youtube": {
+        "status": "daily_upload_limit",
+        "reason": "YouTube: Limite quotidienne de mises en ligne atteinte"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Minutrel — Install and self-host your team workspace",
+      "titleFr": "Installer et autohéberger Minutrel",
+      "summary": "Run a Minutrel team workspace on infrastructure you control. This guide follows the Node.js installation route.",
+      "description": "Run a Minutrel team workspace on infrastructure you control. This guide follows the Node.js installation route.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Prepare an application folder.\n• Build the web client and server.\n• Start your instance.\n• Create the first administrator.\n• Put HTTPS in front of the server.\n• Back up data and its key together.\n• Create accounts and test the full path.\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\nThe HTTPS address and reverse proxy configuration shown are examples.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel",
+      "duration": 137.8,
+      "file": "video/out/series-en/minutrel-12-self-host.mp4",
+      "subtitle": "video/out/series-en/minutrel-12-self-host.srt",
+      "uploadFile": "video/.cache/youtube-upload/12 - Minutrel - Install and self-host your team workspace.mp4",
+      "youtube": {
+        "status": "daily_upload_limit",
+        "reason": "YouTube: Limite quotidienne de mises en ligne atteinte"
+      }
+    }
+  ],
+  "updatedAt": "2026-11-06T20:39:58.455Z",
+  "repositoryUrl": "https://github.com/fmacfa/minutrel"
+}

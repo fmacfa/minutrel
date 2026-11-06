@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "id": "ollama-shared",
+      "kind": "openai-compatible",
+      "enabled": false,
+      "base_url": "http://ollama:11434/v1",
+      "model": "A_CONFIGURER",
+      "secret_ref": null
+    },
+    {
+      "id": "vllm-shared",
+      "kind": "openai-compatible",
+      "enabled": false,
+      "base_url": "http://vllm:8000/v1",
+      "model": "A_CONFIGURER",
+      "secret_ref": "VLLM_API_TOKEN"
+    },
+    {
+      "id": "claude-api",
+      "kind": "anthropic-messages",
+      "enabled": false,
+      "base_url": "https://api.anthropic.com",
+      "model": "A_CONFIGURER",
+      "secret_ref": "ANTHROPIC_API_KEY"
+    }
+  ],
+  "generation_defaults": {
+    "max_parallel_jobs": 1,
+    "timeout_seconds": 60,
+    "max_output_tokens": 1200
+  }
+}

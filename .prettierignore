@@ -1,0 +1,13 @@
+node_modules/
+**/dist/
+**/target/
+**/src-tauri/gen/
+**/Cargo.lock
+**/*.svg
+**/*.png
+**/*.ico
+**/*.icns
+**/.gitkeep
+coverage/
+apps/**/README.md
+packages/**/README.md

@@ -1,0 +1,3 @@
+entry_id;report_date;time_zone;member;project;task;description;duration_seconds;duration;hours_decimal;billable
+40000000-0000-4000-8000-000000000001;2026-11-05;Europe/Paris;Alex Exemple;Site vitrine;;Réunion de lancement;5400;1 h 30 min;1,50;true
+40000000-0000-4000-8000-000000000002;2026-11-05;Europe/Paris;Camille Exemple;Site vitrine;;Préparation des maquettes;2700;0 h 45 min;0,75;true
