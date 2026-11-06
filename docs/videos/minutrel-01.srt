@@ -1,0 +1,19 @@
+1
+00:00:00,100 --> 00:00:03,655
+Meet Minutrel. Open-source time tracking, by project.
+
+2
+00:00:04,100 --> 00:00:07,699
+Track the work. Capture the context. See where your time goes.
+
+3
+00:00:09,100 --> 00:00:11,568
+Turn your month into clear, shareable reports.
+
+4
+00:00:14,100 --> 00:00:17,543
+Work solo on your computer. Or together, on your own server.
+
+5
+00:00:21,100 --> 00:00:23,796
+Your projects. Your time. Your data. Minutrel.

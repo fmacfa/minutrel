@@ -50,5 +50,13 @@
   },
   "overrides": {
     "minimatch": "11.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fmacfa/minutrel.git"
+  },
+  "homepage": "https://github.com/fmacfa/minutrel#readme",
+  "bugs": {
+    "url": "https://github.com/fmacfa/minutrel/issues"
   }
 }

@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:04,763
+Bring people and projects together, with clear roles and shared time tracking.
+
+2
+00:00:05,620 --> 00:00:15,120
+As an administrator, open Team and add a member. Enter their name and email, choose a role, and provide a strong initial password privately.
+
+3
+00:00:16,187 --> 00:00:28,497
+Contributors track their own work. Managers handle projects and team time. Administrators also manage accounts, integrations and collective exports. Choose the role that fits.
+
+4
+00:00:29,553 --> 00:00:39,662
+Open Projects, edit Atlas and select the people who should work on it. Contributors see the projects assigned to them, while managers manage the team’s projects.
+
+5
+00:00:41,087 --> 00:00:53,096
+Give each member the same team HTTPS address and their own account. They can use the browser or connect the desktop app to that server. These are two ways into the same workspace.
+
+6
+00:00:54,153 --> 00:00:58,773
+People, permissions and projects are in place. The team is ready to work.

@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:04,330
+Started on your own? Bring completed time into a team deliberately.
+
+2
+00:00:05,187 --> 00:00:15,277
+Finish your personal timers before transferring anything. Personal and team workspaces remain separate; simply opening an account does not merge their data.
+
+3
+00:00:16,353 --> 00:00:26,128
+Sign in to the team, open Settings and choose Transfer my local work. Read your local workspace to see the personal projects available for transfer.
+
+4
+00:00:27,187 --> 00:00:38,795
+Choose an existing, authorised team project for each personal project you want to transfer. Projects without a match stay local. No team project is created automatically.
+
+5
+00:00:39,853 --> 00:00:53,133
+Transfer the selected completed time and verify it in your team history. Original entries stay on the computer. Private notes are not sent, and repeating the same import does not create duplicates.
+
+6
+00:00:54,187 --> 00:00:59,823
+The selected time is now in your team account. Your original personal work stays local.

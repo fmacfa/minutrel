@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:04,018
+Hours tell you how much. Your work journal explains what happened.
+
+2
+00:00:04,887 --> 00:00:14,462
+Open Work journal and add a note. Choose its project and date, then record a result, a decision or the next step while the details are still fresh.
+
+3
+00:00:15,520 --> 00:00:25,157
+A new note is private by default. Use Review and share to make it available in team reports. Only share the information that is useful to your team.
+
+4
+00:00:26,220 --> 00:00:36,139
+Use Write to prepare a monthly summary in your own words. Save it as a draft. The text adds context; it never changes the recorded time totals.
+
+5
+00:00:37,220 --> 00:00:46,124
+Open Review and approve, correct the wording, and confirm that you have reviewed it. Only approved summaries are included in the shared report.
+
+6
+00:00:47,553 --> 00:00:52,138
+Capture the useful details now. Share a summary you have actually reviewed.

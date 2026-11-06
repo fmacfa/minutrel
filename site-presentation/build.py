@@ -20,6 +20,7 @@ CONTENT = SRC / 'content'
 sys.path.insert(0, str(SRC))
 from pages import icon, button, intro, home, features, functioning, resources, hosting_extra, FEATURES, resource
 from bilingual import build_english, configure, MISSING
+from video_library import install as install_video_library
 
 snapshot = json.loads((CONTENT / 'snapshot.json').read_text())
 ORIGIN = os.environ.get('MINUTREL_SITE_ORIGIN', '').rstrip('/')
@@ -70,6 +71,9 @@ def resolve_link(url, current):
     fragment = '#'+slug(unquote(parts.fragment)) if parts.fragment else ''
     if path in DOCS: return DOCS[path][0]+fragment
     if path.startswith('docs/screenshots/'): return 'assets/screenshots/'+path.split('/')[-1]
+    if path.startswith('docs/videos/posters/'): return 'assets/video-posters/'+path.split('/')[-1]
+    if path.startswith('docs/videos/') and path.endswith('.srt'): return 'downloads/videos/'+path.split('/')[-1]
+    if path.startswith('docs/videos/') and path.endswith('.mp4'): return 'assets/videos/'+path.split('/')[-1]
     if path.startswith('brand/assets/'): return 'assets/'+path.removeprefix('brand/assets/')
     if path == 'brand/fonts/OFL.txt': return 'assets/fonts/OFL.txt'
     if path.startswith('output/pdf/'): return 'downloads/'+path.split('/')[-1]
@@ -184,7 +188,7 @@ def markdown(text, current):
 
 def shell(title, description, body, active='', filename='index.html', language='fr'):
     nav=''
-    for route,label in [('fonctionnalites.html','Fonctionnalités'),('fonctionnement.html','Fonctionnement'),('guide.html','Guide'),('autohebergement.html','Autohébergement')]:
+    for route,label in [('fonctionnalites.html','Fonctionnalités'),('fonctionnement.html','Fonctionnement'),('videos.html','Vidéos'),('guide.html','Guide'),('autohebergement.html','Autohébergement')]:
         nav+=f'<a href="{route}"'+(' aria-current="page"' if active==route else '')+f'>{label}</a>'
     return f'''<!doctype html>
 <html lang="{language}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#142c38"><meta name="description" content="{html.escape(description,quote=True)}"><title>{html.escape(title)} — Minutrel</title><link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"><link rel="preload" href="assets/fonts/Manrope-Variable.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="assets/styles.css"><link rel="canonical" href="{ORIGIN}/{filename}"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:title" content="{html.escape(title,quote=True)} — Minutrel"><meta property="og:description" content="{html.escape(description,quote=True)}"><meta property="og:image" content="{ORIGIN}/assets/social-preview.png"><meta property="og:url" content="{ORIGIN}/{filename}"><script src="assets/site.js" defer></script></head>
@@ -259,11 +263,24 @@ for key,data in DOCS.items():
 english_index=build_english(DIST,CONTENT,DOCS,shell,markdown,slug,pages,snapshot,hosting_extra,intro,resource,FEATURES)
 for file in DIST.glob('*.html'):
     file.write_text(configure(file.read_text(),file.name))
+video_index=install_video_library(DIST,shell)
+index.extend(video_index['fr'])
+english_index.extend(video_index['en'])
+for folder,entries in [(DIST,index),(DIST/'en',english_index)]:
+    data=json.dumps(entries,ensure_ascii=False,separators=(',',':'))
+    (folder/'search-index.json').write_text(data)
+    (folder/'search-data.js').write_text('window.MINUTREL_SEARCH_INDEX = '+data+';\n')
 # Preserve the former English-guide entry point without a mixed-language shell.
 (DIST/'guide-en.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=en/guide.html"><title>User guide — Minutrel</title></head><body><h1>User guide</h1><a href="en/guide.html">Open the English user guide</a></body></html>')
 with zipfile.ZipFile(DIST/'downloads'/'minutrel-documentation.zip','w',zipfile.ZIP_DEFLATED) as archive:
-    for file in sorted(CONTENT.rglob('*.md')):archive.write(file,file.relative_to(CONTENT))
+    for file in sorted(CONTENT.rglob('*.md')):
+        value=file.read_text()
+        # Large videos stay online; subtitles and posters remain in the docs ZIP.
+        value=re.sub(r'\]\((?:docs/)?videos/(minutrel-[^)]+\.mp4)\)',r'](https://github.com/fmacfa/minutrel/blob/main/docs/videos/\1)',value)
+        archive.writestr(str(file.relative_to(CONTENT)),value)
     for file in sorted((SRC/'assets'/'screenshots').iterdir()):archive.write(file,Path('docs/screenshots')/file.name)
+    for file in sorted((SRC/'assets'/'video-posters').iterdir()):archive.write(file,Path('docs/videos/posters')/file.name)
+    for file in sorted((SRC/'downloads'/'videos').glob('*.srt')):archive.write(file,Path('docs/videos')/file.name)
 routes=[x.relative_to(DIST).as_posix() for x in DIST.rglob('*.html')]
 if ORIGIN:
     (DIST/'sitemap.xml').write_text('<?xml version="1.0" encoding="utf-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join(f'<url><loc>{ORIGIN}/{name}</loc></url>' for name in routes)+'</urlset>')
@@ -274,10 +291,14 @@ from bilingual import localise
 # The exported website needs only a static host. No Site identity, account or secret is included.
 with zipfile.ZipFile(DIST/'downloads'/'minutrel-site-autonome.zip','w',zipfile.ZIP_DEFLATED) as archive:
     for file in sorted(DIST.rglob('*')):
-        if file.is_file() and file.name!='minutrel-site-autonome.zip':
+        if file.is_file() and file.name not in {'minutrel-site-autonome.zip','minutrel-0.1.0-sources.zip'}:
             if file.suffix=='.html':
                 value=file.read_text()
                 value=value.replace('href="downloads/minutrel-site-autonome.zip"','href="heberger-le-site.html"').replace('href="../downloads/minutrel-site-autonome.zip"','href="heberger-le-site.html"')
+                # Keep the portable download below static-host file limits. The app
+                # source remains available in the public GitHub repository.
+                for prefix in ('','../'):
+                    value=value.replace('href="'+prefix+'downloads/minutrel-0.1.0-sources.zip"','href="https://github.com/fmacfa/minutrel/archive/refs/heads/main.zip"')
                 archive.writestr(str(Path('minutrel-site')/file.relative_to(DIST)),value)
             else:archive.write(file,Path('minutrel-site')/file.relative_to(DIST))
     archive.write(ROOT/'README.md',Path('minutrel-site')/'README-site.md')

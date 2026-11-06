@@ -1,5 +1,7 @@
 # Commande rapide du chronomètre
 
+Guide vidéo en anglais : [le mini chrono](https://youtu.be/oTt_Pdyksdw). [Tous les guides et sous-titres](VIDEOS.md).
+
 Le sélecteur choisit uniquement un **projet Minutrel autorisé**. Il ne parcourt pas les dossiers du disque et ne surveille aucun fichier.
 
 ## Ordinateur

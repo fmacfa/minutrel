@@ -1,0 +1,35 @@
+1
+00:00:00,120 --> 00:00:07,818
+Run a Minutrel team workspace on infrastructure you control. This guide follows the Node.js installation route.
+
+2
+00:00:08,687 --> 00:00:23,653
+Start from a copy of the Minutrel source code in a dedicated application folder. Install Node.js twenty-four, check its version, and install the locked dependencies. Keep real data separate from a temporary demonstration.
+
+3
+00:00:24,720 --> 00:00:40,047
+Run npm run build. This prepares the web client and the API. The same server serves the browser interface and the team endpoints. It does not require an AI provider or a commercial time tracking service.
+
+4
+00:00:41,120 --> 00:00:56,099
+Start the server with npm start and open its local address. By default, the service listens only on this computer. Its persistent data folder contains the database and the key needed to read protected server secrets.
+
+5
+00:00:57,153 --> 00:01:11,351
+On first launch, name the workspace, choose its time zone and create the first administrator. Enter the generated setup secret and a strong password privately. There is no default password and no public sign-up.
+
+6
+00:01:12,420 --> 00:01:32,455
+For remote team access, configure a trusted HTTPS reverse proxy. Set the exact public origin and secure cookies in the server environment. The proxy must forward the API, MCP and hooks paths, and allow long-lived server events. The address shown here is an example.
+
+7
+00:01:33,520 --> 00:01:49,325
+Keep the database and its master key together in backups, and test a restore. Use a single server process for this SQLite workspace. Before updating, back up the current data; do not remove persistent volumes as an update step.
+
+8
+00:01:50,387 --> 00:02:09,680
+Create your team accounts, assign members to projects and test one timer and one report. Browser and desktop clients use the same team address. Desktop HTTP connections are accepted only for a server on the same computer; remote access uses HTTPS.
+
+9
+00:02:10,987 --> 00:02:17,055
+Your server is ready. Give each member their own account and the same HTTPS address.

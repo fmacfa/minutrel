@@ -4,6 +4,8 @@ import {films} from './story-series.mjs';
 const root=resolve('..'),directory=resolve('.cache/youtube-upload');
 await mkdir(directory,{recursive:true});await mkdir('publication',{recursive:true});
 let prior={};try{prior=JSON.parse(await readFile('publication/youtube.json','utf8'));}catch{}
+const repositoryUrl=prior.repositoryUrl??'https://github.com/fmacfa/minutrel';
+const playlistUrl=prior.playlistUrl;
 const titles=[
  ['Open-source time tracking, by project','Comprendre Minutrel','A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.'],
  ['Getting started: track, pause, finish and report','Premiers pas avec Minutrel','Follow a project from selecting it and recording a session to adding time, sharing a note and exporting a report.'],
@@ -31,5 +33,6 @@ for(let id=1;id<=12;id++){
  const description=[summary,'','Minutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.','','In this video:',...points.map(s=>'• '+s),'','English guide · Minutrel V0.1 preview.','Fictional demonstration data. Synthetic English narration and original background music.',...(film?.mode==='native'?['This desktop guide uses real application screenshots arranged as narrated steps.']:[]),...(id===12?['The HTTPS address and reverse proxy configuration shown are examples.']:[]),'','More Minutrel videos: https://www.youtube.com/@minutrel'].join('\n');
  videos.push({id,title,titleFr:titles[id-1][1],summary,description,duration:id===1?26:id===2?timing.total:data.total,file,subtitle,uploadFile:upload.replace(root+'/',''),youtube:prior.videos?.find(v=>v.id===id)?.youtube??{status:'prepared'}});
 }
-await writeFile('publication/youtube.json',JSON.stringify({channelId:'UCcJhCgd_1O0jeWqGJZGfjSw',channelUrl:'https://www.youtube.com/@minutrel',language:'en',preparedAt:new Date().toISOString(),videos},null,2)+'\n');
+for(const video of videos) video.description+='\nSource code and documentation: '+repositoryUrl+(playlistUrl?'\nEnglish video playlist: '+playlistUrl:'');
+await writeFile('publication/youtube.json',JSON.stringify({channelId:'UCcJhCgd_1O0jeWqGJZGfjSw',channelUrl:'https://www.youtube.com/@minutrel',repositoryUrl,...(playlistUrl?{playlistUrl}:{}),language:'en',preparedAt:new Date().toISOString(),videos},null,2)+'\n');
 console.log('Prepared twelve verified English MP4s and their publication metadata.');

@@ -1,5 +1,7 @@
 # Minutrel V0.1 — User guide
 
+English videos with narration, music and subtitles: [introduction](https://youtu.be/q6VeUbyOhn8), [getting started](https://youtu.be/u5MItUvsxQc) and [all 12 video guides](../../VIDEOS.en.md).
+
 [Français](../fr/README.md) · [English](README.md) · [Deutsch](../de/README.md)
 
 This guide covers the features delivered in version 0.1.0. Screenshots contain fictional data. Some detailed screenshots show the French interface; the layout and actions are shared across languages. Project names, descriptions and notes keep their original language.

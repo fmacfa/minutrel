@@ -26,7 +26,8 @@ for name in roots:
     for file in (root / name).rglob('*'):
         if file.is_symlink() or not file.is_file() or any(part in excluded for part in file.relative_to(root).parts):
             continue
-        if file.suffix.lower() in extensions or file.name in {'Dockerfile', 'LICENSE', 'Cargo.lock', 'CODEOWNERS'}:
+        video_download = file.relative_to(root).parts[:2] == ('docs', 'videos') and file.suffix.lower() in {'.mp4', '.srt'}
+        if video_download or file.suffix.lower() in extensions or file.name in {'Dockerfile', 'LICENSE', 'Cargo.lock', 'CODEOWNERS'}:
             files.append(file)
 files = sorted(set(files))
 with zipfile.ZipFile(downloads / 'minutrel-0.1.0-sources.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
@@ -39,7 +40,7 @@ for file in files:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(file, target)
     # Keep exact, non-generated reference files for links in the documentation.
-    elif file.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.ttf', '.ico', '.icns'}:
+    elif file.suffix.lower() not in {'.png', '.jpg', '.jpeg', '.ttf', '.ico', '.icns', '.mp4', '.srt'}:
         target = assets / 'reference' / rel
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(file, target)

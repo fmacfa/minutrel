@@ -8,6 +8,14 @@ Les clients utilisent Tauri et la WebView du système. Le serveur commun conserv
 
 **Guides illustrés : [Français](docs/guide/fr/README.md) · [English](docs/guide/en/README.md) · [Deutsch](docs/guide/de/README.md).**
 
+## Découvrir Minutrel en vidéo
+
+[![Présentation de Minutrel en anglais](docs/videos/posters/01.png)](https://youtu.be/q6VeUbyOhn8)
+
+[Présentation](https://youtu.be/q6VeUbyOhn8) · [Fonctionnement et premiers pas](https://youtu.be/u5MItUvsxQc) · [Playlist YouTube](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk)
+
+Les **12 vidéos en anglais**, avec voix, musique originale et sous-titres, sont répertoriées dans la [vidéothèque](docs/VIDEOS.md) et son [English catalog](docs/VIDEOS.en.md). Les guides assistants et autohébergement sont disponibles en MP4. Les exemples utilisent des données fictives de la préversion V0.1.
+
 ## Essayer en local
 
 Installer Node.js **24** (version verrouillée dans [.nvmrc](.nvmrc)), puis :

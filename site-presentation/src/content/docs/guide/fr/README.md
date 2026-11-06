@@ -1,5 +1,7 @@
 # Guide utilisateur — Minutrel V0.1
 
+Vidéos en anglais avec narration, musique et sous-titres : [présentation](https://youtu.be/q6VeUbyOhn8), [premiers pas](https://youtu.be/u5MItUvsxQc) et [les 12 guides vidéo](../../VIDEOS.md).
+
 [Français](README.md) · [English](../en/README.md) · [Deutsch](../de/README.md)
 
 Ce guide couvre les fonctions livrées de la version 0.1.0. Les captures proviennent de l’application et de données fictives. Les textes des projets et des notes ne sont pas traduits automatiquement.

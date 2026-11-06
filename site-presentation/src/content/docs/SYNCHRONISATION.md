@@ -1,5 +1,7 @@
 # Espaces locaux et synchronisation — V0.1
 
+Guides vidéo en anglais : [travail hors connexion](https://youtu.be/PPQwciBWBMY) et [transfert personnel vers une équipe](https://youtu.be/EW9aX79bKEY). [Sous-titres et catalogue](VIDEOS.md).
+
 Un ordinateur peut utiliser Minutrel sans serveur. L’espace personnel et chaque compte d’équipe sont des espaces distincts. La connexion à une équipe est facultative ; le partage entre plusieurs personnes nécessite le serveur commun.
 
 ## Espace autonome

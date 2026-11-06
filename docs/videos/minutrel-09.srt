@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:04,233
+A connection loss does not have to interrupt a desktop time entry.
+
+2
+00:00:05,087 --> 00:00:14,978
+First sign in to your team from the desktop app. This prepares your permitted projects and current timer. Offline team work needs this initial connection.
+
+3
+00:00:16,053 --> 00:00:25,394
+When the server becomes unreachable, the app shows the connection state. Timer commands and new time entries are saved locally before they can be sent.
+
+4
+00:00:26,453 --> 00:00:37,466
+Pause, resume and finish as usual. Your changes remain in the local queue. Team administration and corrections to server entries still require a connection.
+
+5
+00:00:38,520 --> 00:00:49,047
+When the server returns, the app sends the queued work and the server checks it. Settings offers Synchronise to retry. A conflict stays visible for you to resolve.
+
+6
+00:00:50,120 --> 00:00:56,729
+Local first, then checked by the server. Wait for synchronisation before using final team totals.

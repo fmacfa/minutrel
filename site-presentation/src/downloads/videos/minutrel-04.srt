@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:03,941
+Start tracking your projects without a server or an online account.
+
+2
+00:00:04,820 --> 00:00:14,036
+Open the desktop app and choose Use on this computer. Your personal workspace opens without an email address, password or online service.
+
+3
+00:00:15,087 --> 00:00:24,638
+Open Projects and create Atlas concept. Give it a useful description and colour. You are choosing a Minutrel project, never a folder on your disk.
+
+4
+00:00:25,720 --> 00:00:34,132
+Return to Overview, add a short work description and click Start. Pause when needed, and click Finish to save the completed session.
+
+5
+00:00:35,187 --> 00:00:45,300
+Your time entries and reports are available locally. In Settings, Export local copy prepares a personal backup that also contains your private notes.
+
+6
+00:00:46,353 --> 00:00:51,465
+Your personal workspace stays on this computer. Joining a team is always optional.

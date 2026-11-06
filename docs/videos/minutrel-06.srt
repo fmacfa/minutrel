@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:04,142
+Forgot a timer, or spotted a mistake? Keep the record accurate.
+
+2
+00:00:05,020 --> 00:00:14,795
+Open Time entries and choose Add time. Select the project and work date, then enter a duration such as forty-five minutes and describe the work.
+
+3
+00:00:15,853 --> 00:00:25,405
+Save the entry and check it in your monthly list. Manual durations and recorded sessions both contribute to the totals once they are finalised.
+
+4
+00:00:26,487 --> 00:00:38,037
+Use the pencil to correct an entry and enter a reason. Editing only the description preserves the original timing. Change Duration only when the amount of time is wrong.
+
+5
+00:00:39,087 --> 00:00:49,581
+Save the correction and review the updated entry. The previous value and your reason stay in the correction history. Team corrections require a server connection.
+
+6
+00:00:51,020 --> 00:00:55,916
+Useful descriptions, accurate durations and a clear record of corrections.

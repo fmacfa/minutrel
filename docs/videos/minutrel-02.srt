@@ -1,0 +1,71 @@
+1
+00:00:00,200 --> 00:00:07,836
+Minutrel tracks work by project. Use it on your own computer, or with a team on your own server. Let’s record a session.
+
+2
+00:00:08,387 --> 00:00:12,534
+Projects give every session a home. We’ll use Atlas for this walkthrough.
+
+3
+00:00:13,553 --> 00:00:18,476
+In Overview, select your project. You can also choose a task if you need one.
+
+4
+00:00:19,709 --> 00:00:24,113
+Give the session a short description, so you can recognise the work later.
+
+5
+00:00:24,675 --> 00:00:28,634
+Click Start. Minutrel now tracks your time against Atlas while you work.
+
+6
+00:00:30,942 --> 00:00:34,825
+Taking a break? Click Pause. This time won’t count as work.
+
+7
+00:00:35,992 --> 00:00:40,873
+Click Resume to continue the same session, with the same project and description.
+
+8
+00:00:42,109 --> 00:00:47,402
+When you’re done, click Finish to save the session. Closing the window doesn’t stop the timer.
+
+9
+00:00:48,400 --> 00:00:53,225
+Open Time entries to see your completed sessions for the month you’ve selected.
+
+10
+00:00:54,636 --> 00:01:02,411
+Forgot to start the timer? Add time manually. Choose a project and date, enter forty-five minutes, and describe the work.
+
+11
+00:01:04,282 --> 00:01:07,479
+Save the entry. It’s now included in your totals.
+
+12
+00:01:09,125 --> 00:01:13,242
+Time shows how much. Your work journal explains what moved forward.
+
+13
+00:01:14,513 --> 00:01:20,393
+Add a note for Atlas. Capture a result, a decision, or the next step, while it’s still fresh.
+
+14
+00:01:22,249 --> 00:01:28,129
+Notes are private by default. Tick this box to share the note in team reports, then save it.
+
+15
+00:01:30,256 --> 00:01:36,996
+Reports bring completed time and shared work together. See where the month went, by project and by person.
+
+16
+00:01:38,047 --> 00:01:43,492
+Choose the month you need. An administrator can filter the team and download a report.
+
+17
+00:01:45,449 --> 00:01:51,641
+Export a PDF, a CSV, or a ZIP package. Here, we’ll download a PDF.
+
+18
+00:01:54,800 --> 00:02:00,351
+Choose a project. Track your time. Add context. Review the results. That’s Minutrel.

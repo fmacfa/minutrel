@@ -1,0 +1,23 @@
+1
+00:00:00,120 --> 00:00:03,381
+See where the month went, then take a clear report with you.
+
+2
+00:00:04,253 --> 00:00:14,239
+Open Reports and select the month you need. The period follows your workspace time zone. Only completed time entries contribute to the final totals.
+
+3
+00:00:15,320 --> 00:00:26,003
+An administrator can view the whole team or select individual members. Check the completed time, the project breakdown and each person’s contribution before exporting.
+
+4
+00:00:27,053 --> 00:00:36,902
+Shared notes and approved monthly summaries add context to the report. Private notes and unapproved drafts are kept out of the team’s shared work summary.
+
+5
+00:00:37,953 --> 00:00:51,499
+Download a PDF for reading, a CSV for analysis, or a ZIP archive. Collective exports require an administrator. Finish any active timers and clear pending synchronisation first.
+
+6
+00:00:52,920 --> 00:00:56,472
+A clear monthly view, ready to read, share or analyse.

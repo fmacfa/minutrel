@@ -4,6 +4,26 @@ const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, ''
 const english = document.documentElement.lang === 'en';
 const t = message => english ? (window.MINUTREL_TRANSLATIONS?.[message] || message) : message;
 
+// Load an external player only after an explicit play action.
+document.addEventListener('click', event => {
+  const trigger = event.target.closest('[data-video-id]');
+  if (!trigger) return;
+  const id = trigger.dataset.videoId;
+  if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+  if (location.protocol === 'file:') {
+    window.open(trigger.dataset.videoUrl, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+  iframe.title = trigger.dataset.videoTitle;
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  iframe.allowFullscreen = true;
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  trigger.replaceWith(iframe);
+  iframe.focus();
+});
+
 function updateLanguageLinks() {
   let fragment = window.location.hash.slice(1);
   try { fragment = decodeURIComponent(fragment); } catch { fragment = ''; }

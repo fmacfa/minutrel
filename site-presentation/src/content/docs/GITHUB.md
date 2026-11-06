@@ -2,6 +2,8 @@
 
 Le dépôt public unique est [fmacfa/minutrel](https://github.com/fmacfa/minutrel), sur la branche principale `main`. Il réunit le serveur, le client web, le client ordinateur macOS/Windows/Linux, les bibliothèques partagées, le site vitrine et les sources de sa vidéo de présentation.
 
+La [vidéothèque](VIDEOS.md) et son [catalogue anglais](VIDEOS.en.md) regroupent les 12 vidéos, leurs sous-titres et les MP4 disponibles. La [playlist publique](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk) suit l’ordre de découverte du produit. Le catalogue de publication de `video/publication/youtube.json` conserve les liens réellement publiés.
+
 Le dossier courant est la racine du projet. Les commandes de vérification et de commit ci-dessous restent locales ; `git push` envoie les modifications vers GitHub.
 
 ## Contenu prêt à publier

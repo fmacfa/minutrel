@@ -1,5 +1,7 @@
 # Minutrel V0.1 — Benutzerhandbuch
 
+Englische Videos mit Sprecherstimme, Musik und Untertiteln: [Einführung](https://youtu.be/q6VeUbyOhn8), [erste Schritte](https://youtu.be/u5MItUvsxQc) und [alle 12 Videoanleitungen](../../VIDEOS.en.md).
+
 [Français](../fr/README.md) · [English](../en/README.md) · [Deutsch](README.md)
 
 Dieses Handbuch beschreibt die gelieferten Funktionen der Version 0.1.0. Die Abbildungen zeigen fiktive Daten. Einige Detailaufnahmen stammen aus der französischen Oberfläche; Aufbau und Aktionen sind in allen Sprachen gleich. Projektnamen, Beschreibungen und Notizen bleiben in ihrer ursprünglichen Sprache.

@@ -11,6 +11,10 @@ La recherche, les filtres, le chronomètre et les captures agrandies fonctionnen
 
 The French and English websites work directly from local files, including search, filters, the demo timer and enlarged screenshots. All assets are bundled. No account, translation service or ChatGPT connection is required.
 
+La vidéothèque (`dist/videos.html` et `dist/en/videos.html`) regroupe les 12 vidéos en anglais, avec voix, musique originale et fichiers SRT. Les dix lecteurs YouTube se chargent uniquement au clic et demandent une connexion Internet ; en `file://`, ils ouvrent la vidéo sur YouTube. Les guides assistants et autohébergement sont inclus en MP4, lisibles hors connexion. Le site fournit aussi des liens vers le [dépôt public](https://github.com/fmacfa/minutrel) et la [playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk).
+
+The video library includes twelve English guides. YouTube playback needs an Internet connection and starts only after a play action; local files open the video on YouTube. The assistant and self-hosting MP4 guides and all English SRT subtitles are bundled for offline use.
+
 ## Serveur local facultatif / Optional local server
 
 Sur macOS, double-cliquer sur **Ouvrir Minutrel.command**, ou lancer la commande ci-dessous. Python 3 est le seul prérequis. Le lanceur ouvre le navigateur ; le serveur écoute uniquement sur `127.0.0.1` et s’arrête avec `Ctrl+C` dans son terminal.
@@ -38,6 +42,7 @@ La construction utilise uniquement la bibliothèque standard de Python. Elle ne 
 Pour actualiser les documents d’origine depuis le projet Minutrel :
 
 ```sh
+python3 sync-videos.py --project-root ..
 python3 sync-content.py --project-root ..
 python3 build.py
 ```
@@ -50,6 +55,7 @@ Les traductions de `src/content/en/` sont éditoriales et doivent être relues a
 | `src/en.json` | Textes anglais du site et des commandes / English site and UI translations |
 | `src/content/en/` | Documentation essentielle en anglais / English core documentation |
 | `src/bilingual.py` | Routes et chapitres FR/EN / Locale and chapter links |
+| `sync-videos.py`, `src/videos.json`, `src/video_library.py` | Catalogue vérifié et vidéothèque bilingue / Verified catalog and bilingual video library |
 | `src/styles.css`, `src/site.js` | Style et interactions locales / Styles and local interactions |
 | `build.py` | Construction des pages et archives / Static build and archives |
 | `serve.py` | Serveur local facultatif / Optional local server |
@@ -57,6 +63,8 @@ Les traductions de `src/content/en/` sont éditoriales et doivent être relues a
 ## Exporter / Export
 
 `dist/downloads/minutrel-site-autonome.zip` contient le site bilingue prêt à ouvrir ou héberger, sans identité Sites ni clé d’accès. Décompresser puis ouvrir `minutrel-site/index.html` ou `minutrel-site/en/index.html`. Le lien vers l’archive du site dans sa propre copie renvoie au guide local, pour éviter une archive récursive ou un téléchargement absent.
+
+L’archive autonome inclut les deux guides MP4. Ses liens vers le code source téléchargent le dépôt public sur GitHub ; l’archive de sources du site complet reste aussi dans `dist/downloads/`. This keeps the portable website download small enough for static hosting; its app source links use the public GitHub archive.
 
 Pour un hébergement statique, copier le contenu de `dist/` en conservant `en/`, `assets/`, `downloads/` et les fichiers de recherche. Les liens `.html` ne demandent aucune réécriture. Les restrictions d’accès se configurent sur votre hébergement.
 

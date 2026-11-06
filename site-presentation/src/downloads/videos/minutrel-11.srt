@@ -1,0 +1,27 @@
+1
+00:00:00,120 --> 00:00:05,383
+Connect a coding assistant with a personal, limited and revocable access token.
+
+2
+00:00:06,253 --> 00:00:18,214
+Open Integrations and create an access token. Give it a recognisable name and an expiry date. Access stays limited to your own Minutrel data, even for an administrator.
+
+3
+00:00:19,287 --> 00:00:30,543
+Choose whether the assistant can read your projects, time and work notes, or suggest private drafts. Timer control is a separate permission and is not enabled by default.
+
+4
+00:00:31,620 --> 00:00:45,972
+Store the token privately in MINUTREL_MCP_TOKEN. Set up my assistant shows configurations for Codex and Claude Code using the team MCP endpoint. Keep the secret out of your source repository.
+
+5
+00:00:47,053 --> 00:00:57,868
+The access list shows names and expiry dates. Revoke a token to stop its access. The assistant’s proposed notes remain private drafts until you review them.
+
+6
+00:00:58,920 --> 00:01:13,409
+An administrator can separately configure Ollama, vLLM or Claude for summary drafting. That needs a real configured provider and your consent to send the selected notes. Time tracking works without it.
+
+7
+00:01:14,953 --> 00:01:19,369
+Your permissions decide the access. Your review decides what gets shared.

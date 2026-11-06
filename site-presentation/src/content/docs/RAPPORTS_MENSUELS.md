@@ -1,5 +1,7 @@
 # Rapports mensuels du travail
 
+Guide vidéo en anglais : [rapports mensuels et exports](https://youtu.be/HpvKxrRlxVU). [Tous les guides et sous-titres](VIDEOS.md).
+
 Dans **Les rapports**, l’administrateur choisit le mois et les salariés, ou l’équipe entière. Les membres désactivés restent disponibles pour leur historique. Les autres rôles consultent leur rapport personnel ; ils n’ouvrent pas les exports collectifs.
 
 ## Chiffres

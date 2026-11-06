@@ -15,9 +15,12 @@
       "subtitle": "video/out/minutrel-presentation-en-v2.srt",
       "uploadFile": "video/.cache/youtube-upload/01 - Minutrel - Open-source time tracking, by project.mp4",
       "youtube": {
-        "status": "draft",
+        "status": "public",
         "id": "q6VeUbyOhn8",
-        "url": "https://youtu.be/q6VeUbyOhn8"
+        "url": "https://youtu.be/q6VeUbyOhn8",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:42:28.458Z"
       }
     },
     {
@@ -31,7 +34,12 @@
       "subtitle": "video/out/minutrel-tutorial-en-v2.srt",
       "uploadFile": "video/.cache/youtube-upload/02 - Minutrel - Getting started - track, pause, finish and report.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "u5MItUvsxQc",
+        "url": "https://youtu.be/u5MItUvsxQc",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:49:24.038Z"
       }
     },
     {
@@ -45,7 +53,12 @@
       "subtitle": "video/out/series-en/minutrel-03-mini-timer.srt",
       "uploadFile": "video/.cache/youtube-upload/03 - Minutrel - Mini timer - keep your session within reach.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "oTt_Pdyksdw",
+        "url": "https://youtu.be/oTt_Pdyksdw",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:50:09.146Z"
       }
     },
     {
@@ -59,7 +72,12 @@
       "subtitle": "video/out/series-en/minutrel-04-solo.srt",
       "uploadFile": "video/.cache/youtube-upload/04 - Minutrel - Work on your computer without a server.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "9k4sMp-2fPY",
+        "url": "https://youtu.be/9k4sMp-2fPY",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:51:09.517Z"
       }
     },
     {
@@ -73,7 +91,12 @@
       "subtitle": "video/out/series-en/minutrel-05-team.srt",
       "uploadFile": "video/.cache/youtube-upload/05 - Minutrel - Set up your team, roles and project assignments.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "td8ghZwWOFA",
+        "url": "https://youtu.be/td8ghZwWOFA",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:55:32.160Z"
       }
     },
     {
@@ -87,7 +110,12 @@
       "subtitle": "video/out/series-en/minutrel-06-time-entries.srt",
       "uploadFile": "video/.cache/youtube-upload/06 - Minutrel - Add time manually and correct time entries.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "SDnlMu1GAAM",
+        "url": "https://youtu.be/SDnlMu1GAAM",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:56:27.951Z"
       }
     },
     {
@@ -101,7 +129,12 @@
       "subtitle": "video/out/series-en/minutrel-07-monthly-reports.srt",
       "uploadFile": "video/.cache/youtube-upload/07 - Minutrel - Monthly reports and PDF, CSV and ZIP exports.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "HpvKxrRlxVU",
+        "url": "https://youtu.be/HpvKxrRlxVU",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:56:58.270Z"
       }
     },
     {
@@ -115,7 +148,12 @@
       "subtitle": "video/out/series-en/minutrel-08-work-journal.srt",
       "uploadFile": "video/.cache/youtube-upload/08 - Minutrel - Work notes, sharing and monthly summaries.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "CjHoGYje-J4",
+        "url": "https://youtu.be/CjHoGYje-J4",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:57:26.399Z"
       }
     },
     {
@@ -129,7 +167,12 @@
       "subtitle": "video/out/series-en/minutrel-09-offline.srt",
       "uploadFile": "video/.cache/youtube-upload/09 - Minutrel - Track time offline and synchronise later.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "PPQwciBWBMY",
+        "url": "https://youtu.be/PPQwciBWBMY",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:57:51.394Z"
       }
     },
     {
@@ -143,7 +186,12 @@
       "subtitle": "video/out/series-en/minutrel-10-transfer.srt",
       "uploadFile": "video/.cache/youtube-upload/10 - Minutrel - Transfer personal time to a team workspace.mp4",
       "youtube": {
-        "status": "prepared"
+        "status": "public",
+        "id": "EW9aX79bKEY",
+        "url": "https://youtu.be/EW9aX79bKEY",
+        "captions": "uploaded_srt",
+        "language": "en",
+        "publishedAt": "2026-11-06T20:58:17.058Z"
       }
     },
     {
@@ -177,6 +225,7 @@
       }
     }
   ],
-  "updatedAt": "2026-11-06T20:39:58.455Z",
-  "repositoryUrl": "https://github.com/fmacfa/minutrel"
+  "updatedAt": "2026-11-06T21:08:26.475Z",
+  "repositoryUrl": "https://github.com/fmacfa/minutrel",
+  "playlistUrl": "https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk"
 }
