@@ -1,6 +1,6 @@
 # Autohéberger Minutrel V0.1
 
-Guide vidéo en anglais : [installer et autohéberger Minutrel (MP4)](videos/minutrel-12-self-host.mp4). [Tous les guides et sous-titres](VIDEOS.md).
+Guide vidéo en anglais : [installer et autohéberger Minutrel sur YouTube](https://youtu.be/HklZXL_R114). [Télécharger le MP4](videos/minutrel-12-self-host.mp4) · [Tous les guides et sous-titres](VIDEOS.md).
 
 Une instance possède un espace d’équipe et une base SQLite commune. Les clients web et ordinateur ne nécessitent aucun service commercial. Docker Compose est la voie la plus courte ; Node.js 24 peut aussi lancer le serveur directement.
 

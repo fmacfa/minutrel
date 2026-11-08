@@ -16,12 +16,14 @@ Minutrel V0.1 is a preview. The examples use fictional data.
 | 08 · Minutrel — Work notes, sharing and monthly summaries | 0:53 | [YouTube](https://youtu.be/CjHoGYje-J4) | [SRT](videos/minutrel-08.srt) |
 | 09 · Minutrel — Track time offline and synchronise later | 0:57 | [YouTube](https://youtu.be/PPQwciBWBMY) | [SRT](videos/minutrel-09.srt) |
 | 10 · Minutrel — Transfer personal time to a team workspace | 1:01 | [YouTube](https://youtu.be/EW9aX79bKEY) | [SRT](videos/minutrel-10.srt) |
-| 11 · Minutrel — Connect coding assistants with limited MCP access | 1:20 | [MP4](videos/minutrel-11-assistants.mp4) | [SRT](videos/minutrel-11.srt) |
-| 12 · Minutrel — Install and self-host your team workspace | 2:18 | [MP4](videos/minutrel-12-self-host.mp4) | [SRT](videos/minutrel-12.srt) |
+| 11 · Minutrel — Connect coding assistants with limited MCP access | 1:20 | [YouTube](https://youtu.be/7UakRqX0TH8) | [SRT](videos/minutrel-11.srt) |
+| 12 · Minutrel — Install and self-host your team workspace | 2:18 | [YouTube](https://youtu.be/HklZXL_R114) | [SRT](videos/minutrel-12.srt) |
 
 [YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
 
-The assistant and installation guides are supplied as MP4 files in this repository.
+All twelve videos are public on YouTube.
+
+MP4 downloads: [assistants](videos/minutrel-11-assistants.mp4) · [installation and self-hosting](videos/minutrel-12-self-host.mp4).
 Desktop guides use real application screenshots arranged as narrated steps.
 
 [Français](VIDEOS.md)

@@ -1,6 +1,6 @@
 # Assistants et moteurs IA — V0.1
 
-Guide vidéo en anglais : [connecter un assistant avec des droits limités (MP4)](videos/minutrel-11-assistants.mp4). [Tous les guides et sous-titres](VIDEOS.md).
+Guide vidéo en anglais : [connecter un assistant avec des droits limités sur YouTube](https://youtu.be/7UakRqX0TH8). [Télécharger le MP4](videos/minutrel-11-assistants.mp4) · [Tous les guides et sous-titres](VIDEOS.md).
 
 Minutrel fonctionne entièrement sans IA. Aucun modèle n’est embarqué dans le serveur de temps ou les clients. Les connexions sont facultatives et configurées par leur utilisateur ou l’administrateur.
 

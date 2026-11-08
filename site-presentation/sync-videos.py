@@ -103,17 +103,22 @@ def documentation(videos, language):
             f"[SRT](videos/minutrel-{number}.srt) |"
         )
     lines += ["", "[YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)", ""]
+    all_public = all("youtubeId" in video for video in videos)
     if language == "fr":
+        if all_public:
+            lines += ["Les douze vidéos sont publiques sur YouTube.", ""]
         lines += [
-            "Les guides « Assistants » et « Installation » sont fournis en MP4 dans ce dépôt.",
+            "Téléchargements MP4 : [assistants](videos/minutrel-11-assistants.mp4) · [installation et autohébergement](videos/minutrel-12-self-host.mp4).",
             "Les vidéos consacrées au client ordinateur utilisent des captures réelles de l’application, organisées en étapes commentées.",
             "",
             "[English](VIDEOS.en.md)",
             "",
         ]
     else:
+        if all_public:
+            lines += ["All twelve videos are public on YouTube.", ""]
         lines += [
-            "The assistant and installation guides are supplied as MP4 files in this repository.",
+            "MP4 downloads: [assistants](videos/minutrel-11-assistants.mp4) · [installation and self-hosting](videos/minutrel-12-self-host.mp4).",
             "Desktop guides use real application screenshots arranged as narrated steps.",
             "",
             "[Français](VIDEOS.md)",
@@ -207,7 +212,7 @@ def main():
     write_if_changed(root / "docs/videos/catalog.json", json.dumps(docs_catalog, ensure_ascii=False, indent=2) + "\n")
     write_if_changed(root / "docs/VIDEOS.md", documentation(videos, "fr"))
     write_if_changed(root / "docs/VIDEOS.en.md", documentation(videos, "en"))
-    print("Synchronised 12 posters, 12 subtitle files and 2 MP4 fallbacks into both website and documentation assets.")
+    print("Synchronised 12 posters, 12 subtitle files and 2 MP4 downloads into both website and documentation assets.")
 
 
 if __name__ == "__main__":

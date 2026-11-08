@@ -27,6 +27,9 @@ def card(video, language):
                  f'<span class="video-play" aria-hidden="true">▶</span>{duration}</button>')
         watch = 'Watch on YouTube ↗' if en else 'Voir sur YouTube ↗'
         link = f'<a href="{esc(video["watchUrl"])}" target="_blank" rel="noopener noreferrer">{watch}</a>'
+        if video.get('mp4'):
+            download = 'Download MP4 ↓' if en else 'Télécharger le MP4 ↓'
+            link += f'<a href="{esc(prefix + video["mp4"])}" download>{download}</a>'
     else:
         media = (f'<div class="video-native"><video controls preload="none" playsinline poster="{esc(poster)}" '
                  f'aria-label="{esc(title)}"><source src="{esc(prefix + video["mp4"])}" type="video/mp4">'
@@ -70,8 +73,8 @@ def install(dist, shell):
                        'Le principe, puis les gestes utiles. Chaque vidéo comprend une narration en anglais, de la musique et des sous-titres téléchargeables.')
         playlist = 'The YouTube playlist ↗' if en else 'La playlist YouTube ↗'
         source = 'Source code on GitHub ↗' if en else 'Le code sur GitHub ↗'
-        note = ('YouTube players load only when you choose to play a video. The last two guides play directly here; MP4 downloads are available too.' if en else
-                'Les lecteurs YouTube se chargent au lancement de la vidéo. Les deux derniers guides se lisent directement ici et sont aussi disponibles en MP4.')
+        note = ('YouTube players load only when you choose to play a video. The assistant and self-hosting guides are also available as MP4 downloads.' if en else
+                'Les lecteurs YouTube se chargent au lancement de la vidéo. Les guides assistants et autohébergement sont aussi disponibles en téléchargement MP4.')
         body = (f'<section class="page-intro video-intro"><div class="wrap"><p class="eyebrow">MINUTREL / VIDEO</p>'
                 f'<h1>{headline}</h1><p class="lead">{description}</p><div class="actions">'
                 f'<a class="btn btn-primary" href="{esc(catalog.get("playlistUrl", catalog["channelUrl"]))}" target="_blank" rel="noopener noreferrer">{playlist}</a>'

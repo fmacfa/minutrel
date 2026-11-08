@@ -16,12 +16,14 @@ Minutrel V0.1 est une préversion. Les exemples utilisent des données fictives.
 | 08 · Notes de travail et comptes rendus | 0:53 | [YouTube](https://youtu.be/CjHoGYje-J4) | [SRT](videos/minutrel-08.srt) |
 | 09 · Travailler hors connexion | 0:57 | [YouTube](https://youtu.be/PPQwciBWBMY) | [SRT](videos/minutrel-09.srt) |
 | 10 · Transférer ses temps personnels vers une équipe | 1:01 | [YouTube](https://youtu.be/EW9aX79bKEY) | [SRT](videos/minutrel-10.srt) |
-| 11 · Connecter des assistants avec des droits limités | 1:20 | [MP4](videos/minutrel-11-assistants.mp4) | [SRT](videos/minutrel-11.srt) |
-| 12 · Installer et autohéberger Minutrel | 2:18 | [MP4](videos/minutrel-12-self-host.mp4) | [SRT](videos/minutrel-12.srt) |
+| 11 · Connecter des assistants avec des droits limités | 1:20 | [YouTube](https://youtu.be/7UakRqX0TH8) | [SRT](videos/minutrel-11.srt) |
+| 12 · Installer et autohéberger Minutrel | 2:18 | [YouTube](https://youtu.be/HklZXL_R114) | [SRT](videos/minutrel-12.srt) |
 
 [YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
 
-Les guides « Assistants » et « Installation » sont fournis en MP4 dans ce dépôt.
+Les douze vidéos sont publiques sur YouTube.
+
+Téléchargements MP4 : [assistants](videos/minutrel-11-assistants.mp4) · [installation et autohébergement](videos/minutrel-12-self-host.mp4).
 Les vidéos consacrées au client ordinateur utilisent des captures réelles de l’application, organisées en étapes commentées.
 
 [English](VIDEOS.en.md)

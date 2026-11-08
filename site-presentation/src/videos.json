@@ -142,8 +142,9 @@
       "durationLabel": "1:20",
       "poster": "assets/video-posters/11.png",
       "subtitles": "downloads/videos/minutrel-11.srt",
+      "youtubeId": "7UakRqX0TH8",
       "mp4": "assets/videos/minutrel-11-assistants.mp4",
-      "watchUrl": "https://github.com/fmacfa/minutrel/blob/main/docs/videos/minutrel-11-assistants.mp4"
+      "watchUrl": "https://youtu.be/7UakRqX0TH8"
     },
     {
       "id": 12,
@@ -155,8 +156,9 @@
       "durationLabel": "2:18",
       "poster": "assets/video-posters/12.png",
       "subtitles": "downloads/videos/minutrel-12.srt",
+      "youtubeId": "HklZXL_R114",
       "mp4": "assets/videos/minutrel-12-self-host.mp4",
-      "watchUrl": "https://github.com/fmacfa/minutrel/blob/main/docs/videos/minutrel-12-self-host.mp4"
+      "watchUrl": "https://youtu.be/HklZXL_R114"
     }
   ],
   "playlistUrl": "https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk"
