@@ -9,7 +9,7 @@
       "title": "Minutrel — Open-source time tracking, by project",
       "titleFr": "Comprendre Minutrel",
       "summary": "A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.",
-      "description": "A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Project-based time tracking\n• Work context and monthly reports\n• Personal and self-hosted team workspaces\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel Website (English): https://minutrel-presentation.pippo-247.chatgpt.site/en/",
+      "description": "A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.\n\nMinutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.\n\nIn this video:\n• Project-based time tracking\n• Work context and monthly reports\n• Personal and self-hosted team workspaces\n\nEnglish guide · Minutrel V0.1 preview.\nFictional demonstration data. Synthetic English narration and original background music.\n\nMore Minutrel videos: https://www.youtube.com/@minutrel\nProject repository: https://github.com/fmacfa/minutrel\n\nWebsite (English): https://minutrel-presentation.pippo-247.chatgpt.site/en/",
       "duration": 26,
       "file": "video/out/minutrel-presentation-en-v2.mp4",
       "subtitle": "video/out/minutrel-presentation-en-v2.srt",
@@ -22,7 +22,7 @@
         "language": "en",
         "publishedAt": "2026-11-06T20:42:28.458Z",
         "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/",
-        "descriptionUpdatedAt": "2026-11-08T10:58:27.282859Z"
+        "descriptionUpdatedAt": "2026-11-08T11:15:42.234Z"
       }
     },
     {
@@ -257,7 +257,7 @@
       }
     }
   ],
-  "updatedAt": "2026-11-08T10:58:27.282859Z",
+  "updatedAt": "2026-11-08T11:15:42.234Z",
   "repositoryUrl": "https://github.com/fmacfa/minutrel",
   "playlistUrl": "https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
   "siteUrl": "https://minutrel-presentation.pippo-247.chatgpt.site",
