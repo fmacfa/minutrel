@@ -2,6 +2,8 @@
 
 Le temps de vos projets, ensemble. Application libre **AGPL-3.0-or-later**, autohébergée, pour suivre le travail d’une équipe depuis le navigateur ou un client macOS, Windows et Linux.
 
+**Site de présentation : [Français](https://minutrel-presentation.pippo-247.chatgpt.site/) · [English](https://minutrel-presentation.pippo-247.chatgpt.site/en/).**
+
 La V0.1 propose un **client ordinateur autonome**, utilisable sans serveur ni compte en ligne, et un **espace d’équipe autohébergé** partagé avec le web. Comptes et rôles, projets, chronomètres, travail hors connexion avec file d’envoi, saisies manuelles, notes, rapports CSV/PDF/ZIP, API, webhook entrant et MCP sont inclus. L’interface est disponible en **français, anglais et allemand**.
 
 Les clients utilisent Tauri et la WebView du système. Le serveur commun conserve les données d’équipe dans SQLite. L’espace personnel et la file locale restent sur l’ordinateur ; la connexion à l’équipe est facultative.
