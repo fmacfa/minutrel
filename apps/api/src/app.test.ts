@@ -224,6 +224,42 @@ describe('Installation, sessions et équipe', () => {
   });
 });
 describe('Projets et chronomètres partagés', () => {
+  it('utilise des sous-catégories nommées librement et les conserve avec le travail exporté', async () => {
+    const user = await addMember();
+    const project = await addProject([user.member.id]);
+    expect(project.tasks).toEqual([]);
+    expect((await req('POST', `/projects/${project.id}/tasks`, { name: '   ' })).statusCode).toBe(
+      400,
+    );
+    expect(
+      (await req('POST', `/projects/${project.id}/tasks`, { name: 'Libre' }, user.token))
+        .statusCode,
+    ).toBe(403);
+    const category = body<{ id: string; name: string }>(
+      await req('POST', `/projects/${project.id}/tasks`, { name: 'Accompagnement clientèle' }),
+    );
+    const other = await addProject([user.member.id]);
+    expect(
+      (await req('POST', '/timer/start', { projectId: other.id, taskId: category.id }, user.token))
+        .statusCode,
+    ).toBe(400);
+    const description = 'Préparation de la proposition pour le client';
+    const entry = await manual(project.id, user.token, { taskId: category.id, description });
+    expect(entry.taskName).toBe(category.name);
+    expect(entry.description).toBe(description);
+    expect(
+      (await req('PATCH', `/tasks/${category.id}`, { name: category.name, archived: true }))
+        .statusCode,
+    ).toBe(200);
+    const prepared = body<{ url: string }>(
+      await req('POST', '/exports', { month: '2026-11', format: 'csv', language: 'en' }),
+    );
+    const csv = await req('GET', prepared.url.replace('/api/v1', ''));
+    expect(csv.statusCode).toBe(200);
+    expect(csv.body).toContain('"Subcategory"');
+    expect(csv.body).toContain(category.name);
+    expect(csv.body).toContain(description);
+  });
   it('respecte les affectations et les tâches du projet', async () => {
     const a = await addMember();
     const b = await addMember();

@@ -288,7 +288,7 @@ export function Settings({
                           (item.action.startsWith('note.')
                             ? tr('Mise à jour d’une note')
                             : item.action.startsWith('task.')
-                              ? tr('Gestion d’une tâche')
+                              ? tr('Gestion d’une sous-catégorie')
                               : tr('Mise à jour de l’espace'))}
                       </td>
                       <td>{item.actorName ?? tr('Système')}</td>

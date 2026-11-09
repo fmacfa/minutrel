@@ -26,8 +26,8 @@ Un jeton MCP est différent d’une session d’application : il ouvre `/mcp` et
 | GET, POST | `/members/{id}/timer`, `/members/{id}/timer/stop` | Voir/résoudre un temps actif avec version et motif ; administrateur |
 | GET, POST | `/projects` | Projets autorisés ; création responsable/administrateur |
 | PATCH | `/projects/{id}` | Modifier, archiver, affecter les membres ; responsable/administrateur avec version |
-| POST | `/projects/{id}/tasks` | Ajouter une tâche ; responsable/administrateur |
-| PATCH | `/tasks/{id}` | Renommer/archiver une tâche ; responsable/administrateur |
+| POST | `/projects/{id}/tasks` | Ajouter une sous-catégorie ; responsable/administrateur |
+| PATCH | `/tasks/{id}` | Renommer/archiver une sous-catégorie ; responsable/administrateur |
 | GET | `/timer` | Chronomètre personnel et heure serveur |
 | POST | `/timer/start`, `/timer/pause`, `/timer/resume`, `/timer/stop` | Écritures personnelles idempotentes, contrôlées par version |
 | GET, POST | `/time-entries` | Liste paginée et saisie personnelle manuelle |
@@ -90,3 +90,7 @@ Le client peut rester autonome sans ouvrir d’API réseau. Pour un compte reli�
 ## Erreurs
 
 Les erreurs ont la forme `{"error":"...","message":"..."}`. Les codes courants sont `400` (données), `401` (session), `403` (droits/CSRF/origine), `404` (objet ou export expiré), `409` (concurrence/état), `429` (limite) et `502` (fournisseur IA). Un détail de base, mot de passe ou clé ne doit pas apparaître dans une erreur destinée au client.
+
+## Sous-catégories et compatibilité
+
+Les sous-catégories sont les anciennes tâches facultatives du projet, présentées avec des intitulés entièrement libres. Un projet neuf possède une liste vide. Les routes `/projects/{id}/tasks` et `/tasks/{id}`, ainsi que les champs `tasks`, `taskId` et `taskName`, sont conservés pour ne pas casser les clients existants. Le formulaire ne préremplit aucun nom ; le serveur exige un nom de 1 à 200 caractères après retrait des espaces extérieurs. La description du travail est le champ `description` du temps. Voir [le guide en anglais](SUBCATEGORIES.md).

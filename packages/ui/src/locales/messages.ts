@@ -1,5 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 export const messages: Record<string, readonly [string, string]> = {
+  'Le nom de la sous-catégorie doit contenir de 1 à 200 caractères.': [
+    'The subcategory name must contain 1 to 200 characters.',
+    'Der Name der Unterkategorie muss 1 bis 200 Zeichen enthalten.',
+  ],
+  'Terminez le chronomètre avant d’archiver cette sous-catégorie.': [
+    'Stop the timer before archiving this subcategory.',
+    'Beenden Sie die Zeitmessung, bevor Sie diese Unterkategorie archivieren.',
+  ],
   ' (désactivé)': [' (disabled)', ' (deaktiviert)'],
   '1 an': ['1 year', '1 Jahr'],
   '30 jours': ['30 days', '30 Tage'],
@@ -329,7 +337,7 @@ export const messages: Record<string, readonly [string, string]> = {
     'Halten Sie Fortschritte fest und teilen Sie das Wesentliche.',
   ],
   Gestion: ['Management', 'Verwaltung'],
-  'Gestion d’une tâche': ['Task managed', 'Aufgabe verwaltet'],
+  'Gestion d’une sous-catégorie': ['Subcategory managed', 'Unterkategorie verwaltet'],
   'Gérer le membre': ['Manage member', 'Mitglied verwalten'],
   'Hors connexion': ['Offline', 'Offline'],
   'Hors connexion · temps conservé sur cet ordinateur.': [
@@ -494,14 +502,14 @@ export const messages: Record<string, readonly [string, string]> = {
       'Completed time entries from your personal workspace will be copied to your team account. Originals stay on this computer. Private notes are not transferred.',
       'Abgeschlossene Zeiteinträge aus Ihrem persönlichen Arbeitsbereich werden in Ihr Teamkonto kopiert. Die Originale bleiben auf diesem Computer. Private Notizen werden nicht übertragen.',
     ],
-  'Les tâches ne sont pas recréées. Un conflit ou un chevauchement interrompt le transfert ; les temps déjà reçus sont reconnus au prochain essai.':
+  'Les sous-catégories ne sont pas recréées. Un conflit ou un chevauchement interrompt le transfert ; les temps déjà reçus sont reconnus au prochain essai.':
     [
-      'Tasks are not recreated. A conflict or overlap stops the transfer; entries already received are recognised on the next attempt.',
-      'Aufgaben werden nicht neu erstellt. Ein Konflikt oder eine Überschneidung unterbricht die Übertragung; bereits empfangene Einträge werden beim nächsten Versuch erkannt.',
+      'Subcategories are not recreated. A conflict or overlap stops the transfer; entries already received are recognised on the next attempt.',
+      'Unterkategorien werden nicht neu erstellt. Ein Konflikt oder eine Überschneidung unterbricht die Übertragung; bereits empfangene Einträge werden beim nächsten Versuch erkannt.',
     ],
-  'Les tâches sont facultatives et appartiennent à ce projet.': [
-    'Tasks are optional and belong to this project.',
-    'Aufgaben sind optional und gehören zu diesem Projekt.',
+  'Créez vos propres sous-catégories pour ce projet. Le champ est vide au départ.': [
+    'Create your own subcategories for this project. The field starts empty.',
+    'Erstellen Sie eigene Unterkategorien für dieses Projekt. Das Feld ist zunächst leer.',
   ],
   'Les versions web et ordinateur utilisent ce même espace et les mêmes données.': [
     'The web and desktop apps use this same workspace and data.',
@@ -589,7 +597,7 @@ export const messages: Record<string, readonly [string, string]> = {
     'Dieses Projekt nicht übertragen',
   ],
   Nom: ['Name', 'Name'],
-  'Nom de la nouvelle tâche': ['New task name', 'Name der neuen Aufgabe'],
+  'Nom de la sous-catégorie': ['Subcategory name', 'Name der Unterkategorie'],
   'Nom de l’accès': ['Access name', 'Name des Zugriffs'],
   'Nom de l’espace': ['Workspace name', 'Name des Arbeitsbereichs'],
   'Nom du fournisseur': ['Provider name', 'Name des Anbieters'],
@@ -609,7 +617,7 @@ export const messages: Record<string, readonly [string, string]> = {
     'Neuer Schlüssel (leer lassen, um den bisherigen zu behalten)',
   ],
   'Nouvelle note de travail': ['New work note', 'Neue Arbeitsnotiz'],
-  'Nouvelle tâche': ['New task', 'Neue Aufgabe'],
+  'Nouvelle sous-catégorie': ['New subcategory', 'Neue Unterkategorie'],
   'Ollama / vLLM (compatible OpenAI)': [
     'Ollama / vLLM (OpenAI compatible)',
     'Ollama / vLLM (OpenAI-kompatibel)',
@@ -747,7 +755,7 @@ export const messages: Record<string, readonly [string, string]> = {
     'No server or online account needed',
     'Ohne Server oder Onlinekonto',
   ],
-  'Sans tâche': ['No task', 'Ohne Aufgabe'],
+  'Sans sous-catégorie': ['No subcategory', 'Ohne Unterkategorie'],
   'Se connecter à ce serveur': ['Connect to this server', 'Mit diesem Server verbinden'],
   'Se déconnecter': ['Sign out', 'Abmelden'],
   'Secret d’installation': ['Setup secret', 'Einrichtungsschlüssel'],
@@ -815,16 +823,16 @@ export const messages: Record<string, readonly [string, string]> = {
   ],
   'Transférer mon travail local': ['Transfer my local work', 'Meine lokale Arbeit übertragen'],
   'Type d’API': ['API type', 'API-Typ'],
-  'Tâche créée.': ['Task created.', 'Aufgabe erstellt.'],
-  'Tâche facultative': ['Optional task', 'Optionale Aufgabe'],
-  'Tâche introuvable ou archivée.': [
-    'Task not found or archived.',
-    'Aufgabe nicht gefunden oder archiviert.',
+  'Sous-catégorie créée.': ['Subcategory created.', 'Unterkategorie erstellt.'],
+  'Sous-catégorie facultative': ['Optional subcategory', 'Optionale Unterkategorie'],
+  'Sous-catégorie introuvable ou archivée.': [
+    'Subcategory not found or archived.',
+    'Unterkategorie nicht gefunden oder archiviert.',
   ],
-  'Tâche introuvable.': ['Task not found.', 'Aufgabe nicht gefunden.'],
-  'Tâche mise à jour.': ['Task updated.', 'Aufgabe aktualisiert.'],
-  Tâches: ['Tasks', 'Aufgaben'],
-  'Tâches · {0}': ['Tasks · {0}', 'Aufgaben · {0}'],
+  'Sous-catégorie introuvable.': ['Subcategory not found.', 'Unterkategorie nicht gefunden.'],
+  'Sous-catégorie mise à jour.': ['Subcategory updated.', 'Unterkategorie aktualisiert.'],
+  'Sous-catégories': ['Subcategories', 'Unterkategorien'],
+  'Sous-catégories · {0}': ['Subcategories · {0}', 'Unterkategorien · {0}'],
   'Téléchargement d’un rapport': ['Report downloaded', 'Bericht heruntergeladen'],
   'Téléchargement préparé.': ['Download ready.', 'Download vorbereitet.'],
   'UN CADRE POUR CHAQUE MINUTE': ['A PLACE FOR EVERY MINUTE', 'EIN PLATZ FÜR JEDE MINUTE'],
@@ -960,7 +968,7 @@ export const messages: Record<string, readonly [string, string]> = {
   'secondes exactes': ['exact seconds', 'exakte Sekunden'],
   'sur la période': ['in this period', 'in diesem Zeitraum'],
   'sur « ': ['on “', 'für „'],
-  'tâche(s)': ['task(s)', 'Aufgabe(n)'],
+  'sous-catégorie(s)': ['subcategory(ies)', 'Unterkategorie(n)'],
   'vos temps finalisés ce mois-ci': [
     'your completed time this month',
     'Ihre abgeschlossenen Zeiten dieses Monats',

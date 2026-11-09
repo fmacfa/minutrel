@@ -1,35 +1,39 @@
 # Minutrel — V0.1
 
-Le temps de vos projets, ensemble. Application libre **AGPL-3.0-or-later**, autohébergée, pour suivre le travail d’une équipe depuis le navigateur ou un client macOS, Windows et Linux.
+**English** · [Français](README.fr.md) · [Deutsch — user guide](docs/guide/de/README.md)
 
-**Site de présentation : [Français](https://minutrel-presentation.pippo-247.chatgpt.site/) · [English](https://minutrel-presentation.pippo-247.chatgpt.site/en/).**
+Your project time, together. **Open source, self-hosted time tracking** for teams, with a web app and desktop clients for macOS, Windows and Linux. Licensed under **AGPL-3.0-or-later**.
 
-La V0.1 propose un **client ordinateur autonome**, utilisable sans serveur ni compte en ligne, et un **espace d’équipe autohébergé** partagé avec le web. Comptes et rôles, projets, chronomètres, travail hors connexion avec file d’envoi, saisies manuelles, notes, rapports CSV/PDF/ZIP, API, webhook entrant et MCP sont inclus. L’interface est disponible en **français, anglais et allemand**.
+**Website: [English](https://minutrel-presentation.pippo-247.chatgpt.site/en/) · [Français](https://minutrel-presentation.pippo-247.chatgpt.site/).**
 
-Les clients utilisent Tauri et la WebView du système. Le serveur commun conserve les données d’équipe dans SQLite. L’espace personnel et la file locale restent sur l’ordinateur ; la connexion à l’équipe est facultative.
+Minutrel V0.1 includes team accounts and permissions, projects with custom subcategories, timers, manual time entries, offline desktop recording, work notes, monthly CSV/PDF/ZIP reports, a REST API, an incoming webhook and MCP tools. The interface supports **English, French and German**.
 
-**Guides illustrés : [Français](docs/guide/fr/README.md) · [English](docs/guide/en/README.md) · [Deutsch](docs/guide/de/README.md).**
+The desktop app can also run **entirely on its own, without an online account or server**. Joining a team is optional. Team clients connect to the same self-hosted server, which stores shared data in SQLite. Desktop clients use Tauri and the system WebView, with no bundled AI model.
 
-## Découvrir Minutrel en vidéo
+This is a **test prerelease**. Packages are unsigned. Check the [validation record](docs/VALIDATION_CI.md) and [publication checklist](docs/PRE_PUBLICATION.md), currently in French, for checks actually completed and the remaining platform, signing, load and security validation.
 
-[![Présentation de Minutrel en anglais](docs/videos/posters/01.png)](https://youtu.be/q6VeUbyOhn8)
+**Illustrated user guides: [English](docs/guide/en/README.md) · [Français](docs/guide/fr/README.md) · [Deutsch](docs/guide/de/README.md).**
 
-[Présentation](https://youtu.be/q6VeUbyOhn8) · [Fonctionnement et premiers pas](https://youtu.be/u5MItUvsxQc) · [Playlist YouTube](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk)
+## Watch Minutrel
 
-Les **12 vidéos en anglais**, avec voix, musique originale et sous-titres, sont répertoriées dans la [vidéothèque](docs/VIDEOS.md) et son [English catalog](docs/VIDEOS.en.md). Les douze vidéos sont publiques sur YouTube ; les guides assistants et autohébergement proposent aussi un téléchargement MP4. Les exemples utilisent des données fictives de la préversion V0.1.
+[![Minutrel introduction in English](docs/videos/posters/01.png)](https://youtu.be/q6VeUbyOhn8)
 
-## Essayer en local
+[Introduction](https://youtu.be/q6VeUbyOhn8) · [How it works and first steps](https://youtu.be/u5MItUvsxQc) · [YouTube playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk)
 
-Installer Node.js **24** (version verrouillée dans [.nvmrc](.nvmrc)), puis :
+The [English video catalog](docs/VIDEOS.en.md) lists all **12 English videos**, with narration, original music and subtitles. All twelve are public on YouTube; the assistant and self-hosting guides also provide MP4 downloads. Examples use fictional prerelease data.
+
+## Try it locally
+
+Install **Node.js 24**, as pinned in [.nvmrc](.nvmrc), then run:
 
 ```sh
 npm ci --ignore-scripts
 npm run demo
 ```
 
-Ouvrir **http://127.0.0.1:8080**. Les identifiants aléatoires de la démonstration sont dans `.cache/demo/access.json`. Les données sont fictives et isolées dans `.cache/demo/`. Aucun service IA n’est sollicité. Arrêter avec `Ctrl+C`.
+Open **http://127.0.0.1:8080**. Random demo credentials are stored in `.cache/demo/access.json`. Fictional demo data stays in `.cache/demo/`. No AI provider is contacted. Stop the server with `Ctrl+C`.
 
-## Créer votre propre espace
+## Create your own workspace
 
 ```sh
 npm ci --ignore-scripts
@@ -37,47 +41,54 @@ npm run build
 npm start
 ```
 
-Ouvrir **http://127.0.0.1:8081**, puis créer le premier administrateur avec le secret du fichier `data/setup-token`. Il n’y a pas de mot de passe par défaut. La base et la clé de chiffrement restent dans `data/`.
+Open **http://127.0.0.1:8081** and create the first administrator using the secret in `data/setup-token`. There is no default password. The database and encryption key stay in `data/`.
 
-L’administrateur crée les membres et attribue leurs rôles ; le responsable gère les projets et leurs affectations. Tous les appareils se connectent à cette même instance.
+Administrators create members and assign roles; managers organise projects and membership. All team devices connect to this same instance.
 
-## Autohébergement avec Docker
+## Self-host with Docker
 
 ```sh
 docker compose up -d --build
 docker compose exec minutrel cat /app/data/setup-token
 ```
 
-Ouvrir **http://127.0.0.1:8080**. La configuration par défaut expose le service uniquement sur la machine hôte. Pour votre équipe, configurer une adresse HTTPS et le proxy selon [le guide d’autohébergement](docs/AUTOHEBERGEMENT.md). Les données sont persistées dans un volume Docker.
+Open **http://127.0.0.1:8080**. By default, the service is exposed only on the host computer. For team access, configure HTTPS and a reverse proxy using the [self-hosting guide](docs/AUTOHEBERGEMENT.md), currently in French. Data persists in a Docker volume.
 
-## Application ordinateur
+## Desktop app and offline work
 
-Configurer l’adresse du serveur de l’équipe à la connexion. Le compte, les projets, les temps et les droits sont les mêmes que sur le web.
+For a team, enter the server address at sign-in. Use the same account to share projects, entries and permissions with the web app.
 
-Pour travailler seul sans serveur, choisir **Utiliser sur cet ordinateur**. Créer vos projets, chronométrer, noter le travail et exporter directement. Pour rejoindre ensuite une équipe, choisir **Ouvrir un espace d’équipe** ; le transfert des temps personnels demande une correspondance explicite de projets.
+To work independently, choose **Use on this computer**. Create projects, record time, write notes and export locally, without a server or online account. You can later choose **Open a team workspace** and explicitly map personal projects before transferring completed time entries.
 
-Un compte d’équipe peut aussi travailler temporairement hors connexion sur ordinateur après une première connexion. Les commandes de temps et les nouvelles saisies sont écrites localement avant envoi, puis les droits et conflits sont contrôlés sur le serveur. Voir [les modes et la synchronisation](docs/SYNCHRONISATION.md).
+A linked desktop account can record timer actions and new manual entries while temporarily offline, after its first online sign-in. Changes are saved locally before sending; the server rechecks permissions, versions and overlaps. Personal and team workspaces stay separate. See the [English user guide](docs/guide/en/README.md) and [technical synchronisation notes](docs/SYNCHRONISATION.md), the latter in French.
 
-Le bouton **Mini chrono** et l’icône de barre de menus ouvrent un widget déplaçable au-dessus des fenêtres ordinaires : choisir un **projet Minutrel**, démarrer, mettre en pause, reprendre, terminer. Aucun dossier de l’ordinateur n’est demandé. Raccourci proposé : `Ctrl/Cmd + Alt + M`, si le système le permet.
+**Mini timer** and the system tray/menu icon open a movable widget above ordinary windows. Select a Minutrel project and optional subcategory, then start, pause, resume or stop. No local disk folder is requested. The proposed shortcut is `Ctrl/Cmd + Alt + M`, subject to system support.
 
-Pour construire l’installateur sur la plateforme courante, installer les [prérequis Tauri](https://v2.tauri.app/start/prerequisites/), Rust via `rustup`, puis :
+To build an installer on the current platform, install the [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/) and Rust through `rustup`, then run:
 
 ```sh
 npm run build:desktop
 ```
 
-Le script produit un `.dmg` sur macOS, un installateur NSIS sur Windows ou un `.deb` sur Linux dans `apps/desktop/src-tauri/target/`. Les paquets V0.1 sont des paquets de test non signés. La CI prépare les trois plateformes.
+The script produces a macOS `.dmg`, Windows NSIS installer or Linux `.deb` under `apps/desktop/src-tauri/target/`. V0.1 test packages are unsigned. CI defines a build matrix for all three platforms; a configured matrix does not itself confirm a successful build or manual test on each system.
 
-## Travail et assistants IA
+## Custom project subcategories
 
-- **Le fil du travail** : notes privées ou partagées et comptes rendus mensuels à valider.
-- **Les connexions** : créer un jeton MCP personnel à durée limitée pour Codex ou Claude Code. Les commandes du chronomètre exigent un droit supplémentaire explicite.
-- **Ollama / vLLM / Claude** : un administrateur peut configurer un moteur de rédaction facultatif. Chaque génération demande l’accord du membre pour envoyer ses descriptions et notes. Aucun modèle n’est embarqué dans les clients.
-- **Les rapports** : les administrateurs sélectionnent le mois et les salariés, puis téléchargent CSV, PDF ou ZIP. Les chiffres proviennent des temps finalisés ; un texte IA ne peut pas changer les durées.
+Each project can contain **subcategories named by you**. Under **Projects → Subcategories**, the creation input starts empty, with no suggested or predefined labels. In a team, managers and administrators manage them; standalone users manage their own.
 
-Les modèles réels et leurs identifiants sont à configurer sur votre infrastructure. Les adaptateurs ont des tests de protocole ; aucun abonnement ni modèle payant n’est fourni.
+When recording time, choose a project and optional subcategory, then describe what you did. The subcategory and description are retained in the time entry and exports. Existing task data remains compatible with the API. Read the [subcategory guide](docs/SUBCATEGORIES.md).
 
-## Vérifications et sauvegardes
+## Work notes, reports and AI assistants
+
+- **Work journal:** private or shared notes and monthly summaries for human review and approval.
+- **Reports:** administrators choose the month and employees, then download CSV, PDF or ZIP. Totals use completed time entries; AI text cannot change durations.
+- **Integrations:** create a personal, expiring MCP token for Codex or Claude Code. Timer commands require a separate optional permission.
+- **Ollama / vLLM / Claude:** an administrator can configure an optional writing provider. Each generation requires the member’s consent to send their descriptions and notes. No model is bundled with the clients.
+- **REST and incoming webhook:** application sessions provide API access; a limited personal token can submit private note drafts through `/hooks/work-notes`. Outgoing webhook subscriptions are not included.
+
+Real AI providers and credentials must be configured on your infrastructure. Adapters have protocol tests; no paid subscription or model is supplied. Standalone mode supports manual notes and summaries; these AI integrations use the team server.
+
+## Checks and backups
 
 ```sh
 npm run check
@@ -86,25 +97,27 @@ python3 scripts/check_brand.py
 npm run backup
 ```
 
-La sauvegarde serveur inclut une copie SQLite cohérente et la clé nécessaire à la restauration. Voir [la procédure](infra/backup/README.md). Le client permet aussi l’export de sa copie locale ; sauvegarder son dossier de configuration complet. Les invitations par lien et l’import général d’un espace JSON restent au backlog.
+Server backups include a consistent SQLite copy and the key required for restoration. See the [backup procedure](infra/backup/README.md), currently in French. The desktop app can export its local copy; also back up its complete configuration folder. Invitations, general workspace JSON import and automatic conflict merging remain on the backlog.
 
-## Repères du dépôt
+## Repository map
 
-| Dossier | Contenu |
+| Directory | Contents |
 | --- | --- |
-| `apps/web` | Point d’entrée du navigateur et configuration Vite |
-| `apps/desktop` | Client natif Tauri, trousseau, widget et barre de menus |
-| `apps/api` | API, authentification, SQLite, rapports et intégrations |
-| `packages/domain` | Calcul des durées et calendrier des rapports |
-| `packages/contracts` | Types des échanges |
-| `packages/ui` | Interface React FR/EN/DE, stockage local et file de synchronisation |
-| `brand` | Logos, icônes, polices libres, couleurs et charte |
-| `infra`, `.github` | Déploiement, sauvegardes et intégration continue |
-| `site-presentation` | Site vitrine et documentation en français et en anglais |
-| `video` | Sources de la vidéo de présentation |
+| `apps/web` | Browser entry point and Vite configuration |
+| `apps/desktop` | Tauri app, OS credential store, widget and system tray |
+| `apps/api` | API, authentication, SQLite, reports and integrations |
+| `packages/domain` | Duration calculations and report calendar |
+| `packages/contracts` | Shared API types |
+| `packages/ui` | EN/FR/DE React UI, local storage and sync queue |
+| `brand` | Logos, icons, open fonts, colours and brand guidelines |
+| `infra`, `.github` | Deployment, backups and continuous integration |
+| `site-presentation` | English and French product website |
+| `video` | Presentation and tutorial video sources |
 
-[Cahier des charges](docs/CAHIER_DES_CHARGES.md) · [État précis de la V0.1](docs/ETAT_V0_1.md) · [Architecture](docs/ARCHITECTURE.md) · [API](docs/API.md) · [Recette](docs/RECETTE.md) · [Préparer GitHub](docs/GITHUB.md) · [Vérification préliminaire du nom](docs/DISPONIBILITE_NOM.md) · [Charte de marque](docs/IDENTITE_DE_MARQUE.md).
+GitHub’s main README, contribution instructions, security reporting guidance, issue/PR templates and workflow labels use **English first**. User guides are available in all three interface languages. Detailed technical documents are currently mostly in French and are identified as such when linked here.
 
-[API et webhook de notes privées](docs/API_WEBHOOKS.md) · [Avant publication](docs/PRE_PUBLICATION.md).
+[Contributing](CONTRIBUTING.md) · [Security reporting](SECURITY.md) · [Changelog](CHANGELOG.md) · [Subcategories](docs/SUBCATEGORIES.md) · [English user guide](docs/guide/en/README.md)
 
-Code : [AGPL-3.0-or-later](LICENSE). Les polices Manrope conservent leur licence SIL OFL ; voir [LICENSING.md](LICENSING.md). Lors de l’exploitation d’une version modifiée en réseau, fournir aux utilisateurs le code source correspondant selon la licence.
+Technical references in French: [Requirements](docs/CAHIER_DES_CHARGES.md) · [Delivered features](docs/ETAT_V0_1.md) · [Architecture](docs/ARCHITECTURE.md) · [API](docs/API.md) · [API and webhook](docs/API_WEBHOOKS.md) · [Acceptance testing](docs/RECETTE.md) · [GitHub publishing](docs/GITHUB.md) · [Preliminary name check](docs/DISPONIBILITE_NOM.md) · [Brand guidelines](docs/IDENTITE_DE_MARQUE.md).
+
+Code: [AGPL-3.0-or-later](LICENSE). Manrope retains its SIL OFL licence; see [LICENSING.md](LICENSING.md). When operating a modified version over a network, provide users with the corresponding source as required by the licence.

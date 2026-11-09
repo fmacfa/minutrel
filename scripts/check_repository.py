@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 ROOT = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {".git", ".cache", "node_modules", ".venv", "__pycache__", "target", "dist", "build", "coverage", "tmp"}
 REQUIRED = [
-    "README.md", "LICENSE", "LICENSING.md", "CONTRIBUTING.md", "SECURITY.md",
+    "README.md", "README.fr.md", "LICENSE", "LICENSING.md", "CONTRIBUTING.md", "SECURITY.md",
     "CHANGELOG.md", ".gitignore", ".gitattributes", ".editorconfig", ".env.example",
     ".github/ISSUE_TEMPLATE/bug_report.md", ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/config.yml", ".github/PULL_REQUEST_TEMPLATE.md",
@@ -39,7 +39,7 @@ REQUIRED = [
     "packages/domain/src/index.ts", "packages/ui/src/index.tsx", "packages/contracts/src/index.ts",
     "docs/CI.md", "docs/IDENTITE_DE_MARQUE.md", "docs/DISPONIBILITE_NOM.md",
     "docs/guide/README.md", "docs/guide/fr/README.md", "docs/guide/en/README.md", "docs/guide/de/README.md",
-    "docs/API_WEBHOOKS.md", "docs/SYNCHRONISATION.md", "docs/PRE_PUBLICATION.md",
+    "docs/API_WEBHOOKS.md", "docs/SYNCHRONISATION.md", "docs/PRE_PUBLICATION.md", "docs/SUBCATEGORIES.md",
     "docs/COMMANDE_RAPIDE.md", "docs/RAPPORTS_MENSUELS.md", "docs/INTEGRATIONS_IA.md", "docs/RESSOURCES.md",
     "examples/integrations/README.md", "examples/integrations/codex-mcp.toml.example",
     "examples/integrations/claude-mcp.json.example", "examples/integrations/providers.json.example",

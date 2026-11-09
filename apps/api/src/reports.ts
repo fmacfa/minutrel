@@ -31,7 +31,7 @@ export function reportCsv(report: MonthlyReport): string {
         'Salarié',
         'Adresse',
         'Projet',
-        'Tâche',
+        'Sous-catégorie',
         'Date ou début',
         'Description',
         'Secondes',

@@ -59,7 +59,7 @@ export function projectAccess(
       taskId,
       projectId,
     );
-    ensure(task && (!writable || !task.archived), 'Tâche introuvable ou archivée.');
+    ensure(task && (!writable || !task.archived), 'Sous-catégorie introuvable ou archivée.');
   }
   return p;
 }

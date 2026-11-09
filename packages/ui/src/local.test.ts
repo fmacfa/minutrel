@@ -88,6 +88,58 @@ it('fonctionne sans aucun serveur : projets, saisies, notes et comptes rendus lo
   ).toBe(5400);
   expect(syncStatus().local).toBe(true);
 });
+it('garde les sous-catégories libres par projet et la description du travail en autonomie', async () => {
+  await startPersonal('Moi');
+  const project = await nativeRequest<{ id: string; tasks: unknown[] }>(
+    unavailable,
+    '/projects',
+    'POST',
+    { name: 'Dossier libre' },
+  );
+  expect(project.tasks).toEqual([]);
+  await expect(
+    nativeRequest(unavailable, `/projects/${project.id}/tasks`, 'POST', { name: '  ' }),
+  ).rejects.toThrow('Le nom de la sous-catégorie');
+  const category = await nativeRequest<{ id: string }>(
+    unavailable,
+    `/projects/${project.id}/tasks`,
+    'POST',
+    { name: 'Accompagnement clientèle' },
+  );
+  const other = await nativeRequest<{ id: string }>(unavailable, '/projects', 'POST', {
+    name: 'Autre dossier',
+  });
+  const input = {
+    projectId: project.id,
+    taskId: category.id,
+    kind: 'duration',
+    duration: '25 min',
+    workDate: '2026-11-06',
+    description: 'Préparation de la proposition pour le client',
+  };
+  await expect(
+    nativeRequest(unavailable, '/time-entries', 'POST', { ...input, projectId: other.id }),
+  ).rejects.toThrow('Sous-catégorie introuvable');
+  const entry = await nativeRequest<TimeEntry>(unavailable, '/time-entries', 'POST', input);
+  expect(entry).toMatchObject({
+    taskName: 'Accompagnement clientèle',
+    description: input.description,
+    seconds: 1500,
+  });
+  const timer = await nativeRequest<TimeEntry>(unavailable, '/timer/start', 'POST', {
+    projectId: project.id,
+    taskId: category.id,
+  });
+  await expect(
+    nativeRequest(unavailable, `/tasks/${category.id}`, 'PATCH', { archived: true }),
+  ).rejects.toThrow('Terminez le chronomètre');
+  vi.setSystemTime(new Date('2026-11-06T12:01:00Z'));
+  await nativeRequest(unavailable, '/timer/stop', 'POST', { version: timer.version });
+  await nativeRequest(unavailable, `/tasks/${category.id}`, 'PATCH', { archived: true });
+  expect(data(true).entries.find((e) => e.id === entry.id)?.taskName).toBe(
+    'Accompagnement clientèle',
+  );
+});
 it('conserve les temps et les actions pendant une coupure et après réouverture', async () => {
   const d = ready();
   memory.records.set(false, { revision: 1, data: d });

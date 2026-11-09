@@ -1,13 +1,15 @@
-# Guides de Minutrel V0.1
+# Minutrel V0.1 user guides
 
-Les guides couvrent le mode autonome, l’équipe et ses droits, les projets/tâches, le chronomètre et le widget, les saisies/corrections, les notes et comptes rendus, les rapports et exports, les intégrations IA/API/webhook, les langues, le responsive et le dépannage.
+The guides cover standalone and team use, roles, projects and custom subcategories, timer and widget, manual entries and corrections, notes and summaries, reports and exports, AI/API/webhook integrations, languages, responsive layouts and troubleshooting.
 
-- [Guide français illustré](fr/README.md)
 - [Illustrated English guide](en/README.md)
+- [Guide français illustré](fr/README.md)
 - [Illustriertes deutsches Handbuch](de/README.md)
 
-Les captures viennent de l’application V0.1 avec des données fictives. Les vues détaillées françaises sont partagées entre les guides et signalées comme telles ; les vues d’ensemble anglaise et allemande montrent les traductions réelles. Le [dossier des captures](../screenshots) contient aussi le widget autonome et la vue mobile.
+Screenshots come from V0.1 with fictional data. Some shared detailed screenshots show the French interface and are identified as such; English and German screenshots show the actual translations. The [screenshot folder](../screenshots) also contains standalone, offline sync, widget and mobile views.
 
-Les documents techniques complètent les gestes utilisateur : [autohébergement](../AUTOHEBERGEMENT.md), [sauvegarde et restauration](../../infra/backup/README.md), [synchronisation](../SYNCHRONISATION.md), [API/webhook](../API_WEBHOOKS.md), [contrat REST](../API.md), [IA/MCP](../INTEGRATIONS_IA.md), [rapports](../RAPPORTS_MENSUELS.md) et [publication GitHub](../GITHUB.md).
+[Custom subcategories](../SUBCATEGORIES.md) explains creating user-defined labels from an empty input and recording a description of completed work.
 
-[État livré](../ETAT_V0_1.md) · [Vérifications exécutées](../VALIDATION_CI.md) · [Travaux restants](../BACKLOG.md).
+Technical references, currently in French: [Self-hosting](../AUTOHEBERGEMENT.md), [Backup and restore](../../infra/backup/README.md), [Synchronisation](../SYNCHRONISATION.md), [API/webhook](../API_WEBHOOKS.md), [REST contract](../API.md), [AI/MCP](../INTEGRATIONS_IA.md), [Reports](../RAPPORTS_MENSUELS.md), [GitHub publishing](../GITHUB.md).
+
+[Delivered features](../ETAT_V0_1.md) · [Validation record](../VALIDATION_CI.md) · [Backlog](../BACKLOG.md).

@@ -37,6 +37,7 @@ export function localCsv(r: MonthlyReport) {
         'timezone',
         'approved_summaries',
         'shared_notes',
+        'subcategory',
       ]
         .map(cell)
         .join(';'),
@@ -58,6 +59,7 @@ export function localCsv(r: MonthlyReport) {
             .filter((n) => n.shared && n.memberId === e.memberId && n.projectId === e.projectId)
             .map((n) => n.text)
             .join('\n'),
+          e.taskName ?? '',
         ]
           .map(cell)
           .join(';'),
@@ -134,7 +136,10 @@ export async function localPdf(r: MonthlyReport) {
   for (const p of r.projects) paragraph(`${p.name} : ${duration(p.seconds)}`);
   y -= 15;
   for (const e of r.entries) {
-    paragraph(`${e.projectName} · ${duration(e.reportSeconds)}`, 11);
+    paragraph(
+      `${e.projectName}${e.taskName ? ` / ${e.taskName}` : ''} · ${duration(e.reportSeconds)}`,
+      11,
+    );
     paragraph(`${e.workDate ?? new Date(e.createdAt * 1000).toISOString()} · ${e.memberName}`, 9);
     paragraph(e.description || '—');
     y -= 8;

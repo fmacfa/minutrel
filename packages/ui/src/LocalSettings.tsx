@@ -62,7 +62,7 @@ function Transfer({ projects, actions }: { projects: Project[]; actions: Actions
           ))}
           <p className="micro">
             {tr(
-              'Les tâches ne sont pas recréées. Un conflit ou un chevauchement interrompt le transfert ; les temps déjà reçus sont reconnus au prochain essai.',
+              'Les sous-catégories ne sont pas recréées. Un conflit ou un chevauchement interrompt le transfert ; les temps déjà reçus sont reconnus au prochain essai.',
             )}
           </p>
           <button

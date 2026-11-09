@@ -1,31 +1,32 @@
 ---
-name: Signaler un bug
-about: Décrire un problème reproductible sans données confidentielles
+name: Bug report
+about: Describe a reproducible problem without confidential data
 title: 'bug: '
 ---
 
-## Problème observé
+## Observed problem
 
-Décrire le comportement et son impact. Ne pas joindre de secret ni d’export réel d’équipe.
+Describe the behaviour and its impact. Do not attach secrets or real team exports.
 
-## Environnement
+## Environment
 
-- Version ou commit :
-- Client : web / macOS / Windows / Linux
-- Système et navigateur :
-- Rôle : contributeur / responsable / administrateur
-- Fuseau :
+- Version or commit:
+- Client: web / macOS / Windows / Linux
+- OS and browser:
+- Role: contributor / manager / administrator
+- Mode: team online / team offline / standalone desktop
+- Time zone:
 
-## Étapes de reproduction
+## Steps to reproduce
 
 1.
 2.
 3.
 
-## Résultat attendu et résultat obtenu
+## Expected and actual results
 
-Préciser les durées exactes si le problème concerne un calcul.
+Include exact durations if the problem concerns a calculation. For subcategory issues, use fictional project/category names and describe the selection made.
 
-## Référence
+## Reference
 
-Exigence du cahier des charges ou test de recette concerné, si connu.
+Relevant requirement, issue or acceptance test, if known.

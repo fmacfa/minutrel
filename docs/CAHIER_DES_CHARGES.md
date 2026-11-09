@@ -13,7 +13,7 @@ Le logiciel doit rester sobre en ressources et utilisable sans IA. Les clients i
 | Rôle | Droits de la V0.1 |
 | --- | --- |
 | Contributeur | Projets affectés, chronomètre personnel, saisies et corrections de ses temps, notes et comptes rendus personnels |
-| Responsable | Gestion des projets, tâches et affectations ; consultation des membres et des temps de l’équipe ; correction motivée de temps finalisés |
+| Responsable | Gestion des projets, sous-catégories et affectations ; consultation des membres et des temps de l’équipe ; correction motivée de temps finalisés |
 | Administrateur | Droits précédents, gestion des accès, configuration de l’espace et des moteurs IA, rapports mensuels et exports collectifs |
 
 Le dernier administrateur actif ne peut pas perdre ses droits sans qu’un autre administrateur actif existe. La désactivation révoque les accès et conserve l’historique. Un chronomètre actif doit être arrêté explicitement avant désactivation. L’intervention d’un administrateur sur un temps actif d’autrui demande un motif.
@@ -27,7 +27,7 @@ Une instance héberge un espace. Le nom et le fuseau sont définis à l’instal
 | F01 | Installation protégée par un secret à usage initial, création du premier administrateur et absence de mot de passe par défaut |
 | F02 | Connexion et déconnexion, changement de mot de passe, création/désactivation des comptes et réinitialisation par l’administrateur |
 | F03 | Projets nommés, description, couleur, affectation des membres et archivage conservant les temps |
-| F04 | Tâches facultatives appartenant à un seul projet, sans arborescence de dossiers locaux |
+| F04 | Sous-catégories facultatives appartenant à un seul projet ; intitulés saisis librement dans un champ vide, sans catégories prédéfinies ni arborescence de dossiers locaux |
 | F05 | Démarrage, pause, reprise et arrêt d’un seul chronomètre actif par membre, tous appareils confondus |
 | F06 | Segments persistés ; reprise de l’état après fermeture, veille, déconnexion ou redémarrage du client |
 | F07 | Saisie d’une durée explicite sur une date, ou d’un intervalle avec fuseau explicite |

@@ -1,17 +1,17 @@
-## Changement
+## Change
 
-Décrire le problème et le comportement obtenu.
+Describe the concrete problem and resulting behaviour.
 
-## Références
+## References
 
-- Ticket :
-- Exigences :
-- Clients concernés :
+- Issue:
+- Requirements:
+- Affected clients:
 
-## Vérifications effectuées
+## Validation
 
-Indiquer les commandes et scénarios réellement exécutés, avec leur résultat. Pour une modification documentaire : `python3 scripts/check_repository.py`.
+List commands and scenarios actually executed, with their results. For documentation changes, run `python3 scripts/check_repository.py`.
 
-## Données et exploitation
+## Data and operations
 
-Préciser les changements de permissions, calculs, schéma ou sauvegarde quand ils existent, ainsi que la méthode de reprise. Retirer cette section si elle ne s’applique pas.
+Describe changes to permissions, calculations, schemas or backups, and the recovery method where applicable. Remove this section if it does not apply.

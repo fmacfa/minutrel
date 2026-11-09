@@ -1,5 +1,19 @@
 # Validation de Minutrel V0.1
 
+## 2026-11-09 — English-first GitHub and custom subcategories
+
+The main README, contribution/security/licensing guidance, changelog, issue/PR templates, guide index and workflow labels now use English first. The French README and all EN/FR/DE user guides are retained. Existing task IDs and API routes remain compatible; the interface calls this level subcategories.
+
+- `npm run check`: formatting, ESLint, strict types, **80 tests in 10 files**, coverage gates and web/API builds passed. Business coverage: 98.81% lines, 97.84% statements, 94.69% functions, 86.51% branches.
+- New tests cover arbitrary category names, empty-name rejection, permissions, rejecting another project's category, standalone recording, active-timer archive protection and category/description retention in exports.
+- Browser trial: a new demo project started with zero subcategories; the creation input had an empty value and no placeholder. A custom “Suivi clients” category was then created, and a 25-minute manual entry retained both its category and its work description. See the [empty input](screenshots/18-subcategory-empty-en.jpg) and [recorded work](screenshots/19-subcategory-work-en.jpg).
+- Repository links/fixtures and all 33 brand hashes passed. The workflow passed actionlint. Initial web JavaScript: approximately **112.24 kB gzip**; the local engine and PDF libraries remain lazy-loaded.
+- The macOS ARM64 app/DMG rebuilt successfully. `hdiutil verify` passed. The current unsigned `Minutrel_0.1.0_aarch64.dmg` is **5,948,333 bytes**, SHA-256 `3869cf1ee8aea544afe154a7aff215992254cb94e287e7f5ae053887478bce64`.
+
+These are local checks. The [GitHub Actions page](https://github.com/fmacfa/minutrel/actions) is the source for remote runs on each published commit. This change does not claim new Windows/Linux manual testing, load measurements or an independent security audit. The older records below describe their original dates and artefacts.
+
+## Relevé historique des 5 et 6 novembre
+
 Contrôles locaux des 5 et **6 novembre 2026**, sur macOS ARM64, avec Node.js 24.22.1 et Rust 1.99.1. Les résultats du 6 novembre incluent l’autonomie, la file hors connexion, les langues, les exports locaux et les guides. Les essais de conteneurs du 5 novembre sont distingués ci-dessous ; ils ne constituent pas une reconstruction des extensions du 6 novembre.
 
 ## Résultats
@@ -54,4 +68,4 @@ Les objectifs de 50 comptes, 20 utilisateurs simultanés, 500 projets et 100 000
 
 ## Ce qui reste à confirmer hors de ce poste
 
-Aucun dépôt distant ni run GitHub n’a été créé par ce travail local. Les matrices Windows et Linux natives sont préparées et doivent être exécutées sur GitHub, puis complétées par une recette terrain. Reconstruire aussi les conteneurs du même commit avant publication. La signature des paquets, leur mise à jour automatique, les modèles IA réels, un audit de sécurité indépendant, la charge et la restauration locale sur un autre poste restent à valider, comme décrit dans [le backlog](BACKLOG.md) et [la liste avant publication](PRE_PUBLICATION.md).
+À la date de ce relevé du 6 novembre, aucun dépôt distant ni run GitHub n’avait été créé par ce travail local. Le dépôt a depuis été publié à [fmacfa/minutrel](https://github.com/fmacfa/minutrel) ; consulter ses exécutions pour le commit concerné. Les matrices Windows et Linux doivent être complétées par une recette terrain. Reconstruire les conteneurs du même commit avant publication. La signature des paquets, leur mise à jour automatique, les modèles IA réels, un audit de sécurité indépendant, la charge et la restauration locale sur un autre poste restent à valider, comme décrit dans [le backlog](BACKLOG.md) et [la liste avant publication](PRE_PUBLICATION.md).

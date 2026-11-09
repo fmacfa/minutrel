@@ -422,6 +422,7 @@ function manual(d: LocalData, b: Record<string, unknown>, entry?: TimeEntry): Ti
   const p = d.projects.find((p) => p.id === b.projectId && !p.archived);
   if (!p) throw new Error(tr('Projet introuvable ou archivé.'));
   const task = p.tasks.find((t) => t.id === b.taskId && !t.archived);
+  if (b.taskId && !task) throw new Error(tr('Sous-catégorie introuvable ou archivée.'));
   let seconds: number;
   const segments: TimeEntry['segments'] = [];
   if (b.kind === 'duration') {
@@ -506,11 +507,14 @@ async function personalRequest(
       if (parts[1] === 'projects') {
         if (parts[3] === 'tasks') {
           const p = d.projects.find((p) => p.id === objectId);
-          if (!p) throw new Error(tr('Projet introuvable.'));
+          if (!p || p.archived) throw new Error(tr('Projet introuvable ou archivé.'));
+          const name = String(b.name ?? '').trim();
+          if (!name || name.length > 200)
+            throw new Error(tr('Le nom de la sous-catégorie doit contenir de 1 à 200 caractères.'));
           const task = {
             id: crypto.randomUUID(),
             projectId: p.id,
-            name: String(b.name).trim().slice(0, 200),
+            name,
             archived: false,
           };
           p.tasks.push(task);
@@ -540,8 +544,15 @@ async function personalRequest(
       }
       if (parts[1] === 'tasks') {
         const task = d.projects.flatMap((p) => p.tasks).find((t) => t.id === objectId);
-        if (!task) throw new Error(tr('Tâche introuvable.'));
-        if (b.name) task.name = String(b.name).trim().slice(0, 200);
+        if (!task) throw new Error(tr('Sous-catégorie introuvable.'));
+        if ('name' in b) {
+          const name = String(b.name ?? '').trim();
+          if (!name || name.length > 200)
+            throw new Error(tr('Le nom de la sous-catégorie doit contenir de 1 à 200 caractères.'));
+          task.name = name;
+        }
+        if (b.archived && currentTimer(d)?.taskId === task.id)
+          throw new Error(tr('Terminez le chronomètre avant d’archiver cette sous-catégorie.'));
         if ('archived' in b) task.archived = Boolean(b.archived);
         return task;
       }

@@ -1,27 +1,28 @@
 ---
-name: Proposer une fonctionnalité
-about: Décrire un besoin, son périmètre et sa validation
+name: Feature request
+about: Describe a need, its scope and acceptance criteria
 title: 'feat: '
 ---
 
-## Besoin
+## User need
 
-En tant que [rôle], je souhaite [action] afin de [résultat utile].
+As a [role], I want [action] so that [useful outcome].
 
-## Périmètre
+## Scope
 
-- Clients concernés : web / macOS / Windows / Linux
-- Exigences F, R ou Q concernées :
-- Lot ou ticket CT concerné :
-- Droits nécessaires :
+- Affected clients: web / macOS / Windows / Linux
+- Relevant F, R or Q requirements:
+- Related milestone or CT issue:
+- Required permissions:
 
-## Critères de validation
+## Acceptance criteria
 
-- [ ] Résultat observable :
-- [ ] Permissions :
-- [ ] Effet sur les temps et les exports :
-- [ ] Comportement en cas d’erreur :
+- [ ] Observable outcome:
+- [ ] Permissions:
+- [ ] Effect on time entries and exports:
+- [ ] Offline and standalone behaviour:
+- [ ] Error behaviour:
 
-## Exemple
+## Example
 
-Utiliser uniquement des données fictives.
+Use fictional data only. Please write public issue titles and descriptions in English when possible.

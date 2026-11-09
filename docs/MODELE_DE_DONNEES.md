@@ -1,5 +1,7 @@
 # Modèle de données V0.1
 
+Dans l’interface, les anciennes tâches sont nommées **sous-catégories**. Les noms techniques `tasks`, `taskId` et `taskName` restent inchangés. Aucun intitulé n’est imposé ou créé par défaut ; la description du travail appartient au temps enregistré.
+
 SQLite est stocké sur le serveur commun. Le schéma exécuté se trouve dans [store.ts](../apps/api/src/store.ts). Il porte `PRAGMA user_version=1` ; le code refuse une base d’une version ultérieure. Les clés étrangères et WAL sont activés.
 
 Les identifiants des entités sont des UUID, les instants sont des secondes Unix entières, les dates de travail sont des chaînes ISO `AAAA-MM-JJ`. Les durées sont des secondes entières, sans nombre flottant d’heures.

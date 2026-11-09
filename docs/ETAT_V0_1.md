@@ -8,7 +8,7 @@ Version du produit : **0.1.0**. Ce fichier distingue les fonctions livrées des 
 | --- | --- |
 | Installation | Premier administrateur protégé par un secret généré localement ; pas d’inscription publique |
 | Équipe | Création des comptes, rôles contributeur/responsable/administrateur, désactivation et réinitialisation par l’administrateur |
-| Projets | Création, modification, couleur, description, affectations, tâches facultatives et archivage |
+| Projets | Création, modification, couleur, description, affectations, sous-catégories aux intitulés libres et archivage |
 | Chronomètre | Démarrer, pause, reprise, arrêt ; segments persistés ; un temps actif par membre ; contrôle des versions et des répétitions |
 | Saisies | Durées explicites, intervalles avec décalage UTC, détection des chevauchements et correction motivée |
 | Partage | Serveur commun aux clients web et ordinateur, notifications SSE et relecture des droits côté serveur |

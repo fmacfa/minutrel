@@ -137,9 +137,9 @@ export function ManualForm({
             </select>
           </Field>
           {!!project?.tasks.length && (
-            <Field label={tr('Tâche facultative')}>
+            <Field label={tr('Sous-catégorie facultative')}>
               <select value={taskId} onChange={(e) => setTaskId(e.target.value)}>
-                <option value="">{tr('Sans tâche')}</option>
+                <option value="">{tr('Sans sous-catégorie')}</option>
                 {project.tasks
                   .filter((t) => !t.archived || t.id === entry?.taskId)
                   .map((t) => (

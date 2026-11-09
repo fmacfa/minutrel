@@ -1,9 +1,9 @@
-# Signaler un problème de sécurité
+# Reporting a security issue
 
-Minutrel possède un socle en développement. Aucune version applicative maintenue n’est encore publiée.
+Minutrel V0.1 is a test prerelease. No stable application release or security certification is claimed.
 
-Ne pas placer de secret, de donnée d’équipe ou de procédure d’exploitation d’une vulnérabilité dans une issue publique. Après publication du dépôt, privilégier le signalement privé GitHub si ses responsables l’ont activé ; à défaut, demander un moyen de contact privé sans publier les détails.
+Do not post secrets, team data or vulnerability exploitation instructions in a public issue. Use GitHub private vulnerability reporting if the maintainers have enabled it. Otherwise, ask for a private contact method without publishing the details.
 
-Avant la première version publique, les responsables devront préciser les versions maintenues et activer un canal privé de signalement. Aucun délai de réponse n’est promis à ce stade.
+Before a stable public release, maintainers must identify supported versions and provide a private reporting channel. No response-time commitment is made at this stage.
 
-Les exigences de permissions, de sessions et de protection des données sont décrites dans le [cahier des charges](docs/CAHIER_DES_CHARGES.md). Ce fichier fournit un canal de signalement ; il ne constitue pas une certification de sécurité.
+Permission, session and data-protection requirements are documented in the [requirements](docs/CAHIER_DES_CHARGES.md), currently in French. This file explains reporting; it does not certify the security of a deployment.

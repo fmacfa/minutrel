@@ -36,7 +36,7 @@ Les projets, les droits et les temps de ce compte sont communs aux appareils con
 
 ## 3. Chronométrer et utiliser le widget
 
-1. Dans **Vue d’ensemble**, choisissez le projet, éventuellement une tâche, et décrivez le travail.
+1. Dans **Vue d’ensemble**, choisissez le projet, éventuellement une sous-catégorie, et décrivez le travail.
 2. Cliquez sur **Démarrer**. **Pause** interrompt le décompte ; **Reprendre** poursuit le même temps.
 3. Cliquez sur **Terminer** pour finaliser le temps. Les pauses ne sont jamais ajoutées à la durée.
 
@@ -72,13 +72,17 @@ En cas de conflit, terminez le temps local, exportez la copie, puis consultez l�
 
 Terminez vos chronomètres personnels, ouvrez votre compte d’équipe puis **Paramètres → Transférer mon travail local → Lire mon espace local**. Pour chaque projet personnel à transférer, choisissez un projet d’équipe existant et autorisé. Les projets sans correspondance restent locaux.
 
-Seuls les temps finalisés sélectionnés sont copiés dans votre compte. Les originaux restent sur l’ordinateur ; les tâches ne sont pas recréées et les notes privées ne sont pas transférées. Le serveur reconnaît un temps déjà importé lors d’une nouvelle tentative. Gardez la même correspondance de projet après un premier envoi ; un changement est traité comme un conflit. Cette opération ne relie pas deux comptes ou deux équipes entre eux.
+Seuls les temps finalisés sélectionnés sont copiés dans votre compte. Les originaux restent sur l’ordinateur ; les sous-catégories ne sont pas recréées et les notes privées ne sont pas transférées. Le serveur reconnaît un temps déjà importé lors d’une nouvelle tentative. Gardez la même correspondance de projet après un premier envoi ; un changement est traité comme un conflit. Cette opération ne relie pas deux comptes ou deux équipes entre eux.
 
 ![Choisir la correspondance entre projets personnels et projets d’équipe](../../screenshots/15-transfert-vers-equipe.png)
 
-## 6. Gérer les projets et tâches
+## 6. Gérer les projets et sous-catégories
 
-Dans **Les projets**, recherchez un projet ou passez aux archives. Les responsables et administrateurs créent et modifient les projets, la couleur, la description et les membres affectés. **Tâches** ajoute ou archive les tâches facultatives. Un projet avec un chronomètre actif doit être finalisé avant archivage.
+Les intitulés sont entièrement libres : **Sous-catégories** ouvre un champ vide, sans valeur préremplie ni suggestion. Tapez le nom souhaité puis **Ajouter**. Un nouveau projet n’en contient aucune. Choisissez ensuite le projet et la sous-catégorie dans le chronomètre ou la saisie manuelle et écrivez la description du travail effectué. Les captures antérieures peuvent encore afficher « Tâches » pour ce même niveau.
+
+![Champ vide pour créer votre propre intitulé, interface anglaise](../../screenshots/18-subcategory-empty-en.jpg)
+
+Dans **Les projets**, recherchez un projet ou passez aux archives. Les responsables et administrateurs créent et modifient les projets, la couleur, la description et les membres affectés. **Sous-catégories** ajoute ou archive les sous-catégories facultatives. Un projet avec un chronomètre actif doit être finalisé avant archivage.
 
 ![Projets et affectations](../../screenshots/02-projets.jpg)
 

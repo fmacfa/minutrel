@@ -1,19 +1,19 @@
-# Licence de Minutrel
+# Minutrel licensing
 
-Le contenu original du dépôt est placé sous **GNU Affero General Public License, version 3 ou toute version ultérieure**, identifiant SPDX `AGPL-3.0-or-later`. Le texte intégral figure dans [LICENSE](LICENSE).
+Original repository content uses the **GNU Affero General Public License, version 3 or later**, SPDX identifier `AGPL-3.0-or-later`. The complete text is included in [LICENSE](LICENSE).
 
-Ce choix permet la modification et la redistribution du projet sous les conditions de cette licence et prévoit un partage du code source correspondant dans le cas des versions modifiées avec lesquelles des utilisateurs interagissent à distance, selon sa section 13. Le texte de la licence précise les obligations applicables. La Free Software Foundation présente ses [licences et leurs usages](https://www.gnu.org/licenses/licenses.en.html).
+This licence permits modification and redistribution under its terms and requires offering the corresponding source to users who interact remotely with modified versions, as specified in section 13. The licence text defines the applicable obligations. See the Free Software Foundation’s [licences and guidance](https://www.gnu.org/licenses/licenses.en.html).
 
-Le texte livré provient du [répertoire officiel SPDX des textes de licence](https://github.com/spdx/license-list-data/blob/main/text/AGPL-3.0-or-later.txt). Il est conservé intégralement, y compris ses instructions générales d’application.
+The included licence text comes from the [official SPDX licence-text repository](https://github.com/spdx/license-list-data/blob/main/text/AGPL-3.0-or-later.txt) and is retained in full.
 
-## Application aux futurs fichiers
+## Source files
 
-Ajouter l’identifiant `SPDX-License-Identifier: AGPL-3.0-or-later` dans les fichiers source lorsque leur format le permet. Les auteurs conservent leurs droits ; ne pas inventer un titulaire de droits ni modifier la licence d’un composant tiers.
+Add `SPDX-License-Identifier: AGPL-3.0-or-later` where the source format supports it. Authors retain their rights. Do not invent a copyright holder or change a third-party component’s licence.
 
-## Dépendances futures
+## Dependencies and assets
 
-Les dépendances du socle sont verrouillées dans les fichiers npm et Cargo. Lors de chaque ajout, conserver les licences et notices, vérifier leur compatibilité et produire un inventaire dans les artefacts de livraison. Les ressources graphiques originales suivent la licence du dépôt ; Manrope garde sa [licence SIL Open Font License](brand/fonts/OFL.txt), incluse avec les fichiers.
+Application dependencies are pinned in the npm and Cargo lockfiles. Keep licences and notices, check compatibility and include an inventory with release artefacts. Original brand assets use the repository licence; Manrope retains its [SIL Open Font License](brand/fonts/OFL.txt), included alongside the font files.
 
-La construction web et ordinateur copie le texte AGPL, la notice Manrope et un inventaire des paquets npm et de leurs notices dans `licenses/THIRD-PARTY-NOTICES.txt`. Les outils PDF locaux (`pdf-lib`, `@pdf-lib/fontkit`, `fflate`) restent sous leurs licences respectives. Le verrou Cargo conserve également les versions et sources des dépendances natives.
+Web and desktop builds copy the AGPL text, Manrope notice and npm package/license inventory into `licenses/THIRD-PARTY-NOTICES.txt`. Local PDF/export libraries (`pdf-lib`, `@pdf-lib/fontkit`, `fflate`) retain their respective licences. The Cargo lockfile records native dependency versions and sources.
 
-La licence du projet n’impose pas l’utilisation de GitHub pour héberger ou exécuter l’application. Les sources correspondantes doivent rester accessibles depuis l’interface des versions déployées, selon les conditions applicables.
+The project licence does not require GitHub as a hosting provider. Corresponding source must remain accessible to deployed-version users under the applicable licence conditions.

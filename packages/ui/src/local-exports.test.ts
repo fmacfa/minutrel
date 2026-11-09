@@ -49,6 +49,9 @@ it('exporte les secondes exactes et neutralise les préfixes de formules et cont
   expect(csv).toContain('"\'\u0000=1+2"');
   r.entries[0]!.description = '\t@SUM(1)';
   expect(localCsv(r)).toContain('"\'\t@SUM(1)"');
+  r.entries[0]!.taskName = 'Accompagnement clientèle';
+  expect(localCsv(r).split('\r\n')[0]).toContain('"subcategory"');
+  expect(localCsv(r)).toContain('"Accompagnement clientèle"');
 });
 it('produit un PDF valide avec accents et pagination pour des descriptions longues', async () => {
   font();

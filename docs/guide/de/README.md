@@ -44,9 +44,13 @@ Unter **Team → Mitglied hinzufügen** erstellt ein Administrator Konten mit ei
 
 E-Mail-Einladungen, SSO und auf einzelne Projekte begrenzte Verwaltungsrollen gehören noch nicht zu V0.1. Verantwortliche verwalten das gesamte Team.
 
-## 4. Projekte, Aufgaben und Archivierung
+## 4. Projekte, Unterkategorien und Archivierung
 
-Unter **Projekte** können Sie suchen und zwischen aktiven und archivierten Projekten wechseln. Verantwortliche und Administratoren bearbeiten Name, Beschreibung, Farbe und zugewiesene Mitglieder. **Aufgaben** erstellt oder archiviert optionale Aufgaben. Mitarbeiter sehen ihre zugewiesenen Projekte. Im persönlichen Arbeitsbereich verwalten Sie Ihre eigenen Projekte.
+Die Namen bestimmen Sie selbst. **Unterkategorien** öffnet ein leeres Eingabefeld ohne vordefinierte Namen oder Platzhalter. Geben Sie Ihren eigenen Namen ein und wählen Sie **Hinzufügen**. Neue Projekte enthalten keine Unterkategorie. Wählen Sie anschließend Projekt und optionale Unterkategorie und beschreiben Sie die erledigte Arbeit. Ältere Aufnahmen können diese Ebene noch „Aufgaben“ nennen.
+
+![Leeres Feld für Ihren eigenen Namen, englische Oberfläche](../../screenshots/18-subcategory-empty-en.jpg)
+
+Unter **Projekte** können Sie suchen und zwischen aktiven und archivierten Projekten wechseln. Verantwortliche und Administratoren bearbeiten Name, Beschreibung, Farbe und zugewiesene Mitglieder. **Unterkategorien** erstellt oder archiviert optionale Unterkategorien. Mitarbeiter sehen ihre zugewiesenen Projekte. Im persönlichen Arbeitsbereich verwalten Sie Ihre eigenen Projekte.
 
 ![Projekte, französisches Beispiel](../../screenshots/02-projets.jpg)
 
@@ -54,7 +58,7 @@ Vor der Archivierung müssen aktive Zeitmessungen des Projekts beendet werden. D
 
 ## 5. Zeit erfassen und Mini-Zeitmessung verwenden
 
-Wählen Sie in der **Übersicht** ein Projekt, bei Bedarf eine Aufgabe, beschreiben Sie Ihre Arbeit und klicken Sie auf **Starten**. **Pause** unterbricht die Zählung, **Fortsetzen** führt denselben Eintrag weiter. **Beenden** schließt ihn ab. Pausen werden nicht gezählt.
+Wählen Sie in der **Übersicht** ein Projekt, bei Bedarf eine Unterkategorie, beschreiben Sie Ihre Arbeit und klicken Sie auf **Starten**. **Pause** unterbricht die Zählung, **Fortsetzen** führt denselben Eintrag weiter. **Beenden** schließt ihn ab. Pausen werden nicht gezählt.
 
 **Mini-Zeitmessung** öffnet ein verschiebbares Fenster über gewöhnlichen Fenstern. Am Computer gibt es zusätzlich ein Symbol in der Menüleiste/im Infobereich und, soweit verfügbar, `Strg/Cmd + Alt + M`. Das Widget passt seine Höhe an den Inhalt an. **Minutrel** öffnet das Hauptfenster; das Kreuz blendet das Widget aus. Vollbildprogramme und manche Linux-/Wayland-Umgebungen bestimmen die Fensterplatzierung selbst.
 
@@ -88,7 +92,7 @@ Bei einem Konflikt beenden Sie die lokale Zeitmessung, exportieren eine Kopie un
 
 Beenden Sie persönliche Zeitmessungen, öffnen Sie Ihr Teamkonto und wählen Sie **Einstellungen → Meine lokale Arbeit übertragen → Meinen lokalen Arbeitsbereich lesen**. Ordnen Sie jedem ausgewählten persönlichen Projekt ein vorhandenes, erlaubtes Teamprojekt zu. Projekte ohne Zuordnung bleiben lokal.
 
-Abgeschlossene Einträge werden in Ihr Teamkonto kopiert; die Originale bleiben auf dem Computer. Aufgaben werden nicht neu erstellt und private Notizen nicht übertragen. Erneute Versuche erkennen bereits empfangene Zeiten. Behalten Sie die Zuordnung nach dem ersten Senden bei; Änderungen werden als Konflikt behandelt. Die Arbeitsbereiche werden nicht automatisch verschmolzen. Es handelt sich auch nicht um die Synchronisierung zweier Teams.
+Abgeschlossene Einträge werden in Ihr Teamkonto kopiert; die Originale bleiben auf dem Computer. Unterkategorien werden nicht neu erstellt und private Notizen nicht übertragen. Erneute Versuche erkennen bereits empfangene Zeiten. Behalten Sie die Zuordnung nach dem ersten Senden bei; Änderungen werden als Konflikt behandelt. Die Arbeitsbereiche werden nicht automatisch verschmolzen. Es handelt sich auch nicht um die Synchronisierung zweier Teams.
 
 ![Zuordnung eines persönlichen Projekts zu einem Teamprojekt, französische Oberfläche](../../screenshots/15-transfert-vers-equipe.png)
 

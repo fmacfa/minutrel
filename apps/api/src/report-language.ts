@@ -6,7 +6,7 @@ const words: Record<string, [string, string]> = {
   Salarié: ['Employee', 'Mitarbeiter'],
   Adresse: ['Email', 'E-Mail'],
   Projet: ['Project', 'Projekt'],
-  Tâche: ['Task', 'Aufgabe'],
+  'Sous-catégorie': ['Subcategory', 'Unterkategorie'],
   'Date ou début': ['Date or start', 'Datum oder Beginn'],
   Description: ['Description', 'Beschreibung'],
   Secondes: ['Seconds', 'Sekunden'],

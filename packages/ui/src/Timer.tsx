@@ -132,7 +132,7 @@ export function TimerPanel({
           {!!selected?.tasks.filter((t) => !t.archived).length && (
             <>
               <label className="visually-hidden" htmlFor={compact ? 'quick-task' : 'timer-task'}>
-                {tr('Tâche facultative')}
+                {tr('Sous-catégorie facultative')}
               </label>
               <select
                 id={compact ? 'quick-task' : 'timer-task'}
@@ -140,7 +140,7 @@ export function TimerPanel({
                 onChange={(e) => setTaskId(e.target.value)}
                 disabled={actions.pending || offline}
               >
-                <option value="">{tr('Sans tâche')}</option>
+                <option value="">{tr('Sans sous-catégorie')}</option>
                 {selected.tasks
                   .filter((t) => !t.archived)
                   .map((t) => (

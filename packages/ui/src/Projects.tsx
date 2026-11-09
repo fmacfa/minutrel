@@ -97,11 +97,13 @@ function ProjectForm({
     </form>
   );
 }
-function Tasks({ project, actions }: { project: Project; actions: Actions }) {
+function Subcategories({ project, actions }: { project: Project; actions: Actions }) {
   const [name, setName] = useState('');
   return (
     <div>
-      <p className="quiet">{tr('Les tâches sont facultatives et appartiennent à ce projet.')}</p>
+      <p className="quiet">
+        {tr('Créez vos propres sous-catégories pour ce projet. Le champ est vide au départ.')}
+      </p>
       <div className="task-list">
         {project.tasks.map((t) => (
           <div className="task-row" key={t.id}>
@@ -114,7 +116,7 @@ function Tasks({ project, actions }: { project: Project; actions: Actions }) {
                   await actions.act(
                     () =>
                       request(`/tasks/${t.id}`, 'PATCH', { name: t.name, archived: !t.archived }),
-                    tr('Tâche mise à jour.'),
+                    tr('Sous-catégorie mise à jour.'),
                   )
                 )
                   actions.close();
@@ -132,19 +134,19 @@ function Tasks({ project, actions }: { project: Project; actions: Actions }) {
           if (
             await actions.act(
               () => request(`/projects/${project.id}/tasks`, 'POST', { name }),
-              tr('Tâche créée.'),
+              tr('Sous-catégorie créée.'),
             )
           )
             actions.close();
         }}
       >
         <input
-          aria-label={tr('Nom de la nouvelle tâche')}
-          placeholder={tr('Nouvelle tâche')}
+          aria-label={tr('Nom de la sous-catégorie')}
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={200}
           required
+          autoFocus
           disabled={project.archived}
         />
         <button className="button primary" type="submit" disabled={project.archived}>
@@ -255,7 +257,7 @@ export function Projects({
                   {tr('ce mois')}
                 </span>
                 <span>
-                  {p.tasks.filter((t) => !t.archived).length} {tr('tâche(s)')}
+                  {p.tasks.filter((t) => !t.archived).length} {tr('sous-catégorie(s)')}
                 </span>
               </div>
               <div className="project-card-footer">
@@ -279,12 +281,12 @@ export function Projects({
                     className="text-button"
                     onClick={() =>
                       actions.open(
-                        tr('Tâches · {0}', p.name),
-                        <Tasks project={p} actions={actions} />,
+                        tr('Sous-catégories · {0}', p.name),
+                        <Subcategories project={p} actions={actions} />,
                       )
                     }
                   >
-                    {tr('Tâches')}
+                    {tr('Sous-catégories')}
                     <Icon name="chevron" size={15} />
                   </button>
                 )}

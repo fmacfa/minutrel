@@ -451,14 +451,14 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
     const member = manage(r);
     const taskId = routeId(r);
     const data = parse(z.object({ name: text(), archived: z.boolean() }).strict(), r.body);
-    ensure(store.get('SELECT 1 FROM tasks WHERE id=?', taskId), 'Tâche introuvable.', 404);
+    ensure(store.get('SELECT 1 FROM tasks WHERE id=?', taskId), 'Sous-catégorie introuvable.', 404);
     ensure(
       !data.archived ||
         !store.get(
           "SELECT 1 FROM entries WHERE taskId=? AND state IN ('running','paused')",
           taskId,
         ),
-      'Un chronomètre utilise cette tâche.',
+      'Terminez le chronomètre avant d’archiver cette sous-catégorie.',
       409,
     );
     store.run(

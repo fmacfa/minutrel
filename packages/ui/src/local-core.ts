@@ -77,7 +77,7 @@ export function timerMutation(
     const p = data.projects.find((p) => p.id === input.projectId && !p.archived);
     if (!p) throw new Error(tr('Projet introuvable ou archivé.'));
     const task = p.tasks.find((t) => t.id === input.taskId && !t.archived);
-    if (input.taskId && !task) throw new Error(tr('Tâche introuvable ou archivée.'));
+    if (input.taskId && !task) throw new Error(tr('Sous-catégorie introuvable ou archivée.'));
     e = {
       id: crypto.randomUUID(),
       memberId: data.session.member.id,

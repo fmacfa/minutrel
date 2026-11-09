@@ -44,9 +44,13 @@ In **Team → Add a member**, administrators create accounts with an initial pas
 
 Invitations by email, SSO and project-specific management roles are not part of V0.1. The manager role covers the whole team.
 
-## 4. Projects, tasks and archiving
+## 4. Projects, subcategories and archiving
 
-In **Projects**, search or switch between active and archived projects. Managers and administrators create or edit the name, description, colour and assigned members. **Tasks** adds or archives optional tasks. Contributors see assigned projects. In a standalone workspace you manage your own projects.
+Subcategory names are entirely up to you. **Subcategories** opens a blank input with no predefined labels or placeholder. Enter your own name and select **Add**. New projects start with none. Select the project and optional subcategory in the timer or manual-entry form, then describe the work done. Older screenshots may still call this level “Tasks”. See the [subcategory guide](../../SUBCATEGORIES.md).
+
+![An empty input for your own subcategory name](../../screenshots/18-subcategory-empty-en.jpg)
+
+In **Projects**, search or switch between active and archived projects. Managers and administrators create or edit the name, description, colour and assigned members. **Subcategories** adds or archives optional subcategories. Contributors see assigned projects. In a standalone workspace you manage your own projects.
 
 ![Projects, French example](../../screenshots/02-projets.jpg)
 
@@ -54,7 +58,7 @@ Stop active project timers before archiving. Archiving preserves historical time
 
 ## 5. Track time and use the mini timer
 
-In **Overview**, choose a project, optionally a task, describe the work and click **Start**. **Pause** stops counting without finishing the entry; **Resume** continues it. **Finish** saves the completed time. Breaks are excluded.
+In **Overview**, choose a project, optionally a subcategory, describe the work and click **Start**. **Pause** stops counting without finishing the entry; **Resume** continues it. **Finish** saves the completed time. Breaks are excluded.
 
 **Mini timer** opens a movable window above ordinary windows. Desktop also offers a system tray/menu bar icon and `Ctrl/Cmd + Alt + M`, when available. The widget resizes to its content; **Minutrel** opens the main window and the cross hides the widget. Full-screen applications and some Linux/Wayland environments impose their own window rules.
 
@@ -88,7 +92,7 @@ To resolve a conflict, finish the local timer, export a local copy and compare t
 
 Finish personal timers, open your team account and go to **Settings → Transfer my local work → Read my local workspace**. Map each selected personal project to an existing, authorised team project. Unmapped projects remain local.
 
-Completed entries are copied to your team account; originals stay on the computer. Tasks are not recreated and private notes are not sent. A repeated transfer recognises entries already received. Keep the same project mapping after the first send; changing it requires resolving a conflict. Personal and team workspaces are not merged automatically, and this is not synchronisation between two teams.
+Completed entries are copied to your team account; originals stay on the computer. Subcategories are not recreated and private notes are not sent. A repeated transfer recognises entries already received. Keep the same project mapping after the first send; changing it requires resolving a conflict. Personal and team workspaces are not merged automatically, and this is not synchronisation between two teams.
 
 ![Mapping a personal project to a team project, shown in French](../../screenshots/15-transfert-vers-equipe.png)
 

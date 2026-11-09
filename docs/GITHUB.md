@@ -1,5 +1,7 @@
 # Dépôt GitHub de Minutrel
 
+La langue principale de GitHub est **l’anglais** : README racine, consignes de contribution, sécurité, historique, modèles de tickets/PR et intitulés de CI. Le français reste disponible dans [README.fr.md](../README.fr.md) et les guides utilisateur existent en EN/FR/DE. Les documents techniques français restent accessibles et signalés comme tels.
+
 Le dépôt public unique est [fmacfa/minutrel](https://github.com/fmacfa/minutrel), sur la branche principale `main`. Il réunit le serveur, le client web, le client ordinateur macOS/Windows/Linux, les bibliothèques partagées, le site vitrine et les sources de sa vidéo de présentation.
 
 La [vidéothèque](VIDEOS.md) et son [catalogue anglais](VIDEOS.en.md) regroupent les 12 vidéos, leurs sous-titres et les MP4 disponibles. La [playlist publique](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk) suit l’ordre de découverte du produit. Le catalogue de publication de `video/publication/youtube.json` conserve les liens réellement publiés.
@@ -34,7 +36,7 @@ npm run check
 git status --short
 ```
 
-Vérifier la licence choisie et les fichiers à publier. Le nom public proposé est `minutrel` ; le texte de description peut être : « Suivi du temps par projet en équipe, libre et autohébergé, pour le web, macOS, Windows et Linux. »
+Vérifier la licence choisie et les fichiers à publier. Le nom public proposé est `minutrel` ; le texte de description peut être : “Open-source, self-hosted project time tracking for teams. Web and desktop apps with offline support.”
 
 Le fichier `.env.example` ne contient que des valeurs documentaires. Les fichiers `.env`, bases et certificats privés, ainsi que les emplacements prévus pour les sauvegardes et exports de production, sont exclus par `.gitignore`. Cette exclusion ne remplace pas l’examen du contenu du premier commit.
 
