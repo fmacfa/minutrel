@@ -1,6 +1,6 @@
 # Minutrel — site local français / English local website
 
-Site de présentation complet en **français et en anglais**, avec sélecteur FR / EN : présentation, 20 fonctionnalités, fonctionnement, guide illustré, autohébergement du logiciel, sauvegardes, rapports, API et intégrations. Les références techniques supplémentaires conservent leur langue d’origine ; les pages essentielles existent dans les deux langues. Les captures utilisent des données fictives ; certaines montrent l’interface française de l’application.
+Site de présentation complet en **français et en anglais**, avec sélecteur FR / EN. Il couvre les fonctionnalités, le fonctionnement, le guide illustré, l’autohébergement du logiciel, les sauvegardes, les rapports, l’API et les intégrations. Les pages essentielles existent dans les deux langues. Les références techniques supplémentaires conservent leur langue d’origine. Les captures utilisent des données fictives. Certaines montrent l’interface française de l’application.
 
 ## Ouvrir directement / Open directly
 

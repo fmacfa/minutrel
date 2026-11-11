@@ -8,12 +8,14 @@ Version du produit : **0.1.0**. Ce fichier distingue les fonctions livrées des 
 | --- | --- |
 | Installation | Premier administrateur protégé par un secret généré localement ; pas d’inscription publique |
 | Équipe | Création des comptes, rôles contributeur/responsable/administrateur, désactivation et réinitialisation par l’administrateur |
-| Projets | Création, modification, couleur, description, affectations, sous-catégories aux intitulés libres et archivage |
+| Projets | Création, modification, couleur, description, affectations, sous-catégories personnalisées et archivage |
+| Planification | Budget horaire, échéance, actions rattachables aux saisies, Gantt, plan de charge et taux horaires facultatifs |
 | Chronomètre | Démarrer, pause, reprise, arrêt ; segments persistés ; un temps actif par membre ; contrôle des versions et des répétitions |
 | Saisies | Durées explicites, intervalles avec décalage UTC, détection des chevauchements et correction motivée |
 | Partage | Serveur commun aux clients web et ordinateur, notifications SSE et relecture des droits côté serveur |
 | Travail effectué | Notes privées/partagées, brouillons proposés par assistant, comptes rendus relus et validés |
 | Rapports | Mois dans le fuseau de l’équipe, secondes exactes, salariés désactivés inclus, CSV/PDF/ZIP pour l’administrateur |
+| Feuilles de temps | Soumission et validation hebdomadaires en équipe, renvoi motivé et exports mensuels des temps approuvés |
 | Instantanés | Un export conserve les données de sa création ; téléchargement privé limité à 24 h et contrôlé de nouveau après génération |
 | Bureau | Tauri, connexion HTTP native, session dans le trousseau, widget au-dessus des fenêtres, icône de barre de menus et raccourci |
 | Web | Barre de chronomètre persistante ; fenêtre compacte si Document Picture-in-Picture est disponible |
@@ -43,7 +45,7 @@ L’API affiche un aperçu de 100 entrées par rapport, avec des totaux portant 
 - Invitations à usage unique et SSO/OIDC.
 - Import JSON avec association des comptes et prévisualisation transactionnelle.
 - Définition de périmètres de gestion plus fins que le rôle responsable global.
-- Budgets, facturation, tarifs et verrouillage de périodes.
+- Facturation et verrouillage général des périodes.
 - Politique de conservation et anonymisation pilotées dans l’interface.
 - Signature, notarisation, mise à jour automatique des clients et validation terrain Windows/Linux.
 - Mesures de charge et de ressources sur les volumes cibles, et validation des fournisseurs IA réels choisis par l’exploitant.

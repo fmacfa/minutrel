@@ -8,12 +8,14 @@ Product version: **0.1.0**. This is a test preview. The following capabilities a
 | --- | --- |
 | Setup | First administrator protected by a locally generated secret; no public registration |
 | Team | Create accounts, contributor/manager/administrator roles, deactivation and password resets |
-| Projects | Names, descriptions, colours, assignments, optional tasks and archiving |
+| Projects | Names, descriptions, colours, assignments, custom subcategories and archiving |
+| Planning | Time budgets, deadlines, actions linked to time entries, Gantt charts, workload and optional hourly rates |
 | Timer | Start, pause, resume, finish; persistent segments, one active entry per member, version/idempotency checks |
 | Manual entries | Explicit durations, intervals with UTC offsets, overlap detection and reasoned corrections |
 | Sharing | Common web/desktop server, SSE notifications and server-side permission checks |
 | Work notes | Private/shared notes, assistant draft proposals and reviewed/approved summaries |
 | Reports | Exact seconds, workspace time zone, disabled members’ history, administrator CSV/PDF/ZIP |
+| Timesheets | Weekly team submission and approval, returns with a reason and monthly exports of approved time |
 | Snapshots | Immutable export content, private download with a 24-hour lifetime and permission rechecks |
 | Desktop | Tauri client, native HTTP, keychain session, floating widget, system icon and shortcut |
 | Browser | Persistent compact timer; external mini window where Document Picture-in-Picture is supported |
@@ -41,7 +43,7 @@ Report previews contain at most 100 rows with full totals. Exports accept 100 me
 - Assisted conflict resolution and offline notes/team entity management.
 - Single-use invitations, SSO/OIDC and finer manager scopes.
 - JSON import with account matching and a transactional preview.
-- Budgets, invoicing, rates and period locking.
+- Invoicing and general period locking.
 - Retention and anonymisation controls in the interface.
 - Signed/notarised desktop packages, automatic updates and Windows/Linux field validation.
 - Load/resource measurements and validation of the actual AI providers selected by operators.

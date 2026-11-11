@@ -28,7 +28,7 @@ EN_DOCS = {
 }
 MAIN_PAGES = {
  'index.html':('Time for your projects, together.','Minutrel: free, self-hosted project time tracking. Standalone desktop or team work, with timers, notes and reports.'),
- 'fonctionnalites.html':('All features','Explore Minutrel V0.1 features: time, projects, team permissions, reports, offline work, MCP and self-hosting.'),
+ 'fonctionnalites.html':('All features','Time tracking, subcategories, project planning, Gantt charts and weekly timesheets in Minutrel V0.1.'),
  'fonctionnement.html':('How Minutrel works','Understand personal, team and browser modes, data storage and synchronisation.'),
  'ressources.html':('Guides and resources','User guides, technical documentation and downloads for Minutrel V0.1.'),
  'videos.html':('Minutrel video guides','English product introduction and practical guides, with narration, music and subtitles.'),

@@ -233,7 +233,7 @@ with (DIST/'assets'/'styles.css').open('a') as file:file.write('\n.sr-only{posit
 
 pages = [
     ('index.html','Le temps de vos projets, ensemble.','Minutrel : suivi du temps par projet, libre et autohébergé. Ordinateur autonome ou équipe, chronomètre, notes et rapports.',home(),''),
-    ('fonctionnalites.html','Toutes les fonctionnalités','Découvrez les fonctions de Minutrel 0.1.0 : temps, projets, équipe, rapports, hors connexion, MCP et autohébergement.',features(),'fonctionnalites.html'),
+    ('fonctionnalites.html','Toutes les fonctionnalités','Suivi du temps, sous-catégories, planification de projets, Gantt et feuilles de temps dans Minutrel V0.1.',features(),'fonctionnalites.html'),
     ('fonctionnement.html','Comment fonctionne Minutrel','Comprenez les modes personnel, équipe et navigateur, le stockage des données et la synchronisation de Minutrel.',functioning(),'fonctionnement.html'),
     ('ressources.html','Guides et ressources','Documentation complète, sources, guides, API et téléchargements pour Minutrel 0.1.0.',resources(),''),
 ]
