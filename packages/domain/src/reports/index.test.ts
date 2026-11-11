@@ -13,6 +13,8 @@ import {
   weekRange,
   scheduledSpan,
   plannedSeconds,
+  presetSchedule,
+  schedulePeriods,
 } from './index.ts';
 
 describe('Calendriers et durées de rapport', () => {
@@ -93,5 +95,37 @@ describe('Calendriers et durées de rapport', () => {
     const weekend = scheduledSpan({ startOn: null, dueOn: '2026-11-07' })!;
     expect(plannedSeconds(weekend, 60, '2026-11-02', '2026-11-09')).toBe(60);
     expect(addDays('2026-12-31', 1)).toBe('2027-01-01');
+  });
+  it('aligne la navigation sur le calendrier et préserve les dates des périodes personnalisées', () => {
+    const quarterView = presetSchedule('2026-11-11', '3y');
+    expect(quarterView).toEqual({ start: '2026-01-01', end: '2029-01-01' });
+    expect(schedulePeriods(quarterView, '3y')).toHaveLength(12);
+    expect(presetSchedule(quarterView.start, '3y', 1)).toEqual({
+      start: '2029-01-01',
+      end: '2032-01-01',
+    });
+    const annual = schedulePeriods(presetSchedule('2026-11-11', '5y'), '5y');
+    expect(annual.map(({ days }) => days)).toEqual([365, 365, 366, 365, 365]);
+    expect(presetSchedule('2028-02-29', '3m', -1)).toEqual({
+      start: '2027-11-01',
+      end: '2028-02-01',
+    });
+    expect(
+      schedulePeriods(presetSchedule('2026-11-11', '6w'), '6w').map(({ workdays }) => workdays),
+    ).toEqual([5, 5, 5, 5, 5, 5]);
+    const custom = { start: '2028-01-20', end: '2028-04-02' };
+    const months = schedulePeriods(custom, 'custom');
+    expect(months.map(({ start, end, days }) => ({ start, end, days }))).toEqual([
+      { start: '2028-01-20', end: '2028-02-01', days: 12 },
+      { start: '2028-02-01', end: '2028-03-01', days: 29 },
+      { start: '2028-03-01', end: '2028-04-01', days: 31 },
+      { start: '2028-04-01', end: '2028-04-02', days: 1 },
+    ]);
+    expect(
+      months.reduce((total, p) => total + plannedSeconds(custom, 36_001, p.start, p.end), 0),
+    ).toBe(36_001);
+    expect(
+      schedulePeriods({ start: '2020-04-03', end: '2071-08-06' }, 'custom').length,
+    ).toBeLessThanOrEqual(13);
   });
 });

@@ -87,7 +87,7 @@ Dans un conteneur, `localhost` désigne le conteneur. Relier le moteur au résea
 
 Sauvegarder les données et la clé avant de reconstruire avec une nouvelle version. Conserver les volumes de Compose. `docker compose down` arrête les services ; `docker compose down --volumes` retire leurs volumes et n’est pas une commande de mise à jour.
 
-Le premier démarrage de la version de développement avec la planification migre SQLite du schéma 1 au schéma 2. Pour un retour au serveur V0.1 d’origine, utiliser la sauvegarde prise avant la migration.
+Le premier démarrage de cette version de développement migre SQLite vers le schéma 3. Pour revenir à une version du serveur qui utilise le schéma 1 ou 2, utiliser la sauvegarde prise avant la migration.
 
 Vérifier `/api/v1/health/live` et `/api/v1/health/ready`, puis une connexion et un rapport. Pour un retour à une version antérieure, restaurer une sauvegarde compatible dans un dossier vide ; une base marquée comme plus récente est refusée au démarrage.
 

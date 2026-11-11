@@ -1,7 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { mcpScopes, type Workspace } from '@minutrel/contracts';
+import {
+  hourlyRateCurrencies,
+  maxHourlyRateMinor,
+  mcpScopes,
+  type HourlyRate,
+  type Workspace,
+} from '@minutrel/contracts';
 import { monthBounds, validDate, validTimezone } from '@minutrel/domain/reports';
 import { Store, ensure, id, hash, secret } from './store.ts';
 import { requireOpenWeek } from './time-slices.ts';
@@ -251,8 +257,52 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
     return notify(store.get<Workspace>('SELECT * FROM workspace'));
   });
   app.get('/api/v1/members', async (r) => {
-    manage(r);
-    return store.all<MemberRow>('SELECT * FROM members ORDER BY name').map(publicMember);
+    const member = manage(r);
+    const members = store.all<MemberRow>('SELECT * FROM members ORDER BY name').map(publicMember);
+    if (member.role !== 'admin') return members;
+    const rates = new Map(
+      store
+        .all<HourlyRate & { memberId: string }>(
+          'SELECT memberId,amountMinor,currency FROM member_rates',
+        )
+        .map(({ memberId, amountMinor, currency }) => [memberId, { amountMinor, currency }]),
+    );
+    return members.map((m) => ({ ...m, hourlyRate: rates.get(m.id) ?? null }));
+  });
+  app.patch('/api/v1/members/:id/hourly-rate', async (r) => {
+    const member = admin(r);
+    const memberId = routeId(r);
+    const { hourlyRate } = parse(
+      z
+        .object({
+          hourlyRate: z
+            .object({
+              amountMinor: z.int().min(0).max(maxHourlyRateMinor),
+              currency: z.enum(hourlyRateCurrencies),
+            })
+            .strict()
+            .nullable(),
+        })
+        .strict(),
+      r.body,
+    );
+    return notify(
+      store.tx(() => {
+        ensure(store.get('SELECT 1 FROM members WHERE id=?', memberId), 'Membre introuvable.', 404);
+        if (hourlyRate) {
+          store.run(
+            'INSERT INTO member_rates VALUES (?,?,?) ON CONFLICT(memberId) DO UPDATE SET amountMinor=excluded.amountMinor,currency=excluded.currency',
+            memberId,
+            hourlyRate.amountMinor,
+            hourlyRate.currency,
+          );
+        } else {
+          store.run('DELETE FROM member_rates WHERE memberId=?', memberId);
+        }
+        store.audit(member.id, 'member.hourly_rate', memberId, { configured: hourlyRate !== null });
+        return { hourlyRate };
+      }),
+    );
   });
   app.post('/api/v1/members', async (r) => {
     const member = admin(r);

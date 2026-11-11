@@ -3,9 +3,10 @@
 ## Unreleased
 
 - Add optional project time budgets and deadlines, with a project overview showing recorded work, subcategory totals and remaining budget for authorised users.
-- Add project actions with an assignee, status, planned dates and estimate. Attach them to time entries and view the project Gantt chart and six-week workload in standalone and team workspaces.
+- Add project actions with an assignee, status, planned dates and estimate. Attach them to time entries and view them in the Gantt chart and workload over weeks, months, years or custom dates.
+- Set an optional hourly rate per person and see estimated amounts in the workload view. Team rates and amounts are restricted to administrators. Standalone users can set a personal rate offline.
 - Add weekly team timesheet submission, approval and return for correction. Lock affected time entries while submitted or approved and filter monthly CSV, PDF and ZIP exports to approved time.
-- Migrate server SQLite databases to schema 2 automatically and include actions, budgets and timesheets in workspace exports.
+- Migrate server SQLite databases to schema 3 automatically and include actions, budgets and timesheets in workspace exports.
 - Make GitHub English first: main README, contribution and security guidance, issue/PR templates and workflow labels. Retain the French README and all three user guides.
 - Present the existing optional project task level as custom subcategories. New projects have none; the creation input is empty, with user-defined names and no presets.
 - Retain the chosen subcategory and work description in timer/manual entries and exports. Add a `subcategory` column to local CSV exports and show the subcategory in local PDFs. Server CSV headers now say Subcategory/Sous-catégorie/Unterkategorie; API fields remain `tasks`, `taskId` and `taskName`.

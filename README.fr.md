@@ -87,7 +87,7 @@ Les modèles réels et leurs identifiants sont à configurer sur votre infrastru
 
 ## Planification et feuilles de temps
 
-La version de développement ajoute les budgets horaires et échéances de projet, les actions, le Gantt et le plan de charge hebdomadaire. La planification fonctionne en équipe et dans l’espace autonome sur ordinateur. Les membres peuvent soumettre leur feuille hebdomadaire, les responsables l’approuver ou la renvoyer et les administrateurs exporter le mois en CSV, PDF ou ZIP avec les heures approuvées. [Guide illustré de la planification et des feuilles de temps](docs/guide/fr/README.md#14-planification-et-feuilles-de-temps).
+La version de développement ajoute les budgets horaires, les échéances et les actions de projet. Le Gantt et le plan de charge couvrent plusieurs semaines, mois ou années, ainsi que des dates personnalisées. Les taux horaires facultatifs permettent d’estimer les montants dans le plan de charge. La planification fonctionne en équipe et dans l’espace autonome sur ordinateur. Les membres peuvent soumettre leur feuille hebdomadaire, les responsables l’approuver ou la renvoyer et les administrateurs exporter le mois en CSV, PDF ou ZIP avec les heures approuvées. [Guide illustré de la planification et des feuilles de temps](docs/guide/fr/README.md#14-planification-et-feuilles-de-temps).
 
 ## Vérifications et sauvegardes
 

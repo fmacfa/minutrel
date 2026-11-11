@@ -197,13 +197,15 @@ Ces fonctions sont disponibles dans la version de développement. Les captures e
 
 ### Gantt et plan de charge
 
-Ouvrez **Gantt** dans le projet pour afficher les actions sur six semaines. Le sélecteur ouvre la semaine de la date choisie. Une action qui n’a qu’une date occupe cette journée. Les actions sans dates figurent sous le diagramme.
+Ouvrez **Gantt** dans le projet. Dans **Période**, choisissez 6 semaines, 3, 6 ou 12 mois, 3 ou 5 ans, ou **Dates personnalisées**. Pour une période libre, indiquez **À partir de** et **Jusqu’au**. Les flèches avancent ou reculent d’une période entière. Une action qui n’a qu’une date occupe cette journée. Les actions sans dates figurent sous le diagramme.
 
-Dans **Les projets → Plan de charge**, consultez les estimations des actions ouvertes par personne et par semaine. Les estimations sont réparties sur les jours prévus du lundi au vendredi. Une action prévue uniquement le week-end conserve son estimation dans la semaine correspondante. Vous pouvez saisir une capacité hebdomadaire pour repérer les dépassements. Les actions auxquelles il manque une date ou une estimation figurent dans **Actions à planifier**.
+Dans **Les projets → Plan de charge**, retrouvez les mêmes choix de période pour consulter les estimations des actions ouvertes par personne. Les estimations sont réparties sur les jours prévus du lundi au vendredi. Une action prévue uniquement le week-end conserve son estimation sur ce week-end. Saisissez une capacité hebdomadaire pour repérer les dépassements. Le plan ajuste la capacité au nombre de jours ouvrés de chaque colonne. Les actions auxquelles il manque une date ou une estimation figurent dans **Actions à planifier**.
 
-![Diagramme de Gantt sur six semaines](../../screenshots/22-project-gantt-en.jpg)
+Un administrateur peut cliquer sur le **Taux horaire** d’un membre dans **L’équipe**, saisir un montant et une devise, puis enregistrer. Le plan de charge multiplie les heures prévues par le taux pour afficher un montant estimé dans la devise de chaque personne. Les taux et montants d’équipe sont visibles par les administrateurs. En mode autonome, le taux personnel se règle dans **Les paramètres → Votre compte**. Videz le montant et enregistrez pour retirer le taux.
 
-![Charge hebdomadaire et dépassement de capacité](../../screenshots/23-workload-en.jpg)
+![Diagramme de Gantt sur trois ans](../../screenshots/22-project-gantt-en.jpg)
+
+![Plan de charge avec taux horaires et montants estimés](../../screenshots/23-workload-en.jpg)
 
 ### Validation hebdomadaire et exports mensuels
 

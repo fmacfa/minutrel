@@ -2,6 +2,23 @@
 
 export const instanceInfo = { name: 'Minutrel', api_version: 'v1', version: '0.1.0' } as const;
 export type Role = 'contributor' | 'manager' | 'admin';
+export const hourlyRateCurrencies = ['EUR', 'CHF', 'GBP', 'USD', 'CAD', 'AUD'] as const;
+export const maxHourlyRateMinor = 100_000_000;
+export interface HourlyRate {
+  amountMinor: number;
+  currency: (typeof hourlyRateCurrencies)[number];
+}
+export function validHourlyRate(value: unknown): value is HourlyRate {
+  if (!value || typeof value !== 'object') return false;
+  const rate = value as Partial<HourlyRate>;
+  return (
+    typeof rate.amountMinor === 'number' &&
+    Number.isInteger(rate.amountMinor) &&
+    rate.amountMinor >= 0 &&
+    rate.amountMinor <= maxHourlyRateMinor &&
+    hourlyRateCurrencies.some((currency) => rate.currency === currency)
+  );
+}
 export interface Member {
   id: string;
   name: string;
@@ -9,6 +26,7 @@ export interface Member {
   role: Role;
   enabled: boolean;
   createdAt: number;
+  hourlyRate?: HourlyRate | null;
 }
 export interface Workspace {
   id: string;

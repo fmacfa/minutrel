@@ -1117,13 +1117,16 @@ tr:last-child td {
   font-size: 18px;
   line-height: 1;
 }
+.schedule-dates {
+  white-space: normal;
+}
 .gantt-table,
 .workload-table {
   min-width: 690px;
   table-layout: fixed;
 }
 .gantt-name {
-  width: 29%;
+  width: 220px;
 }
 .gantt-table th,
 .workload-table th,
@@ -1131,7 +1134,23 @@ tr:last-child td {
   padding-inline: 12px;
 }
 .workload-table th:first-child {
-  width: 25%;
+  width: 175px;
+}
+.gantt-table .gantt-date-header {
+  padding-inline: 0;
+}
+.gantt-dates {
+  display: grid;
+  grid-template-columns: var(--gantt-columns);
+}
+.gantt-dates span {
+  overflow: hidden;
+  padding-inline: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workload-table thead th {
+  white-space: normal;
 }
 .planning-page tbody th {
   font-size: 12px;
@@ -1146,13 +1165,14 @@ tr:last-child td {
 .gantt-timeline {
   position: relative;
   min-height: 48px;
-  background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px);
-  background-size: calc(100% / 6) 100%;
+  overflow: hidden;
+  background-image: var(--gantt-grid);
 }
 .gantt-bar {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  min-width: 2px;
   height: 16px;
   border-radius: 4px;
   background: #667d8d;

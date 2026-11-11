@@ -180,13 +180,15 @@ Diese Funktionen sind in der Entwicklungsversion verfügbar. Die englischen Bild
 
 ### Gantt und Auslastungsplanung
 
-Öffnen Sie **Gantt** im Projekt, um die Aufgaben auf einer Zeitachse von sechs Wochen zu sehen. Die Datumsauswahl öffnet die Woche des gewählten Tages. Eine Aufgabe mit einem Termin erscheint an diesem Tag. Aufgaben ohne Termine stehen unter dem Diagramm.
+Öffnen Sie **Gantt** im Projekt. Unter **Zeitraum** können Sie 6 Wochen, 3, 6 oder 12 Monate, 3 oder 5 Jahre oder **Benutzerdefinierte Daten** wählen. Für eigene Zeiträume legen Sie den ersten und letzten Tag fest. Mit den Pfeilen springen Sie um einen ganzen Zeitraum. Eine Aufgabe mit einem Termin erscheint an diesem Tag. Aufgaben ohne Termine stehen unter dem Diagramm.
 
-Unter **Projekte → Auslastungsplanung** sehen Sie den geschätzten Aufwand offener Aufgaben pro Person und Woche. Die Schätzungen verteilen sich auf die geplanten Tage von Montag bis Freitag. Eine Aufgabe, die nur am Wochenende geplant ist, zählt zu der entsprechenden Woche. Geben Sie bei Bedarf eine Wochenkapazität ein, um Überschreitungen hervorzuheben. Aufgaben ohne Termin oder Schätzung stehen unter **Zu planende Aufgaben**.
+Unter **Projekte → Auslastungsplanung** sehen Sie den geschätzten Aufwand offener Aufgaben pro Person in denselben Zeiträumen. Die Schätzungen verteilen sich auf die geplanten Tage von Montag bis Freitag. Eine Aufgabe, die nur am Wochenende geplant ist, zählt zu diesem Wochenende. Geben Sie eine Wochenkapazität ein, um Überschreitungen hervorzuheben. Die Kapazität richtet sich nach den Arbeitstagen in der jeweiligen Spalte. Aufgaben ohne Termin oder Schätzung stehen unter **Zu planende Aufgaben**.
 
-![Gantt-Diagramm für sechs Wochen](../../screenshots/22-project-gantt-en.jpg)
+Administratoren können im **Team** den **Stundensatz** eines Mitglieds mit Betrag und Währung hinterlegen. Die Auslastungsplanung multipliziert die geplanten Stunden mit dem Stundensatz und zeigt den geschätzten Betrag in der Währung der jeweiligen Person. Stundensätze und Beträge im Team sind für Administratoren sichtbar. Im eigenständigen Arbeitsbereich lässt sich der persönliche Stundensatz unter **Einstellungen → Ihr Konto** festlegen. Zum Entfernen des Satzes lassen Sie den Betrag leer und speichern.
 
-![Wöchentliche Auslastung und Kapazitätsgrenze](../../screenshots/23-workload-en.jpg)
+![Gantt-Diagramm für drei Jahre](../../screenshots/22-project-gantt-en.jpg)
+
+![Auslastungsplanung mit Stundensätzen und geschätzten Beträgen](../../screenshots/23-workload-en.jpg)
 
 ### Wöchentliche Freigabe und Monatsexporte
 

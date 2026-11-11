@@ -180,13 +180,15 @@ These features are available in the development version. The screenshots use fic
 
 ### Gantt and workload
 
-Open **Gantt** within a project to see actions placed on a six-week timeline. The date selector jumps to the week containing the chosen date. An action with one date appears on that day. Actions without dates are listed below the chart.
+Open **Gantt** within a project. Under **Period**, choose 6 weeks, 3, 6 or 12 months, 3 or 5 years, or **Custom dates**. With custom dates, set **Starting** and **Through**. The arrows move by one displayed period. An action with one date appears on that day. Actions without dates are listed below the chart.
 
-Open **Projects → Workload** to see estimated time for open actions by person and week. Estimates are spread over the planned Monday-to-Friday days. An action scheduled only for the weekend keeps its estimate in that week. Enter an optional weekly capacity to highlight overloaded weeks. Actions that need a date or estimate appear under **Actions to schedule**.
+Open **Projects → Workload** to see estimated time for open actions by person across the same period choices. Estimates are spread over the planned Monday-to-Friday days. An action scheduled only for the weekend keeps its estimate on that weekend. Enter a weekly capacity to highlight overload. The view adjusts capacity to the number of working days in each column. Actions that need a date or estimate appear under **Actions to schedule**.
 
-![Six-week Gantt timeline](../../screenshots/22-project-gantt-en.jpg)
+In a team, an administrator can select **Team → Hourly rate** for a member, enter the amount and currency, then save. The workload view multiplies planned hours by the rate and shows the estimated amount in each person's currency. Team rates and amounts are visible to administrators. In a standalone workspace, set your rate under **Settings → Your account**. Clear the amount and save to remove a rate.
 
-![Weekly workload and capacity threshold](../../screenshots/23-workload-en.jpg)
+![Gantt timeline over three years](../../screenshots/22-project-gantt-en.jpg)
+
+![Workload with hourly rates and estimated amounts](../../screenshots/23-workload-en.jpg)
 
 ### Weekly review and monthly exports
 

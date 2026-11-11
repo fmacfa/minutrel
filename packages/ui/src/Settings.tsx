@@ -7,6 +7,7 @@ import { download, native, request } from './transport.ts';
 import { roleNames } from './Team.tsx';
 import { syncStatus } from './local.ts';
 import { LocalSettings } from './LocalSettings.tsx';
+import { HourlyRateButton } from './HourlyRate.tsx';
 import type { Project } from '@minutrel/contracts';
 
 interface Audit {
@@ -21,6 +22,7 @@ const actionNames: Record<string, string> = {
   'workspace.update': tr('Modification de l’espace'),
   'member.create': tr('Création d’un compte'),
   'member.update': tr('Modification des droits'),
+  'member.hourly_rate': tr('Modification d’un taux horaire'),
   'member.password': tr('Changement du mot de passe'),
   'member.password_reset': tr('Réinitialisation du mot de passe'),
   'time.correct': tr('Correction d’un temps'),
@@ -102,6 +104,11 @@ export function Settings({
             <br />
             <span className="quiet">{session.member.email}</span>
           </p>
+          {local && (
+            <p>
+              {tr('Taux horaire')} · <HourlyRateButton member={session.member} actions={actions} />
+            </p>
+          )}
           <hr />
           {local ? (
             <p className="micro">

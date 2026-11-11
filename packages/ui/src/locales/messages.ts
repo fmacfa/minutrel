@@ -1,5 +1,35 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 export const messages: Record<string, readonly [string, string]> = {
+  '6 semaines': ['6 weeks', '6 Wochen'],
+  '3 mois': ['3 months', '3 Monate'],
+  '6 mois': ['6 months', '6 Monate'],
+  '12 mois': ['12 months', '12 Monate'],
+  '3 ans': ['3 years', '3 Jahre'],
+  '5 ans': ['5 years', '5 Jahre'],
+  'Dates personnalisées': ['Custom dates', 'Benutzerdefinierte Daten'],
+  'Jusqu’au': ['Through', 'Bis einschließlich'],
+  'T{0} {1}': ['Q{0} {1}', 'Q{0} {1}'],
+  'Charge par personne': ['Workload by person', 'Auslastung pro Person'],
+  'Taux horaire': ['Hourly rate', 'Stundensatz'],
+  '{0}/h': ['{0}/h', '{0}/Std.'],
+  Devise: ['Currency', 'Währung'],
+  'Laisser vide pour retirer le taux.': [
+    'Leave blank to remove the rate.',
+    'Zum Entfernen des Stundensatzes leer lassen.',
+  ],
+  'Définir le taux': ['Set rate', 'Stundensatz festlegen'],
+  'Modifier le taux horaire de {0}': ['Edit hourly rate for {0}', 'Stundensatz für {0} bearbeiten'],
+  'Modification d’un taux horaire': ['Hourly rate change', 'Änderung eines Stundensatzes'],
+  'Indiquez un taux horaire valide.': [
+    'Enter a valid hourly rate.',
+    'Geben Sie einen gültigen Stundensatz ein.',
+  ],
+  'Taux horaire enregistré.': ['Hourly rate saved.', 'Stundensatz gespeichert.'],
+  'Montant estimé': ['Estimated amount', 'Geschätzter Betrag'],
+  'Les montants sont estimés à partir des taux horaires et des heures prévues.': [
+    'Amounts are estimated from the hourly rates and planned hours.',
+    'Die Beträge werden aus den Stundensätzen und den geplanten Stunden geschätzt.',
+  ],
   Action: ['Action', 'Aufgabe'],
   'Action associée': ['Linked action', 'Verknüpfte Aufgabe'],
   'Action créée.': ['Action created.', 'Aufgabe erstellt.'],
@@ -66,10 +96,6 @@ export const messages: Record<string, readonly [string, string]> = {
   'Cette vue affiche uniquement vos temps.': [
     'This view shows your time entries only.',
     'Hier sehen Sie nur Ihre eigenen Zeiten.',
-  ],
-  'Charge hebdomadaire par personne': [
-    'Weekly workload by person',
-    'Wöchentliche Auslastung pro Person',
   ],
   'Chargement…': ['Loading…', 'Wird geladen…'],
   'Choisissez un membre actif affecté au projet.': [

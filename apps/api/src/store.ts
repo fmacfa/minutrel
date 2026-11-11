@@ -46,7 +46,7 @@ export class Store {
       'PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000; PRAGMA trusted_schema=OFF;',
     );
     const currentVersion = this.get<{ user_version: number }>('PRAGMA user_version')!.user_version;
-    if (currentVersion > 2) {
+    if (currentVersion > 3) {
       this.db.close();
       throw new Problem(500, 'Cette base provient d’une version plus récente de Minutrel.');
     }
@@ -133,6 +133,19 @@ export class Store {
           );
           CREATE INDEX timesheets_week ON timesheets(weekStart,status);
           PRAGMA user_version=2;
+        `);
+      });
+    }
+    if (currentVersion < 3) {
+      this.tx(() => {
+        if (this.get<{ user_version: number }>('PRAGMA user_version')!.user_version >= 3) return;
+        this.db.exec(`
+          CREATE TABLE member_rates(
+            memberId TEXT PRIMARY KEY NOT NULL REFERENCES members(id),
+            amountMinor INTEGER NOT NULL CHECK(amountMinor BETWEEN 0 AND 100000000),
+            currency TEXT NOT NULL CHECK(currency IN ('EUR','CHF','GBP','USD','CAD','AUD'))
+          );
+          PRAGMA user_version=3;
         `);
       });
     }

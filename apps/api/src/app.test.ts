@@ -105,6 +105,43 @@ afterEach(async () => {
 });
 
 describe('Planification et feuilles de temps', () => {
+  it('réserve les taux à l’administrateur et distingue un taux zéro d’un taux retiré', async () => {
+    const employee = await addMember();
+    const manager = await addMember('manager');
+    const path = `/members/${employee.member.id}/hourly-rate`;
+    const hourlyRate = { amountMinor: 5525, currency: 'CHF' };
+    const list = async (token = adminToken) =>
+      body<Member[]>(await req('GET', '/members', undefined, token)).find(
+        (m) => m.id === employee.member.id,
+      );
+    expect((await list())?.hourlyRate).toBeNull();
+    expect((await req('PATCH', path, { hourlyRate }, manager.token)).statusCode).toBe(403);
+    expect((await req('PATCH', path, { hourlyRate }, employee.token)).statusCode).toBe(403);
+    expect(
+      (await req('PATCH', path, { hourlyRate: { ...hourlyRate, amountMinor: -1 } })).statusCode,
+    ).toBe(400);
+    expect(
+      (await req('PATCH', path, { hourlyRate: { ...hourlyRate, currency: 'XYZ' } })).statusCode,
+    ).toBe(400);
+    expect(
+      (await req('PATCH', `/members/${crypto.randomUUID()}/hourly-rate`, { hourlyRate }))
+        .statusCode,
+    ).toBe(404);
+    expect(body(await req('PATCH', path, { hourlyRate }))).toEqual({ hourlyRate });
+    expect((await list())?.hourlyRate).toEqual(hourlyRate);
+    expect(await list(manager.token)).not.toHaveProperty('hourlyRate');
+    expect(body(await req('GET', '/me', undefined, employee.token)).member).not.toHaveProperty(
+      'hourlyRate',
+    );
+    expect((await req('GET', '/reports/monthly?month=2026-11')).body).not.toContain('hourlyRate');
+    expect((await req('GET', '/workspace/export')).body).not.toContain('hourlyRate');
+    const free = { amountMinor: 0, currency: 'EUR' };
+    expect((await req('PATCH', path, { hourlyRate: free })).statusCode).toBe(200);
+    expect((await list())?.hourlyRate).toEqual(free);
+    expect((await req('PATCH', path, { hourlyRate: null })).statusCode).toBe(200);
+    expect((await list())?.hourlyRate).toBeNull();
+  });
+
   it('garde le budget et le lien d’action, avec des droits distincts sur les temps et la planification', async () => {
     const assigned = await addMember();
     const outside = await addMember();

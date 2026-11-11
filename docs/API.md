@@ -22,6 +22,7 @@ Un jeton MCP est différent d’une session d’application : il ouvre `/mcp` et
 | GET | `/members` | Liste des membres ; responsable ou administrateur |
 | POST | `/members` | Créer un compte et son rôle ; administrateur |
 | PATCH | `/members/{id}` | Identité, rôle et activation ; administrateur |
+| PATCH | `/members/{id}/hourly-rate` | Définir ou retirer le taux horaire du membre. Administrateur |
 | POST | `/members/{id}/password` | Réinitialiser et révoquer les accès ; administrateur |
 | GET, POST | `/members/{id}/timer`, `/members/{id}/timer/stop` | Voir/résoudre un temps actif avec version et motif ; administrateur |
 | GET, POST | `/projects` | Projets autorisés ; création responsable/administrateur |
@@ -56,6 +57,8 @@ Un jeton MCP est différent d’une session d’application : il ouvre `/mcp` et
 | GET | `/events` | SSE authentifié : `connected`, `change` et heartbeat, sans données métier dans l’événement |
 | POST | `/sync/time-entry` | Instantané de chronomètre personnel avec `mutationId`, `baseVersion` et segments ; droits et historique revalidés |
 | POST | `/sync/import` | Nouvelle saisie personnelle avec `localId` stable et formulaire `input` ; reçu durable sans doublon |
+
+L’administrateur reçoit `hourlyRate` pour chaque membre via `GET /members`. Pour fixer un taux, envoyer `{"hourlyRate":{"amountMinor":5525,"currency":"EUR"}}` à `PATCH /members/{id}/hourly-rate` pour 55,25 € par heure. Les devises proposées sont EUR, CHF, GBP, USD, CAD et AUD. Les montants sont des entiers dans la plus petite unité de la devise. Envoyer `{"hourlyRate":null}` retire le taux.
 
 ## Chronomètre et concurrence
 

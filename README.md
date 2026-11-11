@@ -90,7 +90,7 @@ Real AI providers and credentials must be configured on your infrastructure. Ada
 
 ## Project planning and weekly timesheets
 
-The development version adds project time budgets, deadlines, actions, a Gantt chart and a weekly workload view. Planning works in team workspaces and in the standalone desktop workspace. Team members can submit weekly timesheets, managers can approve or return them, and administrators can export a month of approved time in CSV, PDF or ZIP. See the [illustrated planning and timesheet guide](docs/guide/en/README.md#14-project-planning-and-timesheets).
+The development version adds project time budgets, deadlines, actions, and Gantt and workload views for weeks, months, years or custom dates. Optional hourly rates show estimated amounts in the workload. Planning works in team workspaces and in the standalone desktop workspace. Team members can submit weekly timesheets, managers can approve or return them, and administrators can export a month of approved time in CSV, PDF or ZIP. See the [illustrated planning and timesheet guide](docs/guide/en/README.md#14-project-planning-and-timesheets).
 
 ## Checks and backups
 

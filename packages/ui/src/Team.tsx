@@ -2,6 +2,7 @@
 import { t as tr } from './i18n.ts';
 import type { Member, Session, TimeEntry } from '@minutrel/contracts';
 import { Avatar, Badge, Field, Icon, formData, val, type Actions } from './components.tsx';
+import { HourlyRateButton } from './HourlyRate.tsx';
 import { request } from './transport.ts';
 
 export const roleNames = {
@@ -189,6 +190,7 @@ export function Team({
   actions: Actions;
 }) {
   const admin = session.member.role === 'admin';
+  const showRates = admin && members.some((member) => member.hourlyRate !== undefined);
   return (
     <>
       <div className="page-heading">
@@ -224,6 +226,7 @@ export function Team({
                 <th>{tr('Membre')}</th>
                 <th>{tr('Rôle')}</th>
                 <th>{tr('Accès')}</th>
+                {showRates && <th>{tr('Taux horaire')}</th>}
                 {admin && <th>{tr('Gestion')}</th>}
               </tr>
             </thead>
@@ -250,6 +253,11 @@ export function Team({
                       {m.enabled ? tr('Actif') : tr('Désactivé')}
                     </Badge>
                   </td>
+                  {showRates && (
+                    <td>
+                      <HourlyRateButton member={m} actions={actions} />
+                    </td>
+                  )}
                   {admin && (
                     <td>
                       <div className="button-group">

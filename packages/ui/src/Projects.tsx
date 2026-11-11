@@ -250,6 +250,7 @@ export function Projects({
         ) : (
           <Workload
             projects={projects}
+            members={members}
             today={session.serverNow}
             timezone={session.workspace.timezone}
             revision={revision}

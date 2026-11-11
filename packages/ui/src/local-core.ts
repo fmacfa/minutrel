@@ -209,6 +209,7 @@ export function localOverview(
 export function localReport(data: LocalData, month: string, now: number): MonthlyReport {
   const entries = finishedEntries(data, month);
   const totalSeconds = entries.reduce((n, e) => n + e.reportSeconds, 0);
+  const { id, name, email } = data.session.member;
   return {
     month,
     timezone: data.session.workspace.timezone,
@@ -217,7 +218,7 @@ export function localReport(data: LocalData, month: string, now: number): Monthl
     totalSeconds,
     entryCount: entries.length,
     activeTimers: currentTimer(data) ? 1 : 0,
-    members: [{ ...data.session.member, seconds: totalSeconds }],
+    members: [{ id, name, email, seconds: totalSeconds }],
     projects: data.projects
       .map((p) => ({
         ...p,

@@ -1,32 +1,31 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { useState } from 'react';
-import type { Project, ProjectAction } from '@minutrel/contracts';
-import {
-  addDays,
-  dateInZone,
-  mondayOf,
-  plannedSeconds,
-  scheduledSpan,
-} from '@minutrel/domain/reports';
+import type { Member, Project, ProjectAction } from '@minutrel/contracts';
+import { dateInZone, plannedSeconds, scheduledSpan } from '@minutrel/domain/reports';
 import { shortDuration } from './components.tsx';
+import { formatMoney, formatRate } from './HourlyRate.tsx';
 import { t as tr } from './i18n.ts';
-import { calendarLabel, ScheduleWindow, scheduleWeeks, weekStarts } from './Schedule.tsx';
+import { periodLabel, scheduleLabel, ScheduleWindow, useSchedule } from './Schedule.tsx';
 import { useResource } from './useResource.ts';
 
 export function Workload({
   projects,
+  members,
   today,
   timezone,
   revision,
   goBack,
 }: {
   projects: Project[];
+  members: Member[];
   today: number;
   timezone: string;
   revision: number;
   goBack: () => void;
 }) {
-  const [start, setStart] = useState(() => mondayOf(dateInZone(today, timezone)));
+  const schedule = useSchedule(dateInZone(today, timezone));
+  const { start, end } = schedule.selection;
+  const periods = schedule.periods;
   const [projectId, setProjectId] = useState('');
   const [capacity, setCapacity] = useState('');
   const result = useResource<ProjectAction[]>('/project-actions', revision);
@@ -37,8 +36,6 @@ export function Workload({
       activeProjects.has(a.projectId) &&
       (!projectId || a.projectId === projectId),
   );
-  const weeks = weekStarts(start);
-  const end = addDays(start, scheduleWeeks * 7);
   const rows = new Map<string | null, { name: string; seconds: number[] }>();
   const incomplete: ProjectAction[] = [];
   for (const a of activeActions) {
@@ -50,14 +47,16 @@ export function Workload({
     if (span.start >= end || span.end <= start) continue;
     const row = rows.get(a.assigneeId) ?? {
       name: a.assigneeName ?? tr('Sans responsable'),
-      seconds: weeks.map(() => 0),
+      seconds: periods.map(() => 0),
     };
-    weeks.forEach((week, i) => {
-      row.seconds[i]! += plannedSeconds(span, a.estimateSeconds!, week, addDays(week, 7));
+    periods.forEach((period, i) => {
+      row.seconds[i]! += plannedSeconds(span, a.estimateSeconds!, period.start, period.end);
     });
     if (row.seconds.some(Boolean)) rows.set(a.assigneeId, row);
   }
-  const maxSeconds = Math.round(Number(capacity) * 3600);
+  const weeklyCapacity = Math.round(Number(capacity) * 3600);
+  const rates = new Map(members.map((member) => [member.id, member.hourlyRate]));
+  const showAmounts = [...rows.keys()].some((id) => id && rates.get(id));
   return (
     <div className="planning-page">
       <button className="text-button back-button" onClick={goBack}>
@@ -72,7 +71,7 @@ export function Workload({
         </div>
       </div>
       <div className="toolbar">
-        <ScheduleWindow start={start} onChange={setStart} />
+        <ScheduleWindow schedule={schedule} />
         <label className="inline-field">
           {tr('Projet')}
           <select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
@@ -102,20 +101,33 @@ export function Workload({
           {result.error}
         </p>
       )}
+      {showAmounts && (
+        <p className="quiet">
+          {tr('Les montants sont estimés à partir des taux horaires et des heures prévues.')}
+        </p>
+      )}
       {result?.data &&
         (rows.size ? (
           <section
             className="panel table-scroll"
             tabIndex={0}
-            aria-label={tr('Charge hebdomadaire par personne')}
+            aria-label={tr('Charge par personne')}
           >
-            <table className="time-table workload-table">
+            <table
+              className="time-table workload-table"
+              style={{ minWidth: Math.max(690, 200 + periods.length * 88) }}
+            >
               <thead>
                 <tr>
                   <th scope="col">{tr('Responsable de l’action')}</th>
-                  {weeks.map((week) => (
-                    <th scope="col" key={week} className="numeric">
-                      {calendarLabel(week)}
+                  {periods.map((period) => (
+                    <th
+                      scope="col"
+                      key={period.start}
+                      title={scheduleLabel(period)}
+                      className="numeric"
+                    >
+                      {periodLabel(period)}
                     </th>
                   ))}
                 </tr>
@@ -125,24 +137,42 @@ export function Workload({
                   .sort(([a, first], [b, second]) =>
                     a === null ? 1 : b === null ? -1 : first.name.localeCompare(second.name),
                   )
-                  .map(([id, row]) => (
-                    <tr key={id ?? 'unassigned'}>
-                      <th scope="row">{row.name}</th>
-                      {row.seconds.map((seconds, i) => {
-                        const over = id !== null && maxSeconds > 0 && seconds > maxSeconds;
-                        return (
-                          <td key={weeks[i]} className="numeric">
-                            <strong className={`duration${over ? ' capacity-over' : ''}`}>
-                              {seconds ? shortDuration(Math.round(seconds / 60) * 60) : '—'}
-                            </strong>
-                            {over && (
-                              <small className="cell-secondary">{tr('Capacité dépassée')}</small>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))}
+                  .map(([id, row]) => {
+                    const rate = id ? rates.get(id) : undefined;
+                    return (
+                      <tr key={id ?? 'unassigned'}>
+                        <th scope="row">
+                          {row.name}
+                          {rate && <small className="cell-secondary">{formatRate(rate)}</small>}
+                        </th>
+                        {row.seconds.map((seconds, i) => {
+                          const period = periods[i]!;
+                          const over =
+                            id !== null &&
+                            weeklyCapacity > 0 &&
+                            seconds > (weeklyCapacity * period.workdays) / 5;
+                          return (
+                            <td key={period.start} className="numeric">
+                              <strong className={`duration${over ? ' capacity-over' : ''}`}>
+                                {seconds ? shortDuration(Math.round(seconds / 60) * 60) : '—'}
+                              </strong>
+                              {rate && seconds > 0 && (
+                                <small className="cell-secondary" title={tr('Montant estimé')}>
+                                  {formatMoney(
+                                    (BigInt(seconds) * BigInt(rate.amountMinor) + 1800n) / 3600n,
+                                    rate.currency,
+                                  )}
+                                </small>
+                              )}
+                              {over && (
+                                <small className="cell-secondary">{tr('Capacité dépassée')}</small>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </section>

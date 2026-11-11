@@ -2,7 +2,7 @@
 
 Dans l’interface, les anciennes tâches sont nommées **sous-catégories**. Les noms techniques `tasks`, `taskId` et `taskName` restent inchangés. Aucun intitulé n’est imposé ou créé par défaut ; la description du travail appartient au temps enregistré.
 
-SQLite est stocké sur le serveur commun. La version de développement migre le schéma de `PRAGMA user_version=1` à `2` dans une transaction. Les projets et temps existants gardent leurs identifiants et leurs valeurs. Les clés étrangères et WAL sont activés. Le serveur refuse une base d’une version ultérieure. [Schéma exécuté](../apps/api/src/store.ts).
+SQLite est stocké sur le serveur commun. La version de développement migre les bases de schéma 1 ou 2 vers `PRAGMA user_version=3`. Les projets et temps existants gardent leurs identifiants et leurs valeurs. Les clés étrangères et WAL sont activés. Le serveur refuse une base d’une version ultérieure. [Schéma exécuté](../apps/api/src/store.ts).
 
 Les identifiants des entités sont des UUID, les instants sont des secondes Unix entières, les dates de travail sont des chaînes ISO `AAAA-MM-JJ`. Les durées sont des secondes entières, sans nombre flottant d’heures.
 
@@ -10,6 +10,7 @@ Les identifiants des entités sont des UUID, les instants sont des secondes Unix
 | --- | --- |
 | `workspace` | Espace unique : identité, nom et fuseau des rapports |
 | `members` | Identité, e-mail unique sans distinction de casse, rôle, état actif et mot de passe scrypt |
+| `member_rates` | Taux horaire facultatif par membre, en centimes de sa devise. Accès administrateur |
 | `sessions` | Empreinte de session, propriétaire, CSRF, type navigateur/natif et expiration |
 | `projects` | Nom, description, couleur, archivage, budget horaire et échéance facultatifs, version |
 | `assignments` | Association unique projet/membre |
@@ -48,6 +49,8 @@ Le client possède aussi des fichiers locaux `LocalData.schema=1`, enveloppés p
 ## Portabilité
 
 L’export JSON `schema_version: 2` contient l’espace, les identités nécessaires à l’association des membres, les projets, affectations, tâches, temps finalisés, segments, notes partagées et comptes rendus validés. Il ne contient ni mots de passe, ni sessions, ni clés de fournisseurs, ni notes privées. Les identifiants de segments y sont opaques et déterministes.
+
+Les taux horaires sont conservés dans la sauvegarde SQLite. Ils sont réservés au plan de charge et à la gestion des membres, avec un accès administrateur.
 
 La version de développement ajoute les champs `budget_seconds`, `due_on` et `action_id` ainsi que les collections `project_actions` et `timesheets` à cet export. Le format local conserve `LocalData.schema=1` et accepte les nouveaux champs optionnels à côté des anciens.
 

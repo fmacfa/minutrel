@@ -38,6 +38,80 @@ export function mondayOf(date: string): string {
   const day = Temporal.PlainDate.from(date);
   return day.subtract({ days: day.dayOfWeek - 1 }).toString();
 }
+const scheduleMonths = { '3m': 3, '6m': 6, '12m': 12, '3y': 36, '5y': 60 } as const;
+export type SchedulePreset = '6w' | keyof typeof scheduleMonths;
+type ScheduleUnit = 'week' | 'month' | 'quarter' | 'year';
+export interface ScheduleRange {
+  start: string;
+  end: string;
+}
+export interface SchedulePeriod extends ScheduleRange {
+  unit: ScheduleUnit;
+  days: number;
+  workdays: number;
+}
+export function presetSchedule(date: string, preset: SchedulePreset, offset = 0): ScheduleRange {
+  if (preset === '6w') {
+    const start = addDays(mondayOf(date), offset * 42);
+    return { start, end: addDays(start, 42) };
+  }
+  const months = scheduleMonths[preset];
+  const day = Temporal.PlainDate.from(date);
+  const start = day
+    .with({ day: 1, month: months > 12 ? 1 : day.month })
+    .add({ months: months * offset });
+  return { start: start.toString(), end: start.add({ months }).toString() };
+}
+export function schedulePeriods(
+  range: ScheduleRange,
+  preset: SchedulePreset | 'custom',
+): SchedulePeriod[] {
+  const first = Temporal.PlainDate.from(range.start);
+  const last = Temporal.PlainDate.from(range.end);
+  const days = first.until(last).days;
+  if (days <= 0) return [];
+  const unit: ScheduleUnit =
+    preset === 'custom'
+      ? days <= 56
+        ? 'week'
+        : days <= 366
+          ? 'month'
+          : days <= 4 * 366
+            ? 'quarter'
+            : 'year'
+      : preset === '6w'
+        ? 'week'
+        : preset === '3y'
+          ? 'quarter'
+          : preset === '5y'
+            ? 'year'
+            : 'month';
+  const months =
+    unit === 'month'
+      ? 1
+      : unit === 'quarter'
+        ? 3
+        : 12 * Math.max(1, Math.ceil((last.year - first.year) / 12));
+  let boundary =
+    unit === 'week'
+      ? first.add({ days: 8 - first.dayOfWeek })
+      : first.with({ month: first.month - ((first.month - 1) % months), day: 1 }).add({ months });
+  let start = range.start;
+  const periods: SchedulePeriod[] = [];
+  while (start < range.end) {
+    const end = Temporal.PlainDate.compare(boundary, last) >= 0 ? range.end : boundary.toString();
+    periods.push({
+      start,
+      end,
+      unit,
+      days: daysBetween(start, end),
+      workdays: workdaysBetween(start, end),
+    });
+    start = end;
+    boundary = boundary.add(unit === 'week' ? { days: 7 } : { months });
+  }
+  return periods;
+}
 export function scheduledSpan(action: { startOn: string | null; dueOn: string | null }) {
   const start = action.startOn ?? action.dueOn;
   return start ? { start, end: addDays(action.dueOn ?? start, 1) } : null;

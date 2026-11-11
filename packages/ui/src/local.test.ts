@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { beforeEach, expect, it, vi } from 'vitest';
-import type { Project, ProjectAction, ProjectOverview, TimeEntry } from '@minutrel/contracts';
+import type {
+  Member,
+  MonthlyReport,
+  Project,
+  ProjectAction,
+  ProjectOverview,
+  TimeEntry,
+} from '@minutrel/contracts';
 import { localSpace, timerMutation, type LocalData } from './local-core.ts';
 const memory = vi.hoisted(() => ({
   records: new Map<boolean, { revision: number; data: unknown }>(),
@@ -47,6 +54,26 @@ beforeEach(() => {
   setMode(false);
   vi.setSystemTime(new Date('2026-11-06T12:00:00Z'));
 });
+it('enregistre le taux personnel hors connexion sans le publier dans le rapport mensuel', async () => {
+  await startPersonal('Alex');
+  const memberId = data(true).session.member.id;
+  const path = `/members/${memberId}/hourly-rate`;
+  const hourlyRate = { amountMinor: 7250, currency: 'EUR' };
+  await nativeRequest(unavailable, path, 'PATCH', { hourlyRate });
+  setMode(true);
+  const members = await nativeRequest<Member[]>(unavailable, '/members');
+  expect(members[0]?.hourlyRate).toEqual(hourlyRate);
+  const report = await nativeRequest<MonthlyReport>(unavailable, '/reports/monthly?month=2026-11');
+  expect(report.members[0]).not.toHaveProperty('hourlyRate');
+  await expect(
+    nativeRequest(unavailable, path, 'PATCH', {
+      hourlyRate: { amountMinor: 0.1, currency: 'EUR' },
+    }),
+  ).rejects.toThrow();
+  await nativeRequest(unavailable, path, 'PATCH', { hourlyRate: null });
+  expect(data(true).session.member.hourlyRate).toBeNull();
+});
+
 it('conserve budget, action et temps associé en mode personnel après réouverture', async () => {
   await startPersonal('Alex');
   const project = await nativeRequest<Project>(unavailable, '/projects', 'POST', {

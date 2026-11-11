@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-import { useState, type FormEvent } from 'react';
+import { useState, type CSSProperties, type FormEvent } from 'react';
 import type {
   ActionStatus,
   Member,
@@ -9,13 +9,7 @@ import type {
   Session,
 } from '@minutrel/contracts';
 import { formatDuration, parseDuration } from '@minutrel/domain';
-import {
-  addDays,
-  dateInZone,
-  daysBetween,
-  mondayOf,
-  scheduledSpan,
-} from '@minutrel/domain/reports';
+import { dateInZone, daysBetween, scheduledSpan } from '@minutrel/domain/reports';
 import {
   Badge,
   clockText,
@@ -30,9 +24,10 @@ import { t as tr } from './i18n.ts';
 import {
   calendarLabel,
   PageControls,
+  periodLabel,
+  scheduleLabel,
   ScheduleWindow,
-  scheduleWeeks,
-  weekStarts,
+  useSchedule,
 } from './Schedule.tsx';
 import { TimeTable } from './Times.tsx';
 import { request } from './transport.ts';
@@ -334,9 +329,21 @@ function Overview({
 }
 
 function Gantt({ actions, today }: { actions: ProjectAction[]; today: string }) {
-  const [start, setStart] = useState(() => mondayOf(today));
-  const dayCount = scheduleWeeks * 7;
-  const end = addDays(start, dayCount);
+  const schedule = useSchedule(today);
+  const { start, end } = schedule.selection;
+  const dayCount = daysBetween(start, end);
+  const periods = schedule.periods;
+  const gridLines = periods.slice(1).map((period) => {
+    const position = `${(daysBetween(start, period.start) / dayCount) * 100}%`;
+    return `transparent ${position}, var(--color-border) ${position}, var(--color-border) calc(${position} + 1px), transparent calc(${position} + 1px)`;
+  });
+  const timelineStyle = {
+    minWidth: Math.max(690, 220 + periods.length * 76),
+    '--gantt-columns': periods.map((period) => `minmax(0, ${period.days}fr)`).join(' '),
+    '--gantt-grid': gridLines.length
+      ? `linear-gradient(to right, ${gridLines.join(', ')})`
+      : 'none',
+  } as CSSProperties;
   const rows = actions.flatMap((action) => {
     const span = scheduledSpan(action);
     if (!span || span.start >= end || span.end <= start) return [];
@@ -350,7 +357,7 @@ function Gantt({ actions, today }: { actions: ProjectAction[]; today: string }) 
   return (
     <>
       <div className="toolbar">
-        <ScheduleWindow start={start} onChange={setStart} />
+        <ScheduleWindow schedule={schedule} />
         <div className="status-legend">
           {statuses.map((s) => (
             <Badge key={s} tone={statusTone(s)}>
@@ -361,26 +368,28 @@ function Gantt({ actions, today }: { actions: ProjectAction[]; today: string }) 
       </div>
       {rows.length ? (
         <section className="panel table-scroll" tabIndex={0} aria-label={tr('Diagramme de Gantt')}>
-          <table className="time-table gantt-table">
+          <table className="time-table gantt-table" style={timelineStyle}>
             <colgroup>
               <col className="gantt-name" />
-              {weekStarts(start).map((week) => (
-                <col key={week} />
-              ))}
+              <col />
             </colgroup>
             <thead>
               <tr>
                 <th scope="col">{tr('Action')}</th>
-                {weekStarts(start).map((week) => (
-                  <th scope="col" key={week}>
-                    {calendarLabel(week)}
-                  </th>
-                ))}
+                <th scope="col" className="gantt-date-header">
+                  <div className="gantt-dates">
+                    {periods.map((period) => (
+                      <span key={period.start} title={scheduleLabel(period)}>
+                        {periodLabel(period)}
+                      </span>
+                    ))}
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map(({ action, span, left, width }) => {
-                const dates = `${calendarLabel(span.start, true)} – ${calendarLabel(addDays(span.end, -1), true)}`;
+                const dates = scheduleLabel(span);
                 return (
                   <tr key={action.id}>
                     <th scope="row">
@@ -390,7 +399,7 @@ function Gantt({ actions, today }: { actions: ProjectAction[]; today: string }) 
                       </small>
                       <small className="cell-secondary">{dates}</small>
                     </th>
-                    <td colSpan={scheduleWeeks} className="gantt-timeline">
+                    <td className="gantt-timeline">
                       <div
                         className="gantt-bar"
                         data-status={action.status}

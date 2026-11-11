@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { t as tr } from './i18n.ts';
 import { invoke } from '@tauri-apps/api/core';
+import { validHourlyRate } from '@minutrel/contracts';
 import type {
   Project,
   ProjectAction,
@@ -610,6 +611,13 @@ async function personalRequest(
       const b = (body ?? {}) as Record<string, unknown>;
       const parts = path.split('/');
       const objectId = parts[2];
+      if (path === `/members/${d.session.member.id}/hourly-rate` && method === 'PATCH') {
+        const hourlyRate = b.hourlyRate;
+        if (hourlyRate !== null && !validHourlyRate(hourlyRate))
+          throw new Error(tr('Indiquez un taux horaire valide.'));
+        d.session.member.hourlyRate = hourlyRate;
+        return { hourlyRate };
+      }
       if (parts[1] === 'timer') return timerMutation(d, parts[2] as 'start', b, now(d), false);
       if (parts[1] === 'projects' && parts[3] === 'actions' && method === 'POST')
         return saveLocalAction(d, objectId!, b);
