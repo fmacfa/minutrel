@@ -1,0 +1,37 @@
+1
+00:00:00,200 --> 00:00:03,050
+Organise time around the work you actually
+do.
+
+2
+00:00:04,033 --> 00:00:06,176
+New projects start with an empty list.
+
+3
+00:00:06,433 --> 00:00:09,278
+In Subcategories, type a name that fits your
+work.
+
+4
+00:00:10,400 --> 00:00:13,068
+Choose the project and your new subcategory.
+
+5
+00:00:13,333 --> 00:00:15,984
+Add the time and a description of what you
+did.
+
+6
+00:00:17,100 --> 00:00:19,501
+The label and description stay with the
+entry.
+
+7
+00:00:19,767 --> 00:00:23,799
+The same subcategory is available in the
+timer and in exports.
+
+8
+00:00:24,900 --> 00:00:28,205
+Start with a project. Add categories as you
+need them.

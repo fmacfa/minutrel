@@ -4,6 +4,8 @@
 
 A Minutrel project acts as the main folder for work. Each project can contain one optional level of **subcategories**, with names chosen entirely by its users. There are no predefined labels and no automatic “Marketing” or “Finance” categories. New projects start with an empty list, and the creation input starts blank without a placeholder.
 
+[Watch the English guide to custom subcategories](https://youtu.be/KyReauNSgaM) · [English subtitles](videos/minutrel-13.srt)
+
 ## Create your own names
 
 1. Open **Projects**, then **Subcategories** on the relevant project.

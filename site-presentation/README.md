@@ -11,9 +11,9 @@ La recherche, les filtres, le chronomètre et les captures agrandies fonctionnen
 
 The French and English websites work directly from local files, including search, filters, the demo timer and enlarged screenshots. All assets are bundled. No account, translation service or ChatGPT connection is required.
 
-La vidéothèque (`dist/videos.html` et `dist/en/videos.html`) regroupe les 12 vidéos en anglais, avec voix, musique originale et fichiers SRT. Les douze lecteurs YouTube se chargent uniquement au clic et demandent une connexion Internet ; en `file://`, ils ouvrent la vidéo sur YouTube. Les guides assistants et autohébergement proposent aussi un téléchargement MP4, lisible hors connexion. Le site fournit des liens vers le [dépôt public](https://github.com/fmacfa/minutrel) et la [playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk).
+La vidéothèque (`dist/videos.html` et `dist/en/videos.html`) regroupe 16 vidéos en anglais avec voix, musique originale et fichiers SRT. Les lecteurs YouTube se chargent au clic et demandent une connexion Internet. En `file://`, ils ouvrent la vidéo sur YouTube. Les guides sur les assistants et l’autohébergement proposent aussi un MP4 lisible hors connexion. Le site renvoie vers le [dépôt public](https://github.com/fmacfa/minutrel) et la [playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk).
 
-The video library includes twelve English guides. YouTube playback needs an Internet connection and starts only after a play action; local files open the video on YouTube. The assistant and self-hosting MP4 guides and all English SRT subtitles are bundled for offline use.
+The video library includes 16 English guides. YouTube playback needs an Internet connection and starts when you choose to play a video. Local files open the video on YouTube. The assistant and self-hosting MP4 guides and all English SRT subtitles are bundled for offline use.
 
 ## Serveur local facultatif / Optional local server
 

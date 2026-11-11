@@ -4,6 +4,7 @@ import { TutorialEN } from './TutorialEN';
 import timing from './timing-en-v2.json';
 import { SeriesFilm } from './SeriesFilm';
 import series from './series/catalog.json';
+import { UpdateCompositions } from './UpdatesFilm';
 export const Root = () => (
   <>
     <Composition
@@ -36,5 +37,6 @@ export const Root = () => (
           durationInFrames={Math.round(f.total * 30)}
         />
       ))}
+    <UpdateCompositions />
   </>
 );

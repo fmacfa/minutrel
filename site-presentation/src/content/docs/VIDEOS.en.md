@@ -1,8 +1,10 @@
 # Minutrel video guides
 
-Twelve English guides with narration, original music and English subtitles, from the product introduction to installation.
+16 English guides with narration, original music and English subtitles.
 
 Minutrel V0.1 is a preview. The examples use fictional data.
+
+The planning, Gantt and timesheet videos were recorded on a Minutrel V0.1 development build. See the [current planning and timesheet guide](https://github.com/fmacfa/minutrel/blob/main/docs/guide/en/README.md#14-project-planning-and-timesheets).
 
 | Video | Duration | Watch | Subtitles |
 | --- | --- | --- | --- |
@@ -18,10 +20,14 @@ Minutrel V0.1 is a preview. The examples use fictional data.
 | 10 · Minutrel — Transfer personal time to a team workspace | 1:01 | [YouTube](https://youtu.be/EW9aX79bKEY) | [SRT](videos/minutrel-10.srt) |
 | 11 · Minutrel — Connect coding assistants with limited MCP access | 1:20 | [YouTube](https://youtu.be/7UakRqX0TH8) | [SRT](videos/minutrel-11.srt) |
 | 12 · Minutrel — Install and self-host your team workspace | 2:18 | [YouTube](https://youtu.be/HklZXL_R114) | [SRT](videos/minutrel-12.srt) |
+| 13 · Minutrel — Custom subcategories for your projects | 0:29 | [YouTube](https://youtu.be/KyReauNSgaM) | [SRT](videos/minutrel-13.srt) |
+| 14 · Minutrel — Project budgets, deadlines and actions | 0:32 | [YouTube](https://youtu.be/Lq5LSsr_xzs) | [SRT](videos/minutrel-14.srt) |
+| 15 · Minutrel — Gantt, workload and hourly rates | 0:37 | [YouTube](https://youtu.be/Od_rfq4xhlk) | [SRT](videos/minutrel-15.srt) |
+| 16 · Minutrel — Weekly timesheets and approved reports | 0:33 | [YouTube](https://youtu.be/HDq-N5CqN2c) | [SRT](videos/minutrel-16.srt) |
 
-[YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
+[YouTube playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk) · [YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
 
-All twelve videos are public on YouTube.
+All 16 videos are public on YouTube.
 
 MP4 downloads: [assistants](videos/minutrel-11-assistants.mp4) · [installation and self-hosting](videos/minutrel-12-self-host.mp4).
 Desktop guides use real application screenshots arranged as narrated steps.

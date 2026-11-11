@@ -2,9 +2,16 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 const exec = promisify(execFile);
-const films = JSON.parse(await readFile('src/series/catalog.json', 'utf8'));
-const ids = process.argv.slice(2).map(Number);
-await mkdir('out/series-en/qa-final', { recursive: true });
+const updates = process.argv.includes('--updates');
+const directory = updates ? 'out/updates-en' : 'out/series-en';
+const films = JSON.parse(
+  await readFile(updates ? 'src/updates/catalog.json' : 'src/series/catalog.json', 'utf8'),
+);
+const ids = process.argv
+  .slice(2)
+  .filter((arg) => /^\d+$/.test(arg))
+  .map(Number);
+await mkdir(`${directory}/qa-final`, { recursive: true });
 function wav(b) {
   let fmt, data;
   for (let i = 12; i + 8 <= b.length;) {
@@ -63,7 +70,7 @@ const dot = (a, b) => {
   return ab / Math.sqrt(Math.max(1e-12, aa * bb));
 };
 async function checkAudio(name, clips) {
-  const path = `out/series-en/qa-final/${name}-decoded-audio.wav`;
+  const path = `${directory}/qa-final/${name}-decoded-audio.wav`;
   await exec(
     'npx',
     [
@@ -73,7 +80,7 @@ async function checkAudio(name, clips) {
       '-v',
       'error',
       '-i',
-      `out/series-en/${name}.mp4`,
+      `${directory}/${name}.mp4`,
       '-vn',
       '-c:a',
       'pcm_s16le',
@@ -140,7 +147,7 @@ for (const film of films.filter((f) => !ids.length || ids.includes(f.id))) {
   const name = `minutrel-${String(film.id).padStart(2, '0')}-${film.slug}`,
     duration = film.total,
     clips = film.voice;
-  const file = `out/series-en/${name}.mp4`;
+  const file = `${directory}/${name}.mp4`;
   const { stdout } = await exec('npx', [
     'remotion',
     'ffprobe',
@@ -198,6 +205,6 @@ for (const film of films.filter((f) => !ids.length || ids.includes(f.id))) {
   );
 }
 await writeFile(
-  `out/series-en/verification${ids.length ? '-' + ids.join('-') : ''}.json`,
+  `${directory}/verification${ids.length ? '-' + ids.join('-') : ''}.json`,
   JSON.stringify({ checkedAt: new Date().toISOString(), outputs }, null, 2) + '\n',
 );

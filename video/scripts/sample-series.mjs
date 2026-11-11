@@ -3,8 +3,15 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { mkdir, readFile } from 'node:fs/promises';
 const { chromium } = createRequire(import.meta.url)('playwright');
-const films = JSON.parse(await readFile('src/series/catalog.json', 'utf8'));
-const ids = process.argv.slice(2).map(Number);
+const updates = process.argv.includes('--updates');
+const directory = updates ? 'out/updates-en' : 'out/series-en';
+const films = JSON.parse(
+  await readFile(updates ? 'src/updates/catalog.json' : 'src/series/catalog.json', 'utf8'),
+);
+const ids = process.argv
+  .slice(2)
+  .filter((arg) => /^\d+$/.test(arg))
+  .map(Number);
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
 try {
@@ -12,10 +19,14 @@ try {
     const name = `minutrel-${String(film.id).padStart(2, '0')}-${film.slug}`;
     const times = [
       0.5,
-      ...film.scenes.map((s) => s.at + Math.min(s.length * 0.55, 3)),
+      ...film.scenes.map((s) =>
+        updates
+          ? (s.atFrame + Math.floor(s.length * 0.64)) / 30
+          : s.at + Math.min(s.length * 0.55, 3),
+      ),
       film.total - 0.1,
     ];
-    await page.goto(pathToFileURL(resolve(`out/series-en/${name}.mp4`)).href);
+    await page.goto(pathToFileURL(resolve(`${directory}/${name}.mp4`)).href);
     await page.locator('video').waitFor();
     await page.evaluate(async () => {
       const v = document.querySelector('video');
@@ -37,7 +48,7 @@ try {
           v.addEventListener('error', reject, { once: true });
         });
     });
-    const dir = `out/series-en/qa-final/${name}`;
+    const dir = `${directory}/qa-final/${name}`;
     await mkdir(dir, { recursive: true });
     for (const seconds of times) {
       await page.evaluate(async (seconds) => {

@@ -1,0 +1,37 @@
+1
+00:00:00,200 --> 00:00:04,503
+Give a project a time budget. Then connect
+the plan to actual work.
+
+2
+00:00:05,500 --> 00:00:08,674
+In Edit project, set a time budget and a
+deadline.
+
+3
+00:00:08,933 --> 00:00:12,018
+The overview shows recorded time and what is
+left.
+
+4
+00:00:13,133 --> 00:00:15,121
+Add one piece of work as an action.
+
+5
+00:00:15,367 --> 00:00:19,028
+Choose a subcategory, an owner, planned
+dates and an estimate.
+
+6
+00:00:20,167 --> 00:00:22,808
+Choose the project and matching subcategory.
+
+7
+00:00:23,067 --> 00:00:26,374
+Select the action, describe the work and
+save the entry.
+
+8
+00:00:27,500 --> 00:00:30,824
+Use project planning with a team or on your
+own computer.

@@ -6,7 +6,6 @@ await mkdir(directory,{recursive:true});await mkdir('publication',{recursive:tru
 let prior={};try{prior=JSON.parse(await readFile('publication/youtube.json','utf8'));}catch{}
 const repositoryUrl=prior.repositoryUrl??'https://github.com/fmacfa/minutrel';
 const playlistUrl=prior.playlistUrl;
-const siteUrl=prior.siteUrl;
 const siteEnglishUrl=prior.siteEnglishUrl;
 const titles=[
  ['Open-source time tracking, by project','Comprendre Minutrel','A clear introduction to Minutrel: open-source time tracking by project, useful work notes and reports, on your own computer or your own team server.'],
@@ -25,16 +24,24 @@ const titles=[
 const timing=JSON.parse(await readFile('src/timing-en-v2.json','utf8'));
 const series=JSON.parse(await readFile('src/series/catalog.json','utf8'));
 const videos=[];
-for(let id=1;id<=12;id++){
+for(let id=1;id<=titles.length;id++){
+ const published=prior.videos?.find(v=>v.id===id);
  const film=films.find(f=>f.id===id),data=series.find(f=>f.id===id),title='Minutrel — '+titles[id-1][0];
  const file=id===1?'video/out/minutrel-presentation-en-v2.mp4':id===2?'video/out/minutrel-tutorial-en-v2.mp4':`video/out/series-en/minutrel-${String(id).padStart(2,'0')}-${film.slug}.mp4`;
  const subtitle=file.replace('.mp4','.srt'),name=String(id).padStart(2,'0')+' - '+title.replace(' — ',' - ').replaceAll(':',' -')+'.mp4',upload=resolve(directory,name);
  try{await access(upload);}catch{await link(resolve(root,file),upload);}
+ if(published?.youtube?.status==='public'){
+  videos.push(published);
+  continue;
+ }
  const summary=film?.intro??titles[id-1][2];
  const points=film?film.steps.map(s=>s.title):id===1?['Project-based time tracking','Work context and monthly reports','Personal and self-hosted team workspaces']:['Choose a project and describe your work','Start, pause, resume and finish a session','Review and add time entries','Share a work note and export a report'];
  const description=[summary,'','Minutrel is open-source time tracking by project. Work on your own computer, or connect the browser and desktop app to a team server you control.','','In this video:',...points.map(s=>'• '+s),'','English guide · Minutrel V0.1 preview.','Fictional demonstration data. Synthetic English narration and original background music.',...(film?.mode==='native'?['This desktop guide uses real application screenshots arranged as narrated steps.']:[]),...(id===12?['The HTTPS address and reverse proxy configuration shown are examples.']:[]),'','More Minutrel videos: https://www.youtube.com/@minutrel'].join('\n');
- videos.push({id,title,titleFr:titles[id-1][1],summary,description,duration:id===1?26:id===2?timing.total:data.total,file,subtitle,uploadFile:upload.replace(root+'/',''),youtube:prior.videos?.find(v=>v.id===id)?.youtube??{status:'prepared'}});
+ videos.push({id,title,titleFr:titles[id-1][1],summary,description,duration:id===1?26:id===2?timing.total:data.total,file,subtitle,uploadFile:upload.replace(root+'/',''),youtube:published?.youtube??{status:'prepared'}});
 }
-for(const video of videos) video.description+='\nSource code and documentation: '+repositoryUrl+(playlistUrl?'\nEnglish video playlist: '+playlistUrl:'')+(siteEnglishUrl?'\n\nWebsite (English): '+siteEnglishUrl:'');
-await writeFile('publication/youtube.json',JSON.stringify({channelId:'UCcJhCgd_1O0jeWqGJZGfjSw',channelUrl:'https://www.youtube.com/@minutrel',repositoryUrl,...(playlistUrl?{playlistUrl}:{}),...(siteUrl?{siteUrl}:{}),...(siteEnglishUrl?{siteEnglishUrl}:{}),language:'en',preparedAt:new Date().toISOString(),videos},null,2)+'\n');
-console.log('Prepared twelve verified English MP4s and their publication metadata.');
+for(const video of videos.filter(v=>v.youtube.status!=='public')){
+ video.description+='\nSource code and documentation: '+repositoryUrl+(playlistUrl?'\nEnglish video playlist: '+playlistUrl:'')+(siteEnglishUrl?'\n\nWebsite (English): '+siteEnglishUrl:'');
+}
+videos.push(...(prior.videos??[]).filter(v=>v.id>titles.length));
+await writeFile('publication/youtube.json',JSON.stringify({...prior,channelId:'UCcJhCgd_1O0jeWqGJZGfjSw',channelUrl:'https://www.youtube.com/@minutrel',repositoryUrl,language:'en',preparedAt:new Date().toISOString(),videos},null,2)+'\n');
+console.log(`Prepared publication metadata for ${videos.length} English guides.`);

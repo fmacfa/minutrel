@@ -1,0 +1,45 @@
+1
+00:00:00,200 --> 00:00:03,303
+See when work lands, who has room, and what
+it could cost.
+
+2
+00:00:04,300 --> 00:00:06,025
+Open Gantt in a project.
+
+3
+00:00:06,267 --> 00:00:09,911
+Switch from weeks to months or years, or
+choose custom dates.
+
+4
+00:00:11,033 --> 00:00:13,752
+Workload spreads estimates across working
+days.
+
+5
+00:00:14,000 --> 00:00:17,734
+Enter a weekly capacity to see where planned
+work exceeds it.
+
+6
+00:00:18,867 --> 00:00:20,967
+As an administrator, open Team.
+
+7
+00:00:21,233 --> 00:00:23,374
+Set a rate and currency for a member.
+
+8
+00:00:24,467 --> 00:00:27,961
+In Workload, planned hours times the rate
+give an estimate.
+
+9
+00:00:28,200 --> 00:00:31,525
+In a team, only administrators see the rates
+and amounts.
+
+10
+00:00:32,667 --> 00:00:34,901
+Adjust the plan before the week fills up.

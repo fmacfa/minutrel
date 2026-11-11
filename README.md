@@ -20,7 +20,9 @@ This is a **test prerelease**. Packages are unsigned. Check the [validation reco
 
 [Introduction](https://youtu.be/q6VeUbyOhn8) · [How it works and first steps](https://youtu.be/u5MItUvsxQc) · [YouTube playlist](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk)
 
-The [English video catalog](docs/VIDEOS.en.md) lists all **12 English videos**, with narration, original music and subtitles. All twelve are public on YouTube; the assistant and self-hosting guides also provide MP4 downloads. Examples use fictional prerelease data.
+The [video catalog](docs/VIDEOS.en.md) lists **16 English videos** with narration, original music and subtitles. The assistant and self-hosting guides also provide MP4 downloads. Open the [video library on the Minutrel website](https://minutrel-presentation.pippo-247.chatgpt.site/en/videos).
+
+[Custom subcategories](https://youtu.be/KyReauNSgaM) · [Project budgets and actions](https://youtu.be/Lq5LSsr_xzs) · [Gantt, workload and rates](https://youtu.be/Od_rfq4xhlk) · [Weekly timesheets](https://youtu.be/HDq-N5CqN2c)
 
 ## Try it locally
 

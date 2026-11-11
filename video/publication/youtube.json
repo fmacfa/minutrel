@@ -255,11 +255,96 @@
         "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/",
         "descriptionUpdatedAt": "2026-11-08T10:58:27.282859Z"
       }
+    },
+    {
+      "id": 13,
+      "title": "Minutrel — Custom subcategories for your projects",
+      "titleFr": "Sous-catégories personnalisées",
+      "summary": "Create a project subcategory and keep it with a time entry and its work description.",
+      "description": "Create a project subcategory and keep it with a time entry and its work description.\n\nEnglish guide to the Minutrel development preview. Fictional demo data, synthetic English narration and original music.\n\nWebsite: https://minutrel-presentation.pippo-247.chatgpt.site/en/\nSource code and guides: https://github.com/fmacfa/minutrel\nEnglish video playlist: https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
+      "duration": 29,
+      "file": "video/out/updates-en/minutrel-13-custom-subcategories.mp4",
+      "subtitle": "video/out/updates-en/minutrel-13-custom-subcategories.srt",
+      "poster": "video/out/updates-en/posters/minutrel-13-custom-subcategories.png",
+      "sourceCommit": "0001df2677b1edf8a128bee628a0c8a76e0a2648",
+      "youtube": {
+        "status": "public",
+        "id": "KyReauNSgaM",
+        "url": "https://youtu.be/KyReauNSgaM",
+        "language": "en",
+        "captions": "uploaded_srt",
+        "publishedAt": "2026-11-11T16:24:18.132Z",
+        "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/"
+      }
+    },
+    {
+      "id": 14,
+      "title": "Minutrel — Project budgets, deadlines and actions",
+      "titleFr": "Budgets, échéances et actions de projet",
+      "summary": "Set a project budget and deadline, assign an action, and attach it to actual work.",
+      "description": "Set a project budget and deadline, assign an action, and attach it to actual work.\n\nEnglish guide to the Minutrel development preview. Fictional demo data, synthetic English narration and original music.\n\nWebsite: https://minutrel-presentation.pippo-247.chatgpt.site/en/\nSource code and guides: https://github.com/fmacfa/minutrel\nEnglish video playlist: https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
+      "duration": 31.6,
+      "file": "video/out/updates-en/minutrel-14-project-planning.mp4",
+      "subtitle": "video/out/updates-en/minutrel-14-project-planning.srt",
+      "poster": "video/out/updates-en/posters/minutrel-14-project-planning.png",
+      "sourceCommit": "0001df2677b1edf8a128bee628a0c8a76e0a2648",
+      "youtube": {
+        "status": "public",
+        "id": "Lq5LSsr_xzs",
+        "url": "https://youtu.be/Lq5LSsr_xzs",
+        "language": "en",
+        "captions": "uploaded_srt",
+        "publishedAt": "2026-11-11T16:25:11.793Z",
+        "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/"
+      }
+    },
+    {
+      "id": 15,
+      "title": "Minutrel — Gantt, workload and hourly rates",
+      "titleFr": "Gantt, charge de travail et taux horaires",
+      "summary": "Change the Gantt period, spot overload and see estimated amounts from hourly rates.",
+      "description": "Change the Gantt period, spot overload and see estimated amounts from hourly rates.\n\nEnglish guide to the Minutrel development preview. Fictional demo data, synthetic English narration and original music.\n\nWebsite: https://minutrel-presentation.pippo-247.chatgpt.site/en/\nSource code and guides: https://github.com/fmacfa/minutrel\nEnglish video playlist: https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
+      "duration": 36.63333333333333,
+      "file": "video/out/updates-en/minutrel-15-gantt-workload-rates.mp4",
+      "subtitle": "video/out/updates-en/minutrel-15-gantt-workload-rates.srt",
+      "poster": "video/out/updates-en/posters/minutrel-15-gantt-workload-rates.png",
+      "sourceCommit": "0001df2677b1edf8a128bee628a0c8a76e0a2648",
+      "youtube": {
+        "status": "public",
+        "id": "Od_rfq4xhlk",
+        "url": "https://youtu.be/Od_rfq4xhlk",
+        "language": "en",
+        "captions": "uploaded_srt",
+        "publishedAt": "2026-11-11T16:26:00.327Z",
+        "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Minutrel — Weekly timesheets and approved reports",
+      "titleFr": "Feuilles de temps hebdomadaires et rapports approuvés",
+      "summary": "Submit a week as a member, approve it as a manager, then export the approved time.",
+      "description": "Submit a week as a member, approve it as a manager, then export the approved time.\n\nEnglish guide to the Minutrel development preview. Fictional demo data, synthetic English narration and original music.\n\nWebsite: https://minutrel-presentation.pippo-247.chatgpt.site/en/\nSource code and guides: https://github.com/fmacfa/minutrel\nEnglish video playlist: https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
+      "duration": 33.46666666666667,
+      "file": "video/out/updates-en/minutrel-16-weekly-timesheets.mp4",
+      "subtitle": "video/out/updates-en/minutrel-16-weekly-timesheets.srt",
+      "poster": "video/out/updates-en/posters/minutrel-16-weekly-timesheets.png",
+      "sourceCommit": "0001df2677b1edf8a128bee628a0c8a76e0a2648",
+      "youtube": {
+        "status": "public",
+        "id": "HDq-N5CqN2c",
+        "url": "https://youtu.be/HDq-N5CqN2c",
+        "language": "en",
+        "captions": "uploaded_srt",
+        "publishedAt": "2026-11-11T16:27:03.402Z",
+        "siteDescriptionUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/"
+      }
     }
   ],
-  "updatedAt": "2026-11-08T11:15:42.234Z",
+  "updatedAt": "2026-11-11T16:31:09.210Z",
   "repositoryUrl": "https://github.com/fmacfa/minutrel",
   "playlistUrl": "https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
   "siteUrl": "https://minutrel-presentation.pippo-247.chatgpt.site",
-  "siteEnglishUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/"
+  "siteEnglishUrl": "https://minutrel-presentation.pippo-247.chatgpt.site/en/",
+  "planningGuideUrl": "https://github.com/fmacfa/minutrel/blob/main/docs/guide/en/README.md#14-project-planning-and-timesheets"
 }

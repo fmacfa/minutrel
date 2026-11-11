@@ -1,5 +1,50 @@
 # Minutrel — English videos, version 2
 
+## November 2026 development guides
+
+The four new guides show the development preview at `0001df2`. They use live recordings of the real English application on an isolated loopback server, with fictional names, projects, rates and hours. Each master is 1920 × 1080 (16:9) at 30 fps, H.264 with stereo AAC, English Kokoro `af_heart` narration and the original tutorial score. English captions are visible in the videos and supplied as separate SRT files.
+
+| Guide | Composition | MP4 in `out/updates-en/` |
+| --- | --- | --- |
+| 13 · Custom subcategories | `MinutrelCustomSubcategoriesEN` | `minutrel-13-custom-subcategories.mp4` |
+| 14 · Project budgets and actions | `MinutrelProjectPlanningEN` | `minutrel-14-project-planning.mp4` |
+| 15 · Gantt, workload and rates | `MinutrelGanttWorkloadEN` | `minutrel-15-gantt-workload-rates.mp4` |
+| 16 · Weekly timesheets | `MinutrelWeeklyTimesheetsEN` | `minutrel-16-weekly-timesheets.mp4` |
+
+From the repository root, using Node.js 24:
+
+```sh
+minutrel_capture_source=$(mktemp -d)
+git archive 0001df2 | tar -x -C "$minutrel_capture_source"
+(cd "$minutrel_capture_source" && npm ci --ignore-scripts && npm run build:web)
+cd video
+npm ci --workspaces=false
+npx playwright install chromium
+mkdir -p public/brand public/fonts
+cp ../brand/assets/logos/minutrel-primary.svg ../brand/assets/logos/minutrel-reverse.svg public/brand/
+cp ../brand/fonts/Manrope-Regular.ttf ../brand/fonts/Manrope-SemiBold.ttf ../brand/fonts/Manrope-ExtraBold.ttf ../brand/fonts/OFL.txt public/fonts/
+python3 scripts/generate-score-en-v2.py
+node scripts/updates/audio.mjs
+node scripts/updates/record.mjs --snapshot "$minutrel_capture_source"
+node scripts/updates/record.mjs --snapshot "$minutrel_capture_source" --record
+node scripts/updates/timeline.mjs
+npm run typecheck
+node scripts/updates/render.mjs --stills
+```
+
+Inspect `out/updates-en/qa/`, then render, verify and package:
+
+```sh
+node scripts/updates/render.mjs
+node scripts/verify-series.mjs --updates
+node scripts/sample-series.mjs --updates
+node scripts/updates/package.mjs
+```
+
+The recorder checks the live UI before rendering. Demo data and random session credentials stay in memory. It validates the saved subcategory, budget, action link and rate, then downloads a real approved-only CSV and checks that draft time is excluded. `scripts/updates/story.mjs` holds the English script; `src/UpdatesFilm.tsx` controls the layout. The package includes a local player (`index.html`), posters, captions and draft English publication metadata (`publication.json`).
+
+## Introduction and first steps
+
 The current delivery follows the revised brief: a faster explanation of the product, and an English walkthrough with narration and background music.
 
 | Composition              | Output                                | Duration           | Format                    |

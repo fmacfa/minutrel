@@ -1,0 +1,38 @@
+1
+00:00:00,200 --> 00:00:04,259
+Submit the week, review the hours, then
+export only what is approved.
+
+2
+00:00:05,233 --> 00:00:08,258
+Open Timesheets from Time entries and choose
+the week.
+
+3
+00:00:08,500 --> 00:00:11,885
+Finish timers and sync pending entries
+before submitting.
+
+4
+00:00:13,033 --> 00:00:15,627
+Select the team member and review the
+entries.
+
+5
+00:00:15,867 --> 00:00:19,259
+Approve the sheet, or return it for
+correction with a reason.
+
+6
+00:00:20,400 --> 00:00:24,196
+In Reports, select the month and enable
+Approved time only.
+
+7
+00:00:24,433 --> 00:00:28,356
+Download CSV, PDF or ZIP for the approved
+hours.
+
+8
+00:00:29,500 --> 00:00:32,405
+One weekly review. A clear monthly export.

@@ -1,8 +1,10 @@
 # Minutrel en vidéo
 
-Douze vidéos avec voix off, musique originale et sous-titres en anglais, de la présentation du produit à son installation.
+16 vidéos avec voix off, musique originale et sous-titres en anglais.
 
 Minutrel V0.1 est une préversion. Les exemples utilisent des données fictives.
+
+Les vidéos sur la planification, le Gantt et les feuilles de temps ont été tournées sur une version de développement de Minutrel V0.1. Retrouvez les étapes dans le [guide actuel en anglais](https://github.com/fmacfa/minutrel/blob/main/docs/guide/en/README.md#14-project-planning-and-timesheets).
 
 | Vidéo | Durée | Regarder | Sous-titres |
 | --- | --- | --- | --- |
@@ -18,10 +20,14 @@ Minutrel V0.1 est une préversion. Les exemples utilisent des données fictives.
 | 10 · Transférer ses temps personnels vers une équipe | 1:01 | [YouTube](https://youtu.be/EW9aX79bKEY) | [SRT](videos/minutrel-10.srt) |
 | 11 · Connecter des assistants avec des droits limités | 1:20 | [YouTube](https://youtu.be/7UakRqX0TH8) | [SRT](videos/minutrel-11.srt) |
 | 12 · Installer et autohéberger Minutrel | 2:18 | [YouTube](https://youtu.be/HklZXL_R114) | [SRT](videos/minutrel-12.srt) |
+| 13 · Sous-catégories personnalisées | 0:29 | [YouTube](https://youtu.be/KyReauNSgaM) | [SRT](videos/minutrel-13.srt) |
+| 14 · Budgets, échéances et actions de projet | 0:32 | [YouTube](https://youtu.be/Lq5LSsr_xzs) | [SRT](videos/minutrel-14.srt) |
+| 15 · Gantt, charge de travail et taux horaires | 0:37 | [YouTube](https://youtu.be/Od_rfq4xhlk) | [SRT](videos/minutrel-15.srt) |
+| 16 · Feuilles de temps hebdomadaires et rapports approuvés | 0:33 | [YouTube](https://youtu.be/HDq-N5CqN2c) | [SRT](videos/minutrel-16.srt) |
 
-[YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
+[Playlist YouTube](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk) · [YouTube · @minutrel](https://www.youtube.com/@minutrel) · [GitHub · fmacfa/minutrel](https://github.com/fmacfa/minutrel)
 
-Les douze vidéos sont publiques sur YouTube.
+Les 16 vidéos sont publiques sur YouTube.
 
 Téléchargements MP4 : [assistants](videos/minutrel-11-assistants.mp4) · [installation et autohébergement](videos/minutrel-12-self-host.mp4).
 Les vidéos consacrées au client ordinateur utilisent des captures réelles de l’application, organisées en étapes commentées.

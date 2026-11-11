@@ -18,7 +18,9 @@ Les clients utilisent Tauri et la WebView du système. Le serveur commun conserv
 
 [Présentation](https://youtu.be/q6VeUbyOhn8) · [Fonctionnement et premiers pas](https://youtu.be/u5MItUvsxQc) · [Playlist YouTube](https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk)
 
-Les **12 vidéos en anglais**, avec voix, musique originale et sous-titres, sont répertoriées dans la [vidéothèque](docs/VIDEOS.md) et son [English catalog](docs/VIDEOS.en.md). Les douze vidéos sont publiques sur YouTube ; les guides assistants et autohébergement proposent aussi un téléchargement MP4. Les exemples utilisent des données fictives de la préversion V0.1.
+Le [catalogue vidéo](docs/VIDEOS.md) répertorie **16 vidéos en anglais** avec voix, musique originale et sous-titres. Les guides sur les assistants et l’autohébergement sont aussi disponibles en MP4. Retrouvez-les dans la [vidéothèque du site Minutrel](https://minutrel-presentation.pippo-247.chatgpt.site/videos).
+
+[Sous-catégories personnalisées](https://youtu.be/KyReauNSgaM) · [Budgets et actions de projet](https://youtu.be/Lq5LSsr_xzs) · [Gantt, charge de travail et taux horaires](https://youtu.be/Od_rfq4xhlk) · [Feuilles de temps hebdomadaires](https://youtu.be/HDq-N5CqN2c)
 
 ## Essayer en local
 

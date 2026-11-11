@@ -1,6 +1,7 @@
 {
   "channelUrl": "https://www.youtube.com/@minutrel",
   "repositoryUrl": "https://github.com/fmacfa/minutrel",
+  "planningGuideUrl": "https://github.com/fmacfa/minutrel/blob/main/docs/guide/en/README.md#14-project-planning-and-timesheets",
   "playlistUrl": "https://www.youtube.com/playlist?list=PLR7Pc9PfnKIk",
   "videos": [
     {
@@ -160,6 +161,58 @@
       "youtubeId": "HklZXL_R114",
       "mp4": "minutrel-12-self-host.mp4",
       "watchUrl": "https://youtu.be/HklZXL_R114"
+    },
+    {
+      "id": 13,
+      "titleEn": "Minutrel — Custom subcategories for your projects",
+      "titleFr": "Sous-catégories personnalisées",
+      "summaryEn": "Create a project subcategory and keep it with a time entry and its work description.",
+      "summaryFr": "Créer une sous-catégorie de projet et la retrouver sur une saisie de temps avec sa description.",
+      "duration": 29,
+      "durationLabel": "0:29",
+      "poster": "posters/13.png",
+      "subtitles": "minutrel-13.srt",
+      "youtubeId": "KyReauNSgaM",
+      "watchUrl": "https://youtu.be/KyReauNSgaM"
+    },
+    {
+      "id": 14,
+      "titleEn": "Minutrel — Project budgets, deadlines and actions",
+      "titleFr": "Budgets, échéances et actions de projet",
+      "summaryEn": "Set a project budget and deadline, assign an action, and attach it to actual work.",
+      "summaryFr": "Fixer un budget et une échéance, attribuer une action et la rattacher à une saisie de temps.",
+      "duration": 31.6,
+      "durationLabel": "0:32",
+      "poster": "posters/14.png",
+      "subtitles": "minutrel-14.srt",
+      "youtubeId": "Lq5LSsr_xzs",
+      "watchUrl": "https://youtu.be/Lq5LSsr_xzs"
+    },
+    {
+      "id": 15,
+      "titleEn": "Minutrel — Gantt, workload and hourly rates",
+      "titleFr": "Gantt, charge de travail et taux horaires",
+      "summaryEn": "Change the Gantt period, spot overload and see estimated amounts from hourly rates.",
+      "summaryFr": "Changer la période du Gantt, repérer les surcharges et estimer les montants à partir des taux horaires.",
+      "duration": 36.63333333333333,
+      "durationLabel": "0:37",
+      "poster": "posters/15.png",
+      "subtitles": "minutrel-15.srt",
+      "youtubeId": "Od_rfq4xhlk",
+      "watchUrl": "https://youtu.be/Od_rfq4xhlk"
+    },
+    {
+      "id": 16,
+      "titleEn": "Minutrel — Weekly timesheets and approved reports",
+      "titleFr": "Feuilles de temps hebdomadaires et rapports approuvés",
+      "summaryEn": "Submit a week as a member, approve it as a manager, then export the approved time.",
+      "summaryFr": "Soumettre une semaine, la faire approuver par un responsable, puis exporter les temps approuvés.",
+      "duration": 33.46666666666667,
+      "durationLabel": "0:33",
+      "poster": "posters/16.png",
+      "subtitles": "minutrel-16.srt",
+      "youtubeId": "HDq-N5CqN2c",
+      "watchUrl": "https://youtu.be/HDq-N5CqN2c"
     }
   ]
 }

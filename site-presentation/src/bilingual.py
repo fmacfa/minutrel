@@ -31,7 +31,7 @@ MAIN_PAGES = {
  'fonctionnalites.html':('All features','Explore Minutrel V0.1 features: time, projects, team permissions, reports, offline work, MCP and self-hosting.'),
  'fonctionnement.html':('How Minutrel works','Understand personal, team and browser modes, data storage and synchronisation.'),
  'ressources.html':('Guides and resources','User guides, technical documentation and downloads for Minutrel V0.1.'),
- 'videos.html':('Minutrel in 12 videos','English product introduction and practical guides, with narration, music and subtitles.'),
+ 'videos.html':('Minutrel video guides','English product introduction and practical guides, with narration, music and subtitles.'),
 }
 ROUTES = set(MAIN_PAGES)|set(EN_DOCS)|{'404.html'}
 ANCHORS = {}

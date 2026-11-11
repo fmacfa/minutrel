@@ -45,7 +45,7 @@ def card(video, language):
 
 
 def section(videos, language, title, description, featured=False):
-    label = 'Browse all 12 videos ↗' if language == 'en' else 'Voir les 12 vidéos ↗'
+    label = 'Browse all videos ↗' if language == 'en' else 'Voir toutes les vidéos ↗'
     classes = 'video-grid video-featured' if featured else 'video-grid'
     return (f'<section class="section video-section"><div class="wrap"><div class="section-head">'
             f'<div><p class="eyebrow">MINUTREL / VIDEO</p><h2>{title}</h2><p>{description}</p></div>'
@@ -56,7 +56,9 @@ def section(videos, language, title, description, featured=False):
 def install(dist, shell):
     catalog = json.loads((Path(__file__).parent / 'videos.json').read_text())
     videos = catalog['videos']
-    assert len(videos) == 12 and len({v['id'] for v in videos}) == 12
+    count = len(videos)
+    if count < 12 or [v['id'] for v in videos] != list(range(1, count + 1)):
+        raise ValueError('The video catalogue must start with the original twelve guides in order')
     by_id = {video['id']: video for video in videos}
     indices = {}
     related = {
@@ -64,10 +66,12 @@ def install(dist, shell):
         'doc-commande-rapide.html': [3], 'synchronisation.html': [9, 10],
         'rapports.html': [7], 'integrations.html': [11], 'autohebergement.html': [12],
     }
+    if 13 in by_id:
+        related['guide.html'].append(13)
     for language in ('fr', 'en'):
         en = language == 'en'
         folder = dist / 'en' if en else dist
-        title = 'Minutrel in 12 videos' if en else 'Minutrel en 12 vidéos'
+        title = f'Minutrel in {count} videos' if en else f'Minutrel en {count} vidéos'
         headline = 'Understand.<br>Try.<br>Find your rhythm.' if en else 'Comprendre.<br>Essayer.<br>Prendre le rythme.'
         description = ('Start with the idea, then follow the practical guides. Every video includes English narration, music and downloadable subtitles.' if en else
                        'Le principe, puis les gestes utiles. Chaque vidéo comprend une narration en anglais, de la musique et des sous-titres téléchargeables.')
@@ -75,12 +79,20 @@ def install(dist, shell):
         source = 'Source code on GitHub ↗' if en else 'Le code sur GitHub ↗'
         note = ('YouTube players load only when you choose to play a video. The assistant and self-hosting guides are also available as MP4 downloads.' if en else
                 'Les lecteurs YouTube se chargent au lancement de la vidéo. Les guides assistants et autohébergement sont aussi disponibles en téléchargement MP4.')
+        planning_note = ''
+        if catalog.get('planningGuideUrl'):
+            planning_link = esc(catalog['planningGuideUrl'])
+            planning_note = (
+                f'<p class="video-note">The planning, Gantt and timesheet videos were recorded on a Minutrel V0.1 development build. See the <a href="{planning_link}">current guide</a>.</p>'
+                if en else
+                f'<p class="video-note">Les vidéos sur la planification, le Gantt et les feuilles de temps ont été tournées sur une version de développement de Minutrel V0.1. Voir le <a href="{planning_link}">guide actuel en anglais</a>.</p>'
+            )
         body = (f'<section class="page-intro video-intro"><div class="wrap"><p class="eyebrow">MINUTREL / VIDEO</p>'
                 f'<h1>{headline}</h1><p class="lead">{description}</p><div class="actions">'
                 f'<a class="btn btn-primary" href="{esc(catalog.get("playlistUrl", catalog["channelUrl"]))}" target="_blank" rel="noopener noreferrer">{playlist}</a>'
                 f'<a class="btn btn-outline" href="{esc(catalog["repositoryUrl"])}" target="_blank" rel="noopener noreferrer">{source}</a></div></div></section>'
                 f'<section class="section video-library"><div class="wrap"><h2 class="sr-only">{title}</h2>'
-                f'<p class="video-note">{note}</p><div class="video-grid">'
+                f'<p class="video-note">{note}</p>{planning_note}<div class="video-grid">'
                 + ''.join(card(video, language) for video in videos) + '</div></div></section>')
         # Translate only the common chrome; video editorial copy is already bilingual.
         page = shell(title, description, '<!--VIDEO_LIBRARY-->', 'videos.html', 'videos.html', language)
@@ -97,7 +109,7 @@ def install(dist, shell):
                 value = value.replace('<div class="trust-strip">', addition + '<div class="trust-strip">', 1)
             elif file.name == 'ressources.html':
                 heading = 'Learn by watching.' if en else 'Voir les gestes en action.'
-                text = '12 English videos, from the product introduction to self-hosting.' if en else '12 vidéos en anglais, de la présentation à l’autohébergement.'
+                text = f'{count} English videos with downloadable subtitles.' if en else f'{count} vidéos en anglais avec sous-titres téléchargeables.'
                 callout = (f'<section class="video-resource"><div class="wrap"><a class="video-callout" href="videos.html">'
                            f'<span><strong>{heading}</strong><span>{text}</span></span><span aria-hidden="true">↗</span></a></div></section>')
                 value = value.replace('</section>', '</section>' + callout, 1)

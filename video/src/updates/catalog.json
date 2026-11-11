@@ -1,0 +1,531 @@
+[
+  {
+    "id": 13,
+    "slug": "custom-subcategories",
+    "composition": "MinutrelCustomSubcategoriesEN",
+    "title": "Make categories your own.",
+    "shortTitle": "Custom subcategories",
+    "summary": "Create a project subcategory and keep it with a time entry and its work description.",
+    "icon": "layers",
+    "total": 29,
+    "durationInFrames": 870,
+    "scenes": [
+      {
+        "key": "intro",
+        "title": "",
+        "role": "",
+        "atFrame": 0,
+        "length": 115,
+        "step": 0,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      },
+      {
+        "key": "create",
+        "title": "Create a subcategory",
+        "role": "",
+        "atFrame": 115,
+        "length": 191,
+        "step": 1,
+        "layout": "wide",
+        "source": "captures/updates-en/13-create.webm",
+        "trim": 0.7250057080000002
+      },
+      {
+        "key": "record",
+        "title": "Record the work",
+        "role": "",
+        "atFrame": 306,
+        "length": 201,
+        "step": 2,
+        "layout": "fit",
+        "source": "captures/updates-en/13-record.webm",
+        "trim": 0.5400502500000003
+      },
+      {
+        "key": "review",
+        "title": "Find the detail later",
+        "role": "",
+        "atFrame": 507,
+        "length": 234,
+        "step": 3,
+        "layout": "wide",
+        "source": "captures/updates-en/13-review.webm",
+        "trim": 0.5809905829999988
+      },
+      {
+        "key": "outro",
+        "title": "",
+        "role": "",
+        "atFrame": 741,
+        "length": 129,
+        "step": 4,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      }
+    ],
+    "voice": [
+      {
+        "id": "13-intro-1",
+        "file": "audio/updates-en/13-intro-1.wav",
+        "at": 0.2,
+        "duration": 2.849666666666667,
+        "text": "Organise time around the work you actually do."
+      },
+      {
+        "id": "13-create-1",
+        "file": "audio/updates-en/13-create-1.wav",
+        "at": 4.033333333333333,
+        "duration": 2.143,
+        "text": "New projects start with an empty list."
+      },
+      {
+        "id": "13-create-2",
+        "file": "audio/updates-en/13-create-2.wav",
+        "at": 6.433333333333334,
+        "duration": 2.8444583333333333,
+        "text": "In Subcategories, type a name that fits your work."
+      },
+      {
+        "id": "13-record-1",
+        "file": "audio/updates-en/13-record-1.wav",
+        "at": 10.4,
+        "duration": 2.6675416666666667,
+        "text": "Choose the project and your new subcategory."
+      },
+      {
+        "id": "13-record-2",
+        "file": "audio/updates-en/13-record-2.wav",
+        "at": 13.333333333333334,
+        "duration": 2.6506666666666665,
+        "text": "Add the time and a description of what you did."
+      },
+      {
+        "id": "13-review-1",
+        "file": "audio/updates-en/13-review-1.wav",
+        "at": 17.1,
+        "duration": 2.4012083333333334,
+        "text": "The label and description stay with the entry."
+      },
+      {
+        "id": "13-review-2",
+        "file": "audio/updates-en/13-review-2.wav",
+        "at": 19.766666666666666,
+        "duration": 4.031916666666667,
+        "text": "The same subcategory is available in the timer and in exports."
+      },
+      {
+        "id": "13-outro-1",
+        "file": "audio/updates-en/13-outro-1.wav",
+        "at": 24.9,
+        "duration": 3.3052916666666667,
+        "text": "Start with a project. Add categories as you need them."
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "slug": "project-planning",
+    "composition": "MinutrelProjectPlanningEN",
+    "title": "From a plan to tracked work.",
+    "shortTitle": "Project budgets and actions",
+    "summary": "Set a project budget and deadline, assign an action, and attach it to actual work.",
+    "icon": "projects",
+    "total": 31.6,
+    "durationInFrames": 948,
+    "scenes": [
+      {
+        "key": "intro",
+        "title": "",
+        "role": "",
+        "atFrame": 0,
+        "length": 159,
+        "step": 0,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      },
+      {
+        "key": "budget",
+        "title": "Set the budget and deadline",
+        "role": "",
+        "atFrame": 159,
+        "length": 229,
+        "step": 1,
+        "layout": "fit",
+        "source": "captures/updates-en/14-budget.webm",
+        "trim": 0.7159753750000019
+      },
+      {
+        "key": "action",
+        "title": "Create and assign an action",
+        "role": "",
+        "atFrame": 388,
+        "length": 211,
+        "step": 2,
+        "layout": "fit",
+        "source": "captures/updates-en/14-action.webm",
+        "trim": 0.6612083749999947
+      },
+      {
+        "key": "link",
+        "title": "Link the action to actual work",
+        "role": "",
+        "atFrame": 599,
+        "length": 220,
+        "step": 3,
+        "layout": "fit",
+        "source": "captures/updates-en/14-link.webm",
+        "trim": 0.5299017500000045
+      },
+      {
+        "key": "outro",
+        "title": "",
+        "role": "",
+        "atFrame": 819,
+        "length": 129,
+        "step": 4,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      }
+    ],
+    "voice": [
+      {
+        "id": "14-intro-1",
+        "file": "audio/updates-en/14-intro-1.wav",
+        "at": 0.2,
+        "duration": 4.303375,
+        "text": "Give a project a time budget. Then connect the plan to actual work."
+      },
+      {
+        "id": "14-budget-1",
+        "file": "audio/updates-en/14-budget-1.wav",
+        "at": 5.5,
+        "duration": 3.1742083333333335,
+        "text": "In Edit project, set a time budget and a deadline."
+      },
+      {
+        "id": "14-budget-2",
+        "file": "audio/updates-en/14-budget-2.wav",
+        "at": 8.933333333333334,
+        "duration": 3.0845416666666665,
+        "text": "The overview shows recorded time and what is left."
+      },
+      {
+        "id": "14-action-1",
+        "file": "audio/updates-en/14-action-1.wav",
+        "at": 13.133333333333333,
+        "duration": 1.9872916666666667,
+        "text": "Add one piece of work as an action."
+      },
+      {
+        "id": "14-action-2",
+        "file": "audio/updates-en/14-action-2.wav",
+        "at": 15.366666666666667,
+        "duration": 3.661625,
+        "text": "Choose a subcategory, an owner, planned dates and an estimate."
+      },
+      {
+        "id": "14-link-1",
+        "file": "audio/updates-en/14-link-1.wav",
+        "at": 20.166666666666668,
+        "duration": 2.6410833333333334,
+        "text": "Choose the project and matching subcategory."
+      },
+      {
+        "id": "14-link-2",
+        "file": "audio/updates-en/14-link-2.wav",
+        "at": 23.066666666666666,
+        "duration": 3.3072916666666665,
+        "text": "Select the action, describe the work and save the entry."
+      },
+      {
+        "id": "14-outro-1",
+        "file": "audio/updates-en/14-outro-1.wav",
+        "at": 27.5,
+        "duration": 3.3235,
+        "text": "Use project planning with a team or on your own computer."
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "slug": "gantt-workload-rates",
+    "composition": "MinutrelGanttWorkloadEN",
+    "title": "See the work ahead.",
+    "shortTitle": "Gantt, workload and rates",
+    "summary": "Change the Gantt period, spot overload and see estimated amounts from hourly rates.",
+    "icon": "calendar",
+    "total": 36.63333333333333,
+    "durationInFrames": 1099,
+    "scenes": [
+      {
+        "key": "intro",
+        "title": "",
+        "role": "",
+        "atFrame": 0,
+        "length": 123,
+        "step": 0,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      },
+      {
+        "key": "period",
+        "title": "Choose a planning period",
+        "role": "",
+        "atFrame": 123,
+        "length": 202,
+        "step": 1,
+        "layout": "wide",
+        "source": "captures/updates-en/15-period.webm",
+        "trim": 0.7592579169999953
+      },
+      {
+        "key": "capacity",
+        "title": "Spot an overloaded week",
+        "role": "",
+        "atFrame": 325,
+        "length": 235,
+        "step": 2,
+        "layout": "wide",
+        "source": "captures/updates-en/15-capacity.webm",
+        "trim": 0.6958998330000031
+      },
+      {
+        "key": "rate",
+        "title": "Set an hourly rate",
+        "role": "",
+        "atFrame": 560,
+        "length": 168,
+        "step": 3,
+        "layout": "fit",
+        "source": "captures/updates-en/15-rate.webm",
+        "trim": 0.5015599999999977
+      },
+      {
+        "key": "estimate",
+        "title": "Read the estimated amount",
+        "role": "",
+        "atFrame": 728,
+        "length": 246,
+        "step": 4,
+        "layout": "wide",
+        "source": "captures/updates-en/15-estimate.webm",
+        "trim": 0.6267295840000006
+      },
+      {
+        "key": "outro",
+        "title": "",
+        "role": "",
+        "atFrame": 974,
+        "length": 125,
+        "step": 5,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      }
+    ],
+    "voice": [
+      {
+        "id": "15-intro-1",
+        "file": "audio/updates-en/15-intro-1.wav",
+        "at": 0.2,
+        "duration": 3.1028333333333333,
+        "text": "See when work lands, who has room, and what it could cost."
+      },
+      {
+        "id": "15-period-1",
+        "file": "audio/updates-en/15-period-1.wav",
+        "at": 4.3,
+        "duration": 1.7254583333333333,
+        "text": "Open Gantt in a project."
+      },
+      {
+        "id": "15-period-2",
+        "file": "audio/updates-en/15-period-2.wav",
+        "at": 6.266666666666667,
+        "duration": 3.64475,
+        "text": "Switch from weeks to months or years, or choose custom dates."
+      },
+      {
+        "id": "15-capacity-1",
+        "file": "audio/updates-en/15-capacity-1.wav",
+        "at": 11.033333333333333,
+        "duration": 2.7183333333333333,
+        "text": "Workload spreads estimates across working days."
+      },
+      {
+        "id": "15-capacity-2",
+        "file": "audio/updates-en/15-capacity-2.wav",
+        "at": 14,
+        "duration": 3.733875,
+        "text": "Enter a weekly capacity to see where planned work exceeds it."
+      },
+      {
+        "id": "15-rate-1",
+        "file": "audio/updates-en/15-rate-1.wav",
+        "at": 18.866666666666667,
+        "duration": 2.1000833333333335,
+        "text": "As an administrator, open Team."
+      },
+      {
+        "id": "15-rate-2",
+        "file": "audio/updates-en/15-rate-2.wav",
+        "at": 21.233333333333334,
+        "duration": 2.140375,
+        "text": "Set a rate and currency for a member."
+      },
+      {
+        "id": "15-estimate-1",
+        "file": "audio/updates-en/15-estimate-1.wav",
+        "at": 24.466666666666665,
+        "duration": 3.494,
+        "text": "In Workload, planned hours times the rate give an estimate."
+      },
+      {
+        "id": "15-estimate-2",
+        "file": "audio/updates-en/15-estimate-2.wav",
+        "at": 28.2,
+        "duration": 3.32475,
+        "text": "In a team, only administrators see the rates and amounts."
+      },
+      {
+        "id": "15-outro-1",
+        "file": "audio/updates-en/15-outro-1.wav",
+        "at": 32.666666666666664,
+        "duration": 2.2344166666666667,
+        "text": "Adjust the plan before the week fills up."
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "slug": "weekly-timesheets",
+    "composition": "MinutrelWeeklyTimesheetsEN",
+    "title": "From weekly hours to approved reports.",
+    "shortTitle": "Weekly timesheets",
+    "summary": "Submit a week as a member, approve it as a manager, then export the approved time.",
+    "icon": "report",
+    "total": 33.46666666666667,
+    "durationInFrames": 1004,
+    "scenes": [
+      {
+        "key": "intro",
+        "title": "",
+        "role": "",
+        "atFrame": 0,
+        "length": 151,
+        "step": 0,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      },
+      {
+        "key": "submit",
+        "title": "Submit the week",
+        "role": "Team member",
+        "atFrame": 151,
+        "length": 234,
+        "step": 1,
+        "layout": "wide",
+        "source": "captures/updates-en/16-submit.webm",
+        "trim": 0.620001666000011
+      },
+      {
+        "key": "approve",
+        "title": "Review the hours",
+        "role": "Manager",
+        "atFrame": 385,
+        "length": 221,
+        "step": 2,
+        "layout": "fit",
+        "source": "captures/updates-en/16-approve.webm",
+        "trim": 0.6343300840000011
+      },
+      {
+        "key": "export",
+        "title": "Export approved time",
+        "role": "Administrator",
+        "atFrame": 606,
+        "length": 273,
+        "step": 3,
+        "layout": "wide",
+        "source": "captures/updates-en/16-export.webm",
+        "trim": 0.5043510000000097
+      },
+      {
+        "key": "outro",
+        "title": "",
+        "role": "",
+        "atFrame": 879,
+        "length": 125,
+        "step": 4,
+        "layout": "cover",
+        "source": "",
+        "trim": 0
+      }
+    ],
+    "voice": [
+      {
+        "id": "16-intro-1",
+        "file": "audio/updates-en/16-intro-1.wav",
+        "at": 0.2,
+        "duration": 4.059333333333333,
+        "text": "Submit the week, review the hours, then export only what is approved."
+      },
+      {
+        "id": "16-submit-1",
+        "file": "audio/updates-en/16-submit-1.wav",
+        "at": 5.233333333333333,
+        "duration": 3.0246666666666666,
+        "text": "Open Timesheets from Time entries and choose the week."
+      },
+      {
+        "id": "16-submit-2",
+        "file": "audio/updates-en/16-submit-2.wav",
+        "at": 8.5,
+        "duration": 3.3845833333333335,
+        "text": "Finish timers and sync pending entries before submitting."
+      },
+      {
+        "id": "16-approve-1",
+        "file": "audio/updates-en/16-approve-1.wav",
+        "at": 13.033333333333333,
+        "duration": 2.5935,
+        "text": "Select the team member and review the entries."
+      },
+      {
+        "id": "16-approve-2",
+        "file": "audio/updates-en/16-approve-2.wav",
+        "at": 15.866666666666667,
+        "duration": 3.39275,
+        "text": "Approve the sheet, or return it for correction with a reason."
+      },
+      {
+        "id": "16-export-1",
+        "file": "audio/updates-en/16-export-1.wav",
+        "at": 20.4,
+        "duration": 3.7959583333333335,
+        "text": "In Reports, select the month and enable Approved time only."
+      },
+      {
+        "id": "16-export-2",
+        "file": "audio/updates-en/16-export-2.wav",
+        "at": 24.433333333333334,
+        "duration": 3.922833333333333,
+        "text": "Download CSV, PDF or ZIP for the approved hours."
+      },
+      {
+        "id": "16-outro-1",
+        "file": "audio/updates-en/16-outro-1.wav",
+        "at": 29.5,
+        "duration": 2.9054166666666665,
+        "text": "One weekly review. A clear monthly export."
+      }
+    ]
+  }
+]
