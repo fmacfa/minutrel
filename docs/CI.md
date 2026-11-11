@@ -17,7 +17,7 @@ Le workflow [repository-check.yml](../.github/workflows/repository-check.yml) s�
 
 Les actions tierces sont épinglées à un SHA et le jeton du workflow reste en lecture seule. Les constructions de paquets sont non signées ; le workflow ne publie pas de release ni d’image sur un registre.
 
-Le job natif Linux récupère ses dépendances sur l’archive officielle Ubuntu 24.04 en HTTPS avec le trousseau Ubuntu du runner. [Vérification de l’archive Ubuntu](https://documentation.ubuntu.com/security/software-integrity/archive-verification/)
+Le job natif Linux sélectionne un miroir HTTPS de l’archive Ubuntu 24.04 accessible depuis le runner. APT vérifie les paquets avec le trousseau Ubuntu du runner. [Vérification de l’archive Ubuntu](https://documentation.ubuntu.com/security/software-integrity/archive-verification/)
 
 ## Tests métier
 

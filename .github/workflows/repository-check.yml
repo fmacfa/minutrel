@@ -97,10 +97,22 @@ jobs:
         if: runner.os == 'Linux'
         timeout-minutes: 8
         run: |
+          archive=
+          for candidate in https://archive.ubuntu.com/ubuntu https://mirrors.edge.kernel.org/ubuntu https://security.ubuntu.com/ubuntu; do
+            if curl --head --fail --silent --show-error --max-time 8 --output /dev/null "$candidate/dists/noble-updates/InRelease"; then
+              archive="$candidate"
+              break
+            fi
+          done
+          if [[ -z "$archive" ]]; then
+            echo '::error::No Ubuntu archive mirror is reachable from this runner.'
+            exit 1
+          fi
+          echo "Using Ubuntu archive $archive"
           sources="$RUNNER_TEMP/minutrel-ubuntu.sources"
-          cat > "$sources" <<'EOF'
+          cat > "$sources" <<EOF
           Types: deb
-          URIs: https://archive.ubuntu.com/ubuntu/
+          URIs: $archive/
           Suites: noble noble-updates noble-security noble-backports
           Components: main restricted universe multiverse
           Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
