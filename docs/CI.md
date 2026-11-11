@@ -17,6 +17,8 @@ Le workflow [repository-check.yml](../.github/workflows/repository-check.yml) s�
 
 Les actions tierces sont épinglées à un SHA et le jeton du workflow reste en lecture seule. Les constructions de paquets sont non signées ; le workflow ne publie pas de release ni d’image sur un registre.
 
+Le job natif Linux récupère ses dépendances sur l’archive officielle Ubuntu 24.04 en HTTPS avec le trousseau Ubuntu du runner. [Vérification de l’archive Ubuntu](https://documentation.ubuntu.com/security/software-integrity/archive-verification/)
+
 ## Tests métier
 
 Les tests vérifient les rôles, les sessions, CSRF/origine, la limitation des tentatives, les affectations, les chronomètres concurrents, les répétitions, les pauses, les versions, les corrections motivées, les bornes mensuelles et changements d’heure, les brouillons privés, les instantanés d’export et le protocole MCP avec son client officiel.
