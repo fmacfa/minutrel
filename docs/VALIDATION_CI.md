@@ -1,5 +1,14 @@
 # Validation de Minutrel V0.1
 
+## 2026-11-11 — Planning and team access
+
+- `npm run check` passed formatting, lint, strict types, 91 tests and the web/API builds. Coverage for the measured server and domain modules was 99.12% of lines and 87.56% of branches.
+- Three native tests and Clippy passed on macOS ARM64. An unsigned macOS app was built from the updated sources.
+- A disposable local server passed the clock, reports, CSV/PDF/ZIP exports, MCP, live updates and restart checks. Browser sign-in and the dashboard were checked in English, French and German at 390 and 1,440 pixels.
+- The tests cover the monthly export of approved time, role restrictions on hourly rates, and account changes while a desktop request is pending. AI generation uses controlled responses in the test suite.
+
+See [GitHub Actions](https://github.com/fmacfa/minutrel/actions) for the build and container results of each published commit. Installation and offline synchronisation on real devices, production HTTPS and live AI providers require deployment-specific checks.
+
 ## 2026-11-09 — English-first GitHub and custom subcategories
 
 The main README, contribution/security/licensing guidance, changelog, issue/PR templates, guide index and workflow labels now use English first. The French README and all EN/FR/DE user guides are retained. Existing task IDs and API routes remain compatible; the interface calls this level subcategories.

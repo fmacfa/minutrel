@@ -468,7 +468,19 @@ export const messages: Record<string, readonly [string, string]> = {
   ],
   Description: ['Description', 'Beschreibung'],
   'Description du travail': ['Work description', 'Arbeitsbeschreibung'],
+  'Appliquez l’adresse du serveur avant de vous connecter.': [
+    'Apply the server address before signing in.',
+    'Übernehmen Sie die Serveradresse, bevor Sie sich anmelden.',
+  ],
+  'Le compte actif a changé. Réessayez.': [
+    'The active account changed. Try again.',
+    'Das aktive Konto hat gewechselt. Versuchen Sie es erneut.',
+  ],
   'Destinataire IA': ['AI recipient', 'KI-Empfänger'],
+  'Le fournisseur IA a changé. Rouvrez le formulaire pour confirmer le destinataire.': [
+    'The AI provider changed. Reopen the form to confirm the recipient.',
+    'Der KI-Anbieter wurde geändert. Öffnen Sie das Formular erneut, um den Empfänger zu bestätigen.',
+  ],
   'Donnez du sens': ['Give meaning', 'Verleihen Sie'],
   'Dossier ZIP': ['ZIP archive', 'ZIP-Archiv'],
   'Droits accordés à cet assistant': [

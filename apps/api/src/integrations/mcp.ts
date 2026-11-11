@@ -9,6 +9,7 @@ import type { MemberRow } from '../auth.ts';
 import {
   activeTimer,
   projects,
+  projectAccess,
   queryEntries,
   notes,
   summaries,
@@ -32,7 +33,10 @@ export function tokenActor(store: Store, request: FastifyRequest) {
     token.memberId,
   );
   ensure(member, 'Ce compte est désactivé.', 401);
-  return { member, scopes: new Set(JSON.parse(token.scopes) as McpScope[]) };
+  return {
+    member: { ...member, role: 'contributor' as const },
+    scopes: new Set(JSON.parse(token.scopes) as McpScope[]),
+  };
 }
 export function registerMcp(app: FastifyInstance, store: Store) {
   app.post(
@@ -57,15 +61,14 @@ export function registerMcp(app: FastifyInstance, store: Store) {
         })
         .strict()
         .parse(request.body);
-      // Un webhook n’obtient jamais les prérogatives globales de son propriétaire.
-      const personal = { ...member, role: 'contributor' as const };
+      projectAccess(store, member, data.projectId, undefined, false);
       const result = idempotent(
         store,
-        personal,
+        member,
         String(request.headers['idempotency-key'] ?? ''),
         'hook.work-note',
         data,
-        () => createNote(store, personal, data, 'assistant'),
+        () => createNote(store, member, data, 'assistant'),
       );
       store.changed();
       return { id: result.id, shared: false, source: 'assistant' };
@@ -113,7 +116,7 @@ export function registerMcp(app: FastifyInstance, store: Store) {
             inputSchema: {},
             annotations: read,
           },
-          async () => result(projects(store, { ...check('projects.read'), role: 'contributor' })),
+          async () => result(projects(store, check('projects.read'))),
         );
       if (scopes.has('time.read_own')) {
         server.registerTool(
@@ -202,6 +205,7 @@ export function registerMcp(app: FastifyInstance, store: Store) {
           async (data) => {
             const m = check('timer.write_own');
             const { idempotencyKey, ...body } = data;
+            projectAccess(store, m, body.projectId, undefined, false);
             const timer = idempotent(store, m, idempotencyKey, 'timer.start', body, () =>
               startTimer(store, m, body),
             );

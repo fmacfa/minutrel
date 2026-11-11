@@ -28,7 +28,7 @@ Les données sont écrites dans le dossier privé de l’application, avec une c
 
 ## 2. Rejoindre une équipe
 
-L’administrateur vous fournit l’adresse HTTPS du serveur et votre compte. Ouvrez cette adresse dans votre navigateur. Sur ordinateur, choisissez **Ouvrir un espace d’équipe**, saisissez l’adresse du même serveur et connectez-vous avec le même compte. Une adresse HTTP est acceptée uniquement pour un serveur situé sur cet ordinateur.
+L’administrateur vous fournit l’adresse HTTPS du serveur et votre compte. Ouvrez cette adresse dans votre navigateur. Sur ordinateur, choisissez **Ouvrir un espace d’équipe**, saisissez l’adresse et appliquez-la avec la flèche à côté du champ. Connectez-vous ensuite avec le même compte. Une adresse HTTP est acceptée uniquement pour un serveur situé sur cet ordinateur.
 
 Les projets, les droits et les temps de ce compte sont communs aux appareils connectés. Deux espaces sur deux serveurs différents restent distincts. Un espace personnel et un espace d’équipe ne fusionnent pas automatiquement.
 
@@ -58,7 +58,7 @@ Dans le navigateur, une barre compacte reste accessible pendant la navigation. L
 | Hors connexion | Chronomètre et nouvelles saisies restent enregistrables sur le client ordinateur ; les fonctions de gestion d’équipe nécessitent le serveur |
 | Conflit à résoudre | Le serveur refuse une version, une affectation ou un chevauchement ; les données locales restent conservées |
 
-Une première connexion prépare la liste des projets autorisés et le chronomètre. Après une coupure, les envois reprennent lorsque l’application retrouve le serveur ; **Paramètres → Synchroniser** permet de réessayer. Une session expirée peut demander une reconnexion au même compte. N’effacez pas le dossier local pendant une attente d’envoi.
+Une première connexion prépare la liste des projets autorisés et le chronomètre. Après une mise à jour depuis un ancien client, ouvrir une fois le compte d’équipe en ligne pour relier le cache à la session. Après une coupure, les envois reprennent lorsque l’application retrouve le serveur ; **Paramètres → Synchroniser** permet de réessayer. Une session expirée peut demander une reconnexion au même compte. N’effacez pas le dossier local pendant une attente d’envoi.
 
 ![Temps d’équipe conservé pendant une coupure](../../screenshots/16-equipe-hors-connexion.png)
 
@@ -108,7 +108,7 @@ Le crayon permet de corriger une saisie finalisée avec un motif. Choisir **Desc
 
 ![Notes et compte rendu](../../screenshots/07-notes-comptes-rendus.jpg)
 
-Un administrateur peut configurer un moteur Ollama, vLLM ou Claude dans **Les connexions**. **Préparer avec l’IA** demande le mois, le fournisseur et votre accord pour lui transmettre vos descriptions et notes personnelles, y compris privées. Relisez le résultat. L’IA ne modifie jamais les chiffres de temps. Aucun modèle n’est fourni ou nécessaire. Les connexions IA de la V0.1 utilisent le serveur d’équipe ; le mode autonome permet les notes et comptes rendus manuels.
+Un administrateur peut configurer un moteur Ollama, vLLM ou Claude dans **Les connexions**. Dans **Préparer avec l’IA**, vérifiez l’adresse affichée avant d’autoriser l’envoi de vos descriptions et notes, y compris privées. Si les paramètres du fournisseur changent, rouvrez le formulaire et confirmez à nouveau le destinataire. Relisez le brouillon avant validation. L’IA ne modifie jamais les durées calculées. Le mode autonome permet de rédiger des notes et des comptes rendus manuels.
 
 ## 9. Télécharger les rapports
 
@@ -165,6 +165,8 @@ Dans **Paramètres**, changez le mot de passe, consultez votre adresse de serveu
 ## 13. Sauvegarder, dépanner et trouver de l’aide
 
 Pour le serveur, suivez [sauvegarde/restauration](../../../infra/backup/README.md) et [autohébergement](../../AUTOHEBERGEMENT.md). Sauvegardez la base et sa clé ensemble. Pour le client autonome, quittez l’application puis copiez son dossier de configuration complet, fichiers `offline-*.json`, `.bak` et `connection.json` compris. Les emplacements usuels sont `~/Library/Application Support/app.minutrel.desktop` sur macOS, `%APPDATA%\app.minutrel.desktop` sur Windows et `$XDG_CONFIG_HOME/app.minutrel.desktop` ou `~/.config/app.minutrel.desktop` sur Linux. Une copie JSON peut aussi être préparée dans les paramètres ; l’import par l’interface n’est pas livré.
+
+Après restauration du serveur d’équipe, les membres se reconnectent. Créez de nouveaux jetons MCP ou webhook pour les intégrations utilisées.
 
 | Problème | Vérification |
 | --- | --- |

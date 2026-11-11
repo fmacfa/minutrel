@@ -6,6 +6,7 @@ import { nativeRequest, pendingBackup, setMode, syncStatus } from './local.ts';
 
 export const native = isTauri();
 let csrf = '';
+let nativeGeneration = 0;
 export const setCsrf = (value: string) => {
   csrf = value;
 };
@@ -22,11 +23,16 @@ export interface Connection {
   persistent: boolean;
   widget: boolean;
   local?: boolean;
+  generation?: number;
 }
 export async function connection(): Promise<Connection> {
   if (native) {
     const c = await invoke<Connection>('get_connection');
-    setMode(Boolean(c.local));
+    const active = c.generation ?? 0;
+    if (active >= nativeGeneration) {
+      nativeGeneration = active;
+      setMode(Boolean(c.local), active);
+    }
     return c;
   }
   return {
@@ -46,7 +52,7 @@ export async function request<T>(
   idempotencyKey?: string,
 ): Promise<T> {
   return native
-    ? nativeRequest<T>(remoteRequest, path, method, body, idempotencyKey)
+    ? nativeRequest<T>(remoteRequest, path, method, body, idempotencyKey, nativeGeneration)
     : remoteRequest<T>(path, method, body, idempotencyKey);
 }
 export async function remoteRequest<T>(
@@ -54,6 +60,7 @@ export async function remoteRequest<T>(
   method = 'GET',
   body?: unknown,
   idempotencyKey?: string,
+  generation = nativeGeneration,
 ): Promise<T> {
   const headers: Record<string, string> = {
     'Idempotency-Key': idempotencyKey ?? crypto.randomUUID(),
@@ -66,6 +73,7 @@ export async function remoteRequest<T>(
         method,
         body: body === undefined ? null : JSON.stringify(body),
         idempotencyKey: headers['Idempotency-Key'],
+        generation,
       })
     : await fetch(`/api/v1${path}`, {
         method,
@@ -101,7 +109,7 @@ export async function download(path: string, filename: string) {
       bytes: Array.from(new TextEncoder().encode(await pendingBackup())),
     });
   }
-  if (native) return invoke('download_file', { path, filename });
+  if (native) return invoke('download_file', { path, filename, generation: nativeGeneration });
   const result = await fetch(path, { credentials: 'same-origin' });
   if (!result.ok) {
     const error = (await result.json()) as { message: string };
@@ -119,6 +127,7 @@ export async function subscribe(
   status: (connected: boolean) => void,
 ): Promise<() => void> {
   if (native) {
+    const generation = nativeGeneration;
     const unlocal = await listen('local-change', () => {
       if (syncStatus().local) status(true);
       change();
@@ -132,12 +141,18 @@ export async function subscribe(
       change();
     });
     const unstatus = await listen<boolean>('server-connection', (e) => status(e.payload));
-    await invoke('watch_events');
-    return () => {
+    const cleanup = () => {
       unlisten();
       unstatus();
       unlocal();
     };
+    try {
+      await invoke('watch_events', { generation });
+      return cleanup;
+    } catch (error) {
+      cleanup();
+      throw error;
+    }
   }
   const source = new EventSource('/api/v1/events');
   source.addEventListener('connected', () => {

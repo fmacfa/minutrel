@@ -30,7 +30,7 @@ Data is written to the app’s private folder with a previous-state copy. Use **
 
 ## 3. Join a team and understand roles
 
-Your administrator supplies the server’s HTTPS address and your account. Open that address in your browser. On desktop choose **Open a team workspace**, enter the same server address and sign in with the same account. HTTP is accepted only for a server on this computer.
+Your administrator supplies the server’s HTTPS address and your account. Open that address in your browser. On desktop choose **Open a team workspace**, enter the same server address and apply it with the arrow next to the field. Then sign in with the same account. HTTP is accepted only for a server on this computer.
 
 | Role | Permissions in V0.1 |
 | --- | --- |
@@ -78,7 +78,7 @@ On the web, a compact bar remains during navigation. A separate mini window is a
 | Offline | Desktop timer actions and new manual entries remain recordable; team administration requires the server |
 | Conflict to resolve | The server rejected a version, assignment or overlap; local proposals remain saved |
 
-An initial online connection prepares your account, assigned projects and current timer. The outbox survives closing the app. Sending resumes when the server is reachable; **Settings → Synchronise** retries. An expired session may require signing in again to the same account. Do not delete app data while changes are pending. Opening a team cache after 30 days without account verification requires a connection; the standalone personal workspace has no such deadline.
+An initial online connection prepares your account, assigned projects and current timer. After upgrading from an older client, open your team account online once to link the saved cache to the session. The outbox survives closing the app. Sending resumes when the server is reachable; **Settings → Synchronise** retries. An expired session may require signing in again to the same account. Do not delete app data while changes are pending. Opening a team cache after 30 days without account verification requires a connection; the standalone personal workspace has no such deadline.
 
 ![A team timer saved during an outage, shown in French](../../screenshots/16-equipe-hors-connexion.png)
 
@@ -114,7 +114,7 @@ In **Work journal → Add a note**, choose the project, work date and text. A pr
 
 ![Work journal, French example](../../screenshots/07-notes-comptes-rendus.jpg)
 
-An administrator can configure Ollama, vLLM or Claude under **Integrations**. **Prepare with AI** asks for a month, a provider and consent to send your own descriptions and notes, including private notes, to that provider. Review the private draft before approval. AI never changes the calculated time totals. Real providers require configuration and testing on your infrastructure; no paid subscription is supplied. Standalone mode supports manual notes and summaries; these AI integrations use the team server.
+An administrator can configure Ollama, vLLM or Claude under **Integrations**. In **Prepare with AI**, check the displayed address before consenting to send your descriptions and notes, including private notes. If the provider settings change, reopen the form and confirm the recipient again. Review the private draft before approval. AI never changes the calculated time totals. Configure and test your provider on your own infrastructure. In standalone mode you can write notes and summaries manually.
 
 ## 10. Monthly reports and exports
 
@@ -149,6 +149,8 @@ On smaller screens, navigation becomes a horizontal bar and tables scroll sidewa
 ## 13. Backup and troubleshooting
 
 For servers, use the [backup/restore procedure](../../../infra/backup/README.md) and [self-hosting guide](../../AUTOHEBERGEMENT.md). Keep the database and encryption key together. For standalone desktop, quit the app and copy its entire configuration folder, including `offline-*.json`, `.bak` and `connection.json`. Typical locations are `~/Library/Application Support/app.minutrel.desktop` on macOS, `%APPDATA%\app.minutrel.desktop` on Windows and `$XDG_CONFIG_HOME/app.minutrel.desktop` or `~/.config/app.minutrel.desktop` on Linux. A JSON copy is also exportable from settings; restoration through the interface is not included.
+
+After restoring a team server, members sign in again. Create new MCP or webhook tokens for the integrations you use.
 
 | Problem | Check |
 | --- | --- |

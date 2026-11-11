@@ -92,6 +92,13 @@ it('migre le schéma 1 en conservant le chronomètre, puis restaure la sauvegard
       payload: { hourlyRate },
     });
     expect(rate.statusCode).toBe(200);
+    const assistant = await app.inject({
+      method: 'POST',
+      url: '/api/v1/mcp-tokens',
+      headers,
+      payload: { name: 'Assistant de recette', scopes: ['projects.read'] },
+    });
+    expect(assistant.statusCode).toBe(200);
     const output = join(temp, 'snapshot');
     const restored = join(temp, 'restored');
     execFileSync(
@@ -107,6 +114,8 @@ it('migre le schéma 1 en conservant le chronomètre, puis restaure la sauvegard
     const restoredStore = new Store({ path: join(restored, 'minutrel.sqlite') });
     try {
       expect(restoredStore.decrypt(encrypted)).toBe('clé-fournisseur-fictive');
+      expect(restoredStore.get('SELECT COUNT(*) AS count FROM sessions')).toEqual({ count: 0 });
+      expect(restoredStore.get('SELECT COUNT(*) AS count FROM tokens')).toEqual({ count: 0 });
       expect(
         restoredStore.get(
           'SELECT amountMinor,currency FROM member_rates WHERE memberId=?',

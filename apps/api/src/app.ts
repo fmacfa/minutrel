@@ -21,6 +21,9 @@ export function createApp(
     logLevel?: 'silent' | 'error' | 'warn' | 'info';
   } = {},
 ) {
+  const trustedProxies = process.env.APP_TRUSTED_PROXIES?.split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
   const store = new Store(options);
   const app = Object.assign(
     Fastify({
@@ -36,12 +39,14 @@ export function createApp(
         : false,
       bodyLimit: 1024 * 1024,
       requestTimeout: 70000,
+      trustProxy: trustedProxies?.length ? trustedProxies : false,
     }),
     { store },
   );
   app.register(cookie);
   app.register(rateLimit, { global: false });
   const streams = new Set<() => void>();
+  const memberStreamCounts = new Map<string, number>();
   store.events.setMaxListeners(0);
   app.addHook('onRequest', async (request, reply) => {
     reply
@@ -97,8 +102,9 @@ export function createApp(
     registerTimesheets(app, store);
   });
   app.get('/api/v1/events', async (request, reply) => {
-    authenticate(store, request);
-    ensure(streams.size < 200, 'Trop de connexions simultanées.', 429);
+    const member = authenticate(store, request);
+    const memberStreams = memberStreamCounts.get(member.id) ?? 0;
+    ensure(streams.size < 200 && memberStreams < 8, 'Trop de connexions simultanées.', 429);
     reply.hijack();
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
@@ -106,33 +112,34 @@ export function createApp(
       'X-Accel-Buffering': 'no',
       'X-Content-Type-Options': 'nosniff',
     });
-    const send = () => {
-      try {
-        authenticate(store, request);
-        reply.raw.write('event: change\ndata: {}\n\n');
-      } catch {
-        close();
-      }
-    };
+    const send = () => publish('event: change\ndata: {}\n\n');
     const close = () => {
+      if (!streams.delete(close)) return;
       clearInterval(heartbeat);
       store.events.off('change', send);
-      streams.delete(close);
+      const remaining = (memberStreamCounts.get(member.id) ?? 1) - 1;
+      if (remaining) memberStreamCounts.set(member.id, remaining);
+      else memberStreamCounts.delete(member.id);
       reply.raw.end();
     };
-    const heartbeat = setInterval(() => {
+    const publish = (message: string) => {
       try {
         authenticate(store, request);
-        reply.raw.write(': heartbeat\n\n');
+        if (!reply.raw.write(message)) {
+          reply.raw.destroy();
+          close();
+        }
       } catch {
         close();
       }
-    }, 25000);
+    };
+    const heartbeat = setInterval(publish, 25000, ': heartbeat\n\n');
     heartbeat.unref();
     store.events.on('change', send);
     streams.add(close);
-    request.raw.on('close', close);
-    reply.raw.write('event: connected\ndata: {}\n\n');
+    memberStreamCounts.set(member.id, memberStreams + 1);
+    reply.raw.once('close', close);
+    publish('event: connected\ndata: {}\n\n');
   });
   app.addHook('preClose', async () => {
     for (const close of streams) close();

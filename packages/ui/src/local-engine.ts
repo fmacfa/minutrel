@@ -23,7 +23,14 @@ import {
   type LocalData,
 } from './local-core.ts';
 
-type Remote = <T>(path: string, method?: string, body?: unknown, key?: string) => Promise<T>;
+type Remote = <T>(
+  path: string,
+  method?: string,
+  body?: unknown,
+  key?: string,
+  generation?: number,
+) => Promise<T>;
+const sessionChanged = 'Le compte actif a changé. Réessayez.';
 interface Envelope {
   revision: number;
   data: LocalData | null;
@@ -35,6 +42,7 @@ export interface SyncStatus {
   conflict: string;
 }
 let personal = false;
+let generation = 0;
 let networkDown = false;
 let snapshot: LocalData | null = null;
 let syncing: Promise<void> | null = null;
@@ -44,28 +52,41 @@ export const syncStatus = (): SyncStatus => ({
   pending: snapshot?.pending.length ?? 0,
   conflict: snapshot?.conflict ?? '',
 });
-export function setMode(local: boolean) {
+export function setMode(local: boolean, activeGeneration = generation) {
+  if (generation !== activeGeneration) syncing = null;
+  generation = activeGeneration;
   personal = local;
   networkDown = false;
   snapshot = null;
 }
-async function read(local = personal): Promise<Envelope> {
-  return invoke('offline_read', { personal: local });
+async function read(local = personal, expectedGeneration = generation): Promise<Envelope> {
+  const result = await invoke<Envelope>('offline_read', {
+    personal: local,
+    generation: local ? null : expectedGeneration,
+  });
+  if (!local && generation !== expectedGeneration) throw new Error(tr(sessionChanged));
+  return result;
 }
-async function change<T>(fn: (data: LocalData) => T, notify = true, local = personal): Promise<T> {
+async function change<T>(
+  fn: (data: LocalData) => T,
+  notify = true,
+  local = personal,
+  expectedGeneration = generation,
+): Promise<T> {
   for (let i = 0; i < 12; i++) {
-    const env = await read(local);
+    const env = await read(local, expectedGeneration);
     if (!env.data)
       throw new Error(tr('Connectez-vous une première fois pour préparer le mode hors connexion.'));
     const result = fn(env.data);
     try {
       const saved = await invoke<Envelope>('offline_write', {
         personal: local,
+        generation: local ? null : expectedGeneration,
         revision: env.revision,
         data: env.data,
         notify,
       });
-      if (local === personal) snapshot = saved.data;
+      if (local === personal && generation === expectedGeneration) snapshot = saved.data;
       return result;
     } catch (e) {
       if (!String(e).includes('LOCAL_CONFLICT')) throw e;
@@ -82,12 +103,12 @@ export async function startPersonal(name = tr('Moi')) {
       data: localSpace(name, Math.floor(Date.now() / 1000)),
       notify: false,
     });
-  await invoke('set_local_mode', { local: true });
-  setMode(true);
+  const active = await invoke<number>('set_local_mode', { local: true });
+  setMode(true, active);
 }
 export async function leavePersonal() {
-  await invoke('set_local_mode', { local: false });
-  setMode(false);
+  const active = await invoke<number>('set_local_mode', { local: false });
+  setMode(false, active);
 }
 export async function pendingBackup() {
   const env = await read();
@@ -114,18 +135,19 @@ function now(data: LocalData) {
   return Math.floor(Date.now() / 1000 + data.offset);
 }
 function canFallback(e: unknown) {
-  return !(e instanceof Error && 'status' in e);
+  return !(e instanceof Error && 'status' in e) && !String(e).includes(sessionChanged);
 }
-export async function flush(remote: Remote) {
+export async function flush(remote: Remote, expectedGeneration = generation) {
+  if (generation !== expectedGeneration) throw new Error(tr(sessionChanged));
   if (personal) return;
   if (syncing) return syncing;
-  syncing = (async () => {
-    const env = await read(false);
-    if (!personal) snapshot = env.data;
+  const operation = (async () => {
+    const env = await read(false, expectedGeneration);
+    if (generation === expectedGeneration) snapshot = env.data;
     if (!env.data || env.data.conflict) return;
     const owner = env.data.session.member.id;
     for (let i = 0; i < 1000; i++) {
-      const latest = (await read(false)).data;
+      const latest = (await read(false, expectedGeneration)).data;
       if (latest?.session.member.id !== owner) return;
       const item = latest.pending[0];
       if (!item) return;
@@ -146,6 +168,7 @@ export async function flush(remote: Remote) {
                 'POST',
                 { mutationId: item.mutationId, baseVersion: item.baseVersion, entry },
                 item.mutationId,
+                expectedGeneration,
               )
             : await remote<TimeEntry>(
                 '/sync/import',
@@ -155,6 +178,7 @@ export async function flush(remote: Remote) {
                   input: { ...manualPayload(item.entry), allowOverlap: item.allowOverlap ?? false },
                 },
                 item.mutationId,
+                expectedGeneration,
               ).then((entry) => ({ entry, serverNow: entry.updatedAt }));
         await change(
           (d) => {
@@ -165,9 +189,11 @@ export async function flush(remote: Remote) {
           },
           true,
           false,
+          expectedGeneration,
         );
-        networkDown = false;
+        if (generation === expectedGeneration) networkDown = false;
       } catch (e) {
+        if (generation !== expectedGeneration) throw e;
         if (canFallback(e)) {
           networkDown = true;
           return;
@@ -181,19 +207,21 @@ export async function flush(remote: Remote) {
           },
           true,
           false,
+          expectedGeneration,
         );
         return;
       }
     }
   })().finally(() => {
-    syncing = null;
+    if (syncing === operation) syncing = null;
   });
-  return syncing;
+  syncing = operation;
+  return operation;
 }
-async function cacheGet(path: string, result: unknown) {
+async function cacheGet(path: string, result: unknown, expectedGeneration: number) {
   if (path === '/me') {
     const s = result as Session;
-    const env = await read(false);
+    const env = await read(false, expectedGeneration);
     if (!env.data) {
       const d = localSpace(s.member.name, s.serverNow);
       d.session = s;
@@ -201,11 +229,12 @@ async function cacheGet(path: string, result: unknown) {
       d.offset = s.serverNow - Date.now() / 1000;
       await invoke('offline_write', {
         personal: false,
+        generation: expectedGeneration,
         revision: env.revision,
         data: d,
         notify: false,
       });
-      snapshot = d;
+      if (generation === expectedGeneration) snapshot = d;
     } else
       await change(
         (d) => {
@@ -228,6 +257,7 @@ async function cacheGet(path: string, result: unknown) {
         },
         false,
         false,
+        expectedGeneration,
       );
   } else if (path === '/projects')
     await change(
@@ -236,6 +266,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
   else if (path === '/project-actions' || path.startsWith('/project-actions?'))
     await change(
@@ -248,6 +279,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
   else if (path === '/timer')
     await change(
@@ -264,6 +296,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
   else if (
     path.startsWith('/time-entries?') &&
@@ -283,6 +316,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
   else if (path === '/notes')
     await change(
@@ -291,6 +325,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
   else if (path === '/summaries')
     await change(
@@ -299,6 +334,7 @@ async function cacheGet(path: string, result: unknown) {
       },
       false,
       false,
+      expectedGeneration,
     );
 }
 export async function nativeRequest<T>(
@@ -307,7 +343,9 @@ export async function nativeRequest<T>(
   method = 'GET',
   input?: unknown,
   key?: string,
+  expectedGeneration = generation,
 ): Promise<T> {
+  if (generation !== expectedGeneration) throw new Error(tr(sessionChanged));
   if (personal) return personalRequest(path, method, input, key) as Promise<T>;
   if (method === 'POST' && /^\/timer\/(start|pause|resume|stop)$/.test(path)) {
     const result = await change(
@@ -326,8 +364,9 @@ export async function nativeRequest<T>(
       },
       true,
       false,
+      expectedGeneration,
     );
-    void flush(remote).catch(() => {});
+    void flush(remote, expectedGeneration).catch(() => {});
     return result as T;
   }
   if (method === 'POST' && path === '/time-entries') {
@@ -348,8 +387,9 @@ export async function nativeRequest<T>(
       },
       true,
       false,
+      expectedGeneration,
     );
-    void flush(remote).catch(() => {});
+    void flush(remote, expectedGeneration).catch(() => {});
     return result as T;
   }
   if (
@@ -357,33 +397,39 @@ export async function nativeRequest<T>(
     path.startsWith('/timesheets/') &&
     (input as { status?: string })?.status === 'submitted'
   ) {
-    await flush(remote);
-    if ((await read(false)).data?.pending.length)
+    await flush(remote, expectedGeneration);
+    if ((await read(false, expectedGeneration)).data?.pending.length)
       throw new Error(tr('Synchronisez vos temps avant de soumettre la feuille.'));
   }
   try {
     // La file part avant la lecture canonique, sans écraser un état local en attente.
     if (path === '/timer') {
-      const env = await read();
+      const env = await read(false, expectedGeneration);
       if (env.data?.pending.length) {
         snapshot = env.data;
-        void flush(remote).catch(() => {});
+        void flush(remote, expectedGeneration).catch(() => {});
         return { timer: currentTimer(env.data), serverNow: now(env.data) } as T;
       }
     }
-    const result = await remote<T>(path, method, input, key);
+    const result = await remote<T>(path, method, input, key, expectedGeneration);
+    if (generation !== expectedGeneration) {
+      if (method === 'GET') throw new Error(tr(sessionChanged));
+      return result;
+    }
     networkDown = false;
-    if (method === 'GET') await cacheGet(path, result);
-    if (path === '/timer' && (await read()).data?.pending.length) {
-      const d = (await read()).data!;
-      snapshot = d;
-      return { timer: currentTimer(d), serverNow: now(d) } as T;
+    if (method === 'GET') await cacheGet(path, result, expectedGeneration);
+    if (path === '/timer') {
+      const { data } = await read(false, expectedGeneration);
+      if (data?.pending.length) {
+        snapshot = data;
+        return { timer: currentTimer(data), serverNow: now(data) } as T;
+      }
     }
     return result;
   } catch (e) {
-    if (!canFallback(e)) throw e;
+    if (generation !== expectedGeneration || !canFallback(e)) throw e;
     networkDown = true;
-    const env = await read();
+    const env = await read(false, expectedGeneration);
     snapshot = env.data;
     if (!env.data || Date.now() / 1000 - env.data.lastOnline > 30 * 86400) throw e;
     if (method === 'GET') return cachedRequest(env.data, path) as T;
@@ -779,7 +825,11 @@ async function personalRequest(
     true,
   );
 }
-export async function importPersonal(remote: Remote, mapping: Record<string, string>) {
+export async function importPersonal(
+  remote: Remote,
+  mapping: Record<string, string>,
+  expectedGeneration = generation,
+) {
   const env = await read(true);
   if (!env.data) return 0;
   const d = env.data;
@@ -803,6 +853,7 @@ export async function importPersonal(remote: Remote, mapping: Record<string, str
         'POST',
         { mutationId: e.id, baseVersion: null, entry },
         e.id,
+        expectedGeneration,
       );
     } else
       await remote(
@@ -823,6 +874,7 @@ export async function importPersonal(remote: Remote, mapping: Record<string, str
           },
         },
         e.id,
+        expectedGeneration,
       );
     count++;
   }

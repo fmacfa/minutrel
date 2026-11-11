@@ -51,8 +51,32 @@ const ready = () => {
 };
 beforeEach(() => {
   memory.records.clear();
-  setMode(false);
+  setMode(false, 0);
   vi.setSystemTime(new Date('2026-11-06T12:00:00Z'));
+});
+it('ignore une réponse reçue après un changement de compte', async () => {
+  const current = ready();
+  memory.records.set(false, { revision: 1, data: current });
+  setMode(false, 1);
+  let complete!: () => void;
+  const response = new Promise<void>((resolve) => {
+    complete = resolve;
+  });
+  const called = vi.fn();
+  const remote = async <T>() => {
+    called();
+    await response;
+    return [] as T;
+  };
+  const pending = nativeRequest(remote, '/notes');
+  const assertion = expect(pending).rejects.toThrow('Le compte actif a changé');
+  await vi.waitFor(() => expect(called).toHaveBeenCalledTimes(1));
+  const next = ready();
+  memory.records.set(false, { revision: 1, data: next });
+  setMode(false, 2);
+  complete();
+  await assertion;
+  expect(memory.records.get(false)).toEqual({ revision: 1, data: next });
 });
 it('enregistre le taux personnel hors connexion sans le publier dans le rapport mensuel', async () => {
   await startPersonal('Alex');

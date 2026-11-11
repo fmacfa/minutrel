@@ -163,6 +163,8 @@ function GenerateForm({
   actions: Actions;
 }) {
   const [busy, setBusy] = useState(false);
+  const [providerId, setProviderId] = useState(() => providers.find((p) => p.enabled)?.id ?? '');
+  const provider = providers.find((p) => p.enabled && p.id === providerId);
   const mounted = useRef(true);
   useEffect(() => {
     mounted.current = true;
@@ -175,6 +177,7 @@ function GenerateForm({
       className="stack-form"
       onSubmit={async (e) => {
         const f = formData(e);
+        if (!provider) return;
         setBusy(true);
         try {
           if (
@@ -182,7 +185,8 @@ function GenerateForm({
               () =>
                 request('/summaries/generate', 'POST', {
                   month,
-                  providerId: val(f, 'providerId'),
+                  providerId: provider.id,
+                  providerRevision: provider.consentRevision,
                   consent: f.has('consent'),
                 }),
               tr('Brouillon préparé. Relisez-le avant de le valider.'),
@@ -202,7 +206,12 @@ function GenerateForm({
         {tr('à partir de vos descriptions de temps et de vos notes de ce mois.')}
       </p>
       <Field label={tr('Destinataire IA')}>
-        <select name="providerId" required disabled={busy}>
+        <select
+          value={providerId}
+          onChange={(e) => setProviderId(e.target.value)}
+          required
+          disabled={busy}
+        >
           {providers
             .filter((p) => p.enabled)
             .map((p) => (
@@ -212,8 +221,9 @@ function GenerateForm({
             ))}
         </select>
       </Field>
+      {provider && <p className="micro">{provider.baseUrl}</p>}
       <label className="check-row">
-        <input type="checkbox" name="consent" required disabled={busy} />
+        <input key={providerId} type="checkbox" name="consent" required disabled={busy} />
         {tr(
           'J’autorise l’envoi de mes descriptions et notes, y compris privées, au fournisseur choisi.',
         )}
@@ -225,7 +235,7 @@ function GenerateForm({
         <button className="button secondary" type="button" onClick={actions.close}>
           {busy ? tr('Fermer pendant la rédaction') : tr('Annuler')}
         </button>
-        <button className="button primary" type="submit" disabled={busy}>
+        <button className="button primary" type="submit" disabled={busy || !provider}>
           <Icon name="spark" />
           {busy ? tr('Rédaction en cours…') : tr('Préparer le brouillon')}
         </button>

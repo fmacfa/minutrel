@@ -1,6 +1,6 @@
 # Minutrel V0.1 user guides
 
-The guides cover standalone and team use, roles, projects and custom subcategories, timer and widget, manual entries and corrections, notes and summaries, reports and exports, AI/API/webhook integrations, languages, responsive layouts and troubleshooting.
+The guides cover standalone and team use, offline synchronisation, roles, projects and custom subcategories, the timer and widget, and manual entries and corrections. They also cover Gantt and workload views, hourly rates, weekly approvals, reports and exports, and AI, API and webhook integrations.
 
 - [Illustrated English guide](en/README.md)
 - [Guide français illustré](fr/README.md)

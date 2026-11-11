@@ -180,6 +180,7 @@ export interface Provider {
   model: string;
   enabled: boolean;
   hasSecret: boolean;
+  consentRevision: string;
 }
 export interface Session {
   member: Member;

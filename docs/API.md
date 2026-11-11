@@ -44,7 +44,7 @@ Un jeton MCP est différent d’une session d’application : il ouvre `/mcp` et
 | PATCH, DELETE | `/notes/{id}` | Relire/partager ou supprimer sa note |
 | GET, POST | `/summaries` | Comptes rendus personnels, création d’un brouillon manuel |
 | PATCH | `/summaries/{id}` | Texte et état `draft`/`approved`, par l’auteur |
-| POST | `/summaries/generate` | Brouillon IA personnel, fournisseur configuré et `consent: true` |
+| POST | `/summaries/generate` | Brouillon IA personnel avec `providerId`, `providerRevision` (champ `consentRevision` de `GET /providers`), `month` et `consent: true` |
 | GET | `/reports/monthly?month=AAAA-MM` | Rapport personnel ; l’administrateur peut choisir les membres |
 | POST | `/exports` | Créer un instantané CSV/PDF/ZIP ; administrateur |
 | GET | `/exports/{id}` | Télécharger son instantané encore valide ; droit administrateur revérifié |

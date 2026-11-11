@@ -27,6 +27,8 @@ struct Preferences {
     #[serde(default)]
     member_id: Option<String>,
     #[serde(default)]
+    session_hash: Option<String>,
+    #[serde(default)]
     local: bool,
     #[serde(default)]
     language: String,
@@ -38,9 +40,11 @@ struct Credentials {
     member_id: Option<String>,
     local: bool,
     language: String,
+    generation: u64,
 }
 struct NativeState {
     credentials: Mutex<Credentials>,
+    session_update: tokio::sync::Mutex<()>,
     event_task: Mutex<Option<tauri::async_runtime::JoinHandle<()>>>,
     client: reqwest::Client,
     config: PathBuf,
@@ -54,12 +58,26 @@ struct Connection {
     persistent: bool,
     widget: bool,
     local: bool,
+    generation: u64,
 }
 #[derive(Serialize)]
 struct ApiResponse {
     status: u16,
     body: String,
 }
+const SESSION_CHANGED: &str = "Le compte actif a changé. Réessayez.";
+
+fn session_changed_response() -> ApiResponse {
+    ApiResponse {
+        status: 409,
+        body: serde_json::json!({ "message": SESSION_CHANGED }).to_string(),
+    }
+}
+
+fn session_hash(token: &str) -> String {
+    format!("{:x}", Sha256::digest(token.as_bytes()))
+}
+
 fn valid_server(value: &str) -> Result<String, String> {
     let url = Url::parse(value).map_err(|_| "Adresse du serveur invalide.")?;
     let local = matches!(url.host_str(), Some("localhost" | "127.0.0.1" | "[::1]"));
@@ -85,11 +103,14 @@ fn valid_path(path: &str) -> bool {
 fn vault(server: &str) -> Result<keyring::Entry, keyring::Error> {
     keyring::Entry::new("app.minutrel.desktop", server)
 }
-fn credentials(state: &NativeState) -> Result<(String, Option<String>), String> {
+fn credentials(state: &NativeState, generation: u64) -> Result<(String, Option<String>), String> {
     let c = state
         .credentials
         .lock()
         .map_err(|_| "Session indisponible.")?;
+    if c.generation != generation || c.local {
+        return Err(SESSION_CHANGED.into());
+    }
     Ok((c.server_url.clone(), c.token.clone()))
 }
 fn abort_events(state: &NativeState) {
@@ -100,24 +121,27 @@ fn abort_events(state: &NativeState) {
     }
 }
 async fn forget(app: &AppHandle, state: &NativeState) -> Result<(), String> {
-    let (server, had_token) = {
+    let (server, saved) = {
         let mut c = state
             .credentials
             .lock()
             .map_err(|_| "Session indisponible.")?;
-        (c.server_url.clone(), c.token.take().is_some())
+        if c.token.take().is_none() {
+            return Ok(());
+        }
+        c.member_id = None;
+        c.generation += 1;
+        (c.server_url.clone(), save_preferences(state, &c))
     };
     abort_events(state);
-    if had_token {
-        let _ = tauri::async_runtime::spawn_blocking(move || {
-            if let Ok(entry) = vault(&server) {
-                let _ = entry.delete_credential();
-            }
-        })
-        .await;
-        let _ = app.emit("session-changed", ());
-    }
-    Ok(())
+    let _ = tauri::async_runtime::spawn_blocking(move || {
+        if let Ok(entry) = vault(&server) {
+            let _ = entry.delete_credential();
+        }
+    })
+    .await;
+    let _ = app.emit("session-changed", ());
+    saved
 }
 #[tauri::command]
 fn get_connection(
@@ -134,6 +158,7 @@ fn get_connection(
         persistent: c.persistent,
         widget: window.label() == "quick",
         local: c.local,
+        generation: c.generation,
     })
 }
 #[tauri::command]
@@ -143,12 +168,7 @@ async fn configure_server(
     server_url: String,
 ) -> Result<(), String> {
     let server = valid_server(server_url.trim())?;
-    let language = state
-        .credentials
-        .lock()
-        .map_err(|_| "Session indisponible.")?
-        .language
-        .clone();
+    let _update = state.session_update.lock().await;
     {
         let c = state
             .credentials
@@ -170,34 +190,26 @@ async fn configure_server(
         })
         .await
         .map_err(|_| "Le trousseau ne répond pas.")?;
-    let prefs = Preferences {
-        server_url: server.clone(),
-        member_id: None,
-        local: false,
-        language: language.clone(),
-    };
-    fs::write(
-        &state.config,
-        serde_json::to_vec(&prefs).map_err(|_| "Préférences invalides.")?,
-    )
-    .map_err(|_| "Impossible d’enregistrer l’adresse du serveur.")?;
-    *state
-        .credentials
-        .lock()
-        .map_err(|_| "Session indisponible.")? = Credentials {
-        server_url: server,
-        token,
-        persistent,
-        member_id: None,
-        local: false,
-        language,
-    };
+    {
+        let mut c = state
+            .credentials
+            .lock()
+            .map_err(|_| "Session indisponible.")?;
+        let next = Credentials {
+            server_url: server,
+            token,
+            persistent,
+            member_id: None,
+            local: false,
+            language: c.language.clone(),
+            generation: c.generation + 1,
+        };
+        save_preferences(&state, &next)?;
+        *c = next;
+    }
+    abort_events(&state);
     let _ = app.emit("session-changed", ());
     Ok(())
-}
-#[tauri::command]
-async fn clear_session(app: AppHandle, state: State<'_, NativeState>) -> Result<(), String> {
-    forget(&app, &state).await
 }
 
 #[tauri::command]
@@ -208,6 +220,7 @@ async fn api_request(
     method: String,
     body: Option<String>,
     idempotency_key: String,
+    generation: u64,
 ) -> Result<ApiResponse, String> {
     if !valid_path(&path)
         || !matches!(method.as_str(), "GET" | "POST" | "PATCH" | "DELETE")
@@ -215,8 +228,11 @@ async fn api_request(
     {
         return Err("Requête Minutrel invalide.".into());
     }
-    let (server, token) = credentials(&state)?;
-    let request_token = token.clone();
+    let (server, token) = match credentials(&state, generation) {
+        Ok(values) => values,
+        Err(error) if error == SESSION_CHANGED => return Ok(session_changed_response()),
+        Err(error) => return Err(error),
+    };
     let mut req = state
         .client
         .request(
@@ -254,17 +270,15 @@ async fn api_request(
     }
     let mut json: Value = serde_json::from_slice(&bytes)
         .map_err(|_| "Le serveur a renvoyé une réponse illisible.")?;
-    if !login {
-        let c = state
-            .credentials
-            .lock()
-            .map_err(|_| "Session indisponible.")?;
-        if c.server_url != server || c.token != request_token {
-            return Ok(ApiResponse {
-                status: 401,
-                body: "{\"message\":\"Le compte actif a changé.\"}".into(),
-            });
-        }
+    let _update = state.session_update.lock().await;
+    if state
+        .credentials
+        .lock()
+        .map_err(|_| "Session indisponible.")?
+        .generation
+        != generation
+    {
+        return Ok(session_changed_response());
     }
     if login && (200..300).contains(&status) {
         let token = json
@@ -272,6 +286,10 @@ async fn api_request(
             .and_then(|o| o.remove("token"))
             .and_then(|v| v.as_str().map(str::to_string))
             .ok_or("La session reçue est invalide.")?;
+        let member_id = json["member"]["id"]
+            .as_str()
+            .ok_or("La session reçue est invalide.")?
+            .to_string();
         let to_store = token.clone();
         let destination = server.clone();
         let persistent = tauri::async_runtime::spawn_blocking(move || {
@@ -289,8 +307,9 @@ async fn api_request(
                 .map_err(|_| "Session indisponible.")?;
             c.token = Some(token);
             c.persistent = persistent;
-            c.member_id = json["member"]["id"].as_str().map(str::to_string);
+            c.member_id = Some(member_id);
             c.local = false;
+            c.generation += 1;
             save_preferences(&state, &c)?;
         }
         let _ = app.emit("session-changed", ());
@@ -300,10 +319,19 @@ async fn api_request(
             .credentials
             .lock()
             .map_err(|_| "Session indisponible.")?;
-        c.member_id = json["member"]["id"].as_str().map(str::to_string);
-        save_preferences(&state, &c)?;
+        let member_id = json["member"]["id"]
+            .as_str()
+            .ok_or("La session reçue est invalide.")?;
+        if c.member_id.as_deref() != Some(member_id) {
+            c.member_id = Some(member_id.to_string());
+            save_preferences(&state, &c)?;
+        }
     }
-    if status == 401 || method == "POST" && path == "/api/v1/auth/logout" && status == 200 {
+    if !login && status == 401
+        || method == "POST"
+            && matches!(path.as_str(), "/api/v1/auth/logout" | "/api/v1/me/password")
+            && status == 200
+    {
         forget(&app, &state).await?;
     }
     Ok(ApiResponse {
@@ -316,13 +344,16 @@ fn save_preferences(state: &NativeState, c: &Credentials) -> Result<(), String> 
     let prefs = Preferences {
         server_url: c.server_url.clone(),
         member_id: c.member_id.clone(),
+        session_hash: c.token.as_deref().map(session_hash),
         local: c.local,
         language: c.language.clone(),
     };
+    let temporary = state.config.with_extension("tmp");
     fs::write(
-        &state.config,
+        &temporary,
         serde_json::to_vec(&prefs).map_err(|_| "Préférences invalides.")?,
     )
+    .and_then(|_| fs::rename(temporary, &state.config))
     .map_err(|_| "Impossible d’enregistrer les préférences.".into())
 }
 #[derive(Serialize, Deserialize)]
@@ -330,7 +361,12 @@ struct LocalEnvelope {
     revision: u64,
     data: Value,
 }
-fn offline_path(state: &NativeState, personal: bool) -> Result<PathBuf, String> {
+fn offline_path(
+    state: &NativeState,
+    personal: bool,
+    generation: Option<u64>,
+    data: Option<&Value>,
+) -> Result<PathBuf, String> {
     let c = state
         .credentials
         .lock()
@@ -338,8 +374,16 @@ fn offline_path(state: &NativeState, personal: bool) -> Result<PathBuf, String> 
     let scope = if personal {
         "personal".to_string()
     } else {
+        if generation != Some(c.generation) || c.local {
+            return Err(SESSION_CHANGED.into());
+        }
         if c.token.is_none() {
             return Err("Reconnectez-vous pour ouvrir cet espace d’équipe.".into());
+        }
+        if let Some(data) = data {
+            if data["session"]["member"]["id"].as_str() != c.member_id.as_deref() {
+                return Err(SESSION_CHANGED.into());
+            }
         }
         format!(
             "{}:{}",
@@ -383,30 +427,26 @@ fn read_local_file(path: &Path) -> Result<LocalEnvelope, String> {
     })
 }
 #[tauri::command]
-fn offline_read(state: State<'_, NativeState>, personal: bool) -> Result<LocalEnvelope, String> {
+fn offline_read(
+    state: State<'_, NativeState>,
+    personal: bool,
+    generation: Option<u64>,
+) -> Result<LocalEnvelope, String> {
     let _lock = state.offline_lock.lock().map_err(|_| "Cache occupé.")?;
-    read_local_file(&offline_path(&state, personal)?)
+    read_local_file(&offline_path(&state, personal, generation, None)?)
 }
 #[tauri::command]
 fn offline_write(
     app: AppHandle,
     state: State<'_, NativeState>,
     personal: bool,
+    generation: Option<u64>,
     revision: u64,
     data: Value,
     notify: bool,
 ) -> Result<LocalEnvelope, String> {
     let _lock = state.offline_lock.lock().map_err(|_| "Cache occupé.")?;
-    if !personal {
-        let c = state
-            .credentials
-            .lock()
-            .map_err(|_| "Session indisponible.")?;
-        if data["session"]["member"]["id"].as_str() != c.member_id.as_deref() {
-            return Err("Le compte actif a changé. Réessayez.".into());
-        }
-    }
-    let path = offline_path(&state, personal)?;
+    let path = offline_path(&state, personal, generation, Some(&data))?;
     let old = read_local_file(&path)?;
     if old.revision != revision {
         return Err("LOCAL_CONFLICT".into());
@@ -460,22 +500,32 @@ fn offline_write(
     Ok(result)
 }
 #[tauri::command]
-fn set_local_mode(
+async fn set_local_mode(
     app: AppHandle,
     state: State<'_, NativeState>,
     local: bool,
-) -> Result<(), String> {
-    {
+) -> Result<u64, String> {
+    let _update = state.session_update.lock().await;
+    let generation = {
         let mut c = state
             .credentials
             .lock()
             .map_err(|_| "Session indisponible.")?;
+        if c.local == local {
+            return Ok(c.generation);
+        }
+        let previous = c.local;
         c.local = local;
-        save_preferences(&state, &c)?;
-    }
+        if let Err(error) = save_preferences(&state, &c) {
+            c.local = previous;
+            return Err(error);
+        }
+        c.generation += 1;
+        c.generation
+    };
     abort_events(&state);
     let _ = app.emit("session-changed", ());
-    Ok(())
+    Ok(generation)
 }
 #[tauri::command]
 async fn save_local_file(filename: String, bytes: Vec<u8>) -> Result<(), String> {
@@ -497,7 +547,14 @@ async fn save_local_file(filename: String, bytes: Vec<u8>) -> Result<(), String>
         .map_err(|_| "Impossible d’enregistrer le fichier local.".into())
 }
 #[tauri::command]
-async fn watch_events(app: AppHandle, state: State<'_, NativeState>) -> Result<(), String> {
+async fn watch_events(
+    app: AppHandle,
+    state: State<'_, NativeState>,
+    generation: u64,
+) -> Result<(), String> {
+    let _update = state.session_update.lock().await;
+    let (server, token) = credentials(&state, generation)?;
+    let token = token.ok_or("Connectez-vous pour synchroniser le chronomètre.")?;
     let mut task = state
         .event_task
         .lock()
@@ -505,8 +562,6 @@ async fn watch_events(app: AppHandle, state: State<'_, NativeState>) -> Result<(
     if task.as_ref().is_some_and(|t| !t.inner().is_finished()) {
         return Ok(());
     }
-    let (server, token) = credentials(&state)?;
-    let token = token.ok_or("Connectez-vous pour synchroniser le chronomètre.")?;
     let client = state.client.clone();
     *task = Some(tauri::async_runtime::spawn(async move {
         let mut wait = 2;
@@ -554,11 +609,12 @@ async fn download_file(
     state: State<'_, NativeState>,
     path: String,
     filename: String,
+    generation: u64,
 ) -> Result<(), String> {
     if !valid_path(&path) || filename.len() > 120 || filename.contains(['/', '\\', '\r', '\n']) {
         return Err("Téléchargement invalide.".into());
     }
-    let (server, token) = credentials(&state)?;
+    let (server, token) = credentials(&state, generation)?;
     let token = token.ok_or("Reconnectez-vous pour télécharger ce fichier.")?;
     let Some(file) = rfd::AsyncFileDialog::new()
         .set_file_name(&filename)
@@ -568,6 +624,15 @@ async fn download_file(
         return Ok(());
     };
     let target = file.path();
+    if state
+        .credentials
+        .lock()
+        .map_err(|_| "Session indisponible.")?
+        .generation
+        != generation
+    {
+        return Err(SESSION_CHANGED.into());
+    }
     let response = state
         .client
         .get(format!("{server}{path}"))
@@ -613,10 +678,15 @@ async fn download_file(
             .await
             .map_err(|_| "Impossible de finaliser le fichier.")?;
         drop(output);
-        if cfg!(target_os = "windows") && target.exists() {
-            tokio::fs::remove_file(target)
-                .await
-                .map_err(|_| "Impossible de remplacer le fichier sélectionné.")?;
+        let _update = state.session_update.lock().await;
+        if state
+            .credentials
+            .lock()
+            .map_err(|_| "Session indisponible.")?
+            .generation
+            != generation
+        {
+            return Err(SESSION_CHANGED.into());
         }
         tokio::fs::rename(&temporary, target)
             .await
@@ -769,13 +839,15 @@ fn main() {
                     server_url: server,
                     token: None,
                     persistent: true,
-                    member_id: prefs.as_ref().and_then(|p| p.member_id.clone()),
+                    member_id: None,
                     local: prefs.as_ref().is_some_and(|p| p.local),
                     language: prefs
                         .as_ref()
                         .map(|p| p.language.clone())
                         .unwrap_or_default(),
+                    generation: 0,
                 }),
+                session_update: tokio::sync::Mutex::new(()),
                 event_task: Mutex::new(None),
                 config,
                 offline_lock: Mutex::new(()),
@@ -811,6 +883,7 @@ fn main() {
                 .is_some_and(|p| !p.local && p.member_id.is_some())
             {
                 let handle = app.handle().clone();
+                let identity = prefs.and_then(|p| p.member_id.zip(p.session_hash));
                 tauri::async_runtime::spawn(async move {
                     let lookup_server = restore_server.clone();
                     let (token, persistent) =
@@ -825,10 +898,17 @@ fn main() {
                         .await
                         .unwrap_or((None, false));
                     let state = handle.state::<NativeState>();
+                    let _update = state.session_update.lock().await;
                     if let Ok(mut c) = state.credentials.lock() {
-                        if c.server_url == restore_server && !c.local && c.token.is_none() {
+                        if c.generation == 0 && c.server_url == restore_server && !c.local {
+                            c.member_id = identity
+                                .filter(|(_, hash)| {
+                                    token.as_deref().is_some_and(|t| session_hash(t) == *hash)
+                                })
+                                .map(|(member_id, _)| member_id);
                             c.token = token;
                             c.persistent = persistent;
+                            c.generation += 1;
                             drop(c);
                             let _ = handle.emit("session-changed", ());
                         }
@@ -848,7 +928,6 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             get_connection,
             configure_server,
-            clear_session,
             api_request,
             watch_events,
             download_file,
@@ -895,6 +974,33 @@ mod tests {
             assert!(!valid_path(path));
         }
     }
+    #[test]
+    fn team_cache_path_requires_current_connection() {
+        let state = NativeState {
+            credentials: Mutex::new(Credentials {
+                server_url: "https://example.test".into(),
+                token: Some("test-session".into()),
+                persistent: false,
+                member_id: Some("test-member".into()),
+                local: false,
+                language: "fr".into(),
+                generation: 2,
+            }),
+            session_update: tokio::sync::Mutex::new(()),
+            event_task: Mutex::new(None),
+            client: reqwest::Client::new(),
+            config: PathBuf::from("connection.json"),
+            offline_lock: Mutex::new(()),
+        };
+        let team = offline_path(&state, false, Some(2), None).unwrap();
+        let personal = offline_path(&state, true, None, None).unwrap();
+        assert_ne!(team, personal);
+        assert_eq!(
+            offline_path(&state, false, Some(1), None).unwrap_err(),
+            SESSION_CHANGED
+        );
+    }
+
     #[test]
     fn recovers_previous_local_state_and_rejects_corrupted_files() {
         let dir = std::env::temp_dir().join(format!("minutrel-journal-{}", std::process::id()));

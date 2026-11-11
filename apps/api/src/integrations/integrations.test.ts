@@ -4,7 +4,7 @@ import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { createApp } from '../app.ts';
 import { callProvider, validateProviderUrl, boundedJson, SerialQueue } from './ai.ts';
-import type { Project, Member, TimeEntry } from '@minutrel/contracts';
+import type { Project, Member, TimeEntry, Provider } from '@minutrel/contracts';
 let app: ReturnType<typeof createApp>;
 let token: string;
 let member: Member;
@@ -70,7 +70,7 @@ describe('Connexions IA facultatives', () => {
     expect(() => validateProviderUrl('http://ollama/v1', 'anthropic')).toThrow();
   });
   it('chiffre une clé sans jamais la renvoyer et laisse les heures intactes', async () => {
-    const added = await call<{ id: string; hasSecret: boolean }>('POST', '/providers', {
+    const added = await call<Provider>('POST', '/providers', {
       name: 'Ollama local',
       kind: 'openai-compatible',
       baseUrl: 'http://ollama:11434/v1',
@@ -104,7 +104,12 @@ describe('Connexions IA facultatives', () => {
     const generated = await call<{ id: string; status: string; text: string; entryIds: string[] }>(
       'POST',
       '/summaries/generate',
-      { providerId: added.data.id, month: '2026-11', consent: true },
+      {
+        providerId: added.data.id,
+        providerRevision: added.data.consentRevision,
+        month: '2026-11',
+        consent: true,
+      },
     );
     expect(generated.code, generated.raw).toBe(200);
     expect(generated.data.status).toBe('draft');
@@ -136,6 +141,26 @@ describe('Connexions IA facultatives', () => {
       enabled: true,
     });
     expect(badChange.code).toBe(400);
+    const renamed = await call<Provider>('PATCH', `/providers/${added.data.id}`, {
+      name: 'Ollama local',
+      kind: 'openai-compatible',
+      baseUrl: 'http://ollama:11434/v1',
+      model: 'modele-test-2',
+      enabled: true,
+    });
+    expect(renamed.code).toBe(200);
+    expect(renamed.data.consentRevision).not.toBe(added.data.consentRevision);
+    expect(
+      (
+        await call('POST', '/summaries/generate', {
+          providerId: added.data.id,
+          providerRevision: added.data.consentRevision,
+          month: '2026-11',
+          consent: true,
+        })
+      ).code,
+    ).toBe(409);
+    expect(mockFetch).toHaveBeenCalledTimes(1);
     const disable = await call('PATCH', `/providers/${added.data.id}`, {
       name: 'Ollama local',
       kind: 'openai-compatible',
@@ -149,6 +174,7 @@ describe('Connexions IA facultatives', () => {
       (
         await call('POST', '/summaries/generate', {
           providerId: added.data.id,
+          providerRevision: added.data.consentRevision,
           month: '2026-11',
           consent: true,
         })
@@ -223,7 +249,10 @@ describe('Connexions IA facultatives', () => {
 });
 describe('MCP réel via le SDK officiel', () => {
   it('n’expose que les outils autorisés et conserve les brouillons privés', async () => {
-    await call('POST', '/projects', { name: 'Projet non affecté', memberIds: [] });
+    const unassigned = await call<Project>('POST', '/projects', {
+      name: 'Projet non affecté',
+      memberIds: [],
+    });
     const created = await call<{ id: string; token: string }>('POST', '/mcp-tokens', {
       name: 'Codex',
       scopes: ['projects.read', 'time.read_own', 'work.read_own', 'work.draft_own'],
@@ -266,6 +295,15 @@ describe('MCP réel via le SDK officiel', () => {
         },
       });
       expect(draft.isError).not.toBe(true);
+      const outsideScope = await client.callTool({
+        name: 'minutrel_create_work_note_draft',
+        arguments: {
+          projectId: unassigned.data.id,
+          workDate: '2026-11-05',
+          text: 'Brouillon sur un projet hors périmètre.',
+        },
+      });
+      expect(outsideScope.isError).toBe(true);
       const notes = await call<{ shared: boolean; source: string }[]>('GET', '/notes');
       expect(notes.data).toHaveLength(1);
       expect(notes.data[0]).toMatchObject({ shared: false, source: 'assistant' });

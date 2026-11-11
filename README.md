@@ -56,7 +56,7 @@ Open **http://127.0.0.1:8080**. By default, the service is exposed only on the h
 
 ## Desktop app and offline work
 
-For a team, enter the server address at sign-in. Use the same account to share projects, entries and permissions with the web app.
+For a team, enter the server address and apply it with the arrow next to the field before signing in. Use the same account to share projects, entries and permissions with the web app.
 
 To work independently, choose **Use on this computer**. Create projects, record time, write notes and export locally, without a server or online account. You can later choose **Open a team workspace** and explicitly map personal projects before transferring completed time entries.
 
@@ -90,7 +90,7 @@ Real AI providers and credentials must be configured on your infrastructure. Ada
 
 ## Project planning and weekly timesheets
 
-The development version adds project time budgets, deadlines, actions, and Gantt and workload views for weeks, months, years or custom dates. Optional hourly rates show estimated amounts in the workload. Planning works in team workspaces and in the standalone desktop workspace. Team members can submit weekly timesheets, managers can approve or return them, and administrators can export a month of approved time in CSV, PDF or ZIP. See the [illustrated planning and timesheet guide](docs/guide/en/README.md#14-project-planning-and-timesheets).
+V0.1 includes project time budgets, deadlines, actions, and Gantt and workload views for weeks, months, years or custom dates. Optional hourly rates show estimated amounts in the workload. Planning works in team workspaces and in the standalone desktop workspace. Team members can submit weekly timesheets, managers can approve or return them, and administrators can export a month of approved time in CSV, PDF or ZIP. See the [illustrated planning and timesheet guide](docs/guide/en/README.md#14-project-planning-and-timesheets).
 
 ## Checks and backups
 

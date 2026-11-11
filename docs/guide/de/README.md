@@ -30,7 +30,7 @@ Die Daten werden im privaten Anwendungsordner gespeichert; der vorherige Stand b
 
 ## 3. Einem Team beitreten und Rollen verstehen
 
-Der Administrator teilt Ihnen die HTTPS-Adresse des Servers und Ihr Konto mit. Öffnen Sie diese Adresse im Browser. Wählen Sie am Computer **Teamarbeitsbereich öffnen**, tragen Sie dieselbe Adresse ein und melden Sie sich mit demselben Konto an. HTTP ist nur für einen Server auf diesem Computer zulässig.
+Der Administrator teilt Ihnen die HTTPS-Adresse des Servers und Ihr Konto mit. Öffnen Sie diese Adresse im Browser. Wählen Sie am Computer **Teamarbeitsbereich öffnen**, tragen Sie dieselbe Adresse ein und übernehmen Sie sie über den Pfeil neben dem Eingabefeld. Melden Sie sich anschließend mit demselben Konto an. HTTP ist nur für einen Server auf diesem Computer zulässig.
 
 | Rolle | Rechte in V0.1 |
 | --- | --- |
@@ -78,7 +78,7 @@ Im Browser bleibt beim Navigieren eine kompakte Leiste erreichbar. Ein separates
 | Offline | Zeitmessung und neue manuelle Einträge bleiben am Computer möglich; Teamverwaltung benötigt den Server |
 | Konflikt zu lösen | Server lehnt Version, Zuweisung oder Überschneidung ab; lokale Vorschläge bleiben erhalten |
 
-Die erste Onlineanmeldung bereitet Konto, Projekte und laufende Zeitmessung vor. Die Warteschlange bleibt nach dem Schließen erhalten. Sobald der Server erreichbar ist, werden die Übertragungen fortgesetzt; **Einstellungen → Synchronisieren** versucht es erneut. Eine abgelaufene Sitzung kann eine erneute Anmeldung mit demselben Konto verlangen. Löschen Sie keine Anwendungsdaten, solange Einträge ausstehen. Nach 30 Tagen ohne Kontoprüfung erfordert das Öffnen einer Teamkopie eine Verbindung; der persönliche Arbeitsbereich hat diese Frist nicht.
+Die erste Onlineanmeldung bereitet Konto, Projekte und laufende Zeitmessung vor. Öffnen Sie nach dem Update eines älteren Clients Ihr Teamkonto einmal online, um den lokalen Cache mit der Sitzung zu verknüpfen. Die Warteschlange bleibt nach dem Schließen erhalten. Sobald der Server erreichbar ist, werden die Übertragungen fortgesetzt; **Einstellungen → Synchronisieren** versucht es erneut. Eine abgelaufene Sitzung kann eine erneute Anmeldung mit demselben Konto verlangen. Löschen Sie keine Anwendungsdaten, solange Einträge ausstehen. Nach 30 Tagen ohne Kontoprüfung erfordert das Öffnen einer Teamkopie eine Verbindung; der persönliche Arbeitsbereich hat diese Frist nicht.
 
 ![Während einer Unterbrechung gespeicherte Teamzeit, französische Oberfläche](../../screenshots/16-equipe-hors-connexion.png)
 
@@ -114,7 +114,7 @@ Unter **Arbeitsjournal → Notiz hinzufügen** wählen Sie Projekt, Datum und Te
 
 ![Arbeitsjournal, französisches Beispiel](../../screenshots/07-notes-comptes-rendus.jpg)
 
-Ein Administrator kann unter **Integrationen** Ollama, vLLM oder Claude konfigurieren. **Mit KI vorbereiten** fragt nach Monat, Anbieter und Ihrer Zustimmung, eigene Beschreibungen und Notizen einschließlich privater Notizen dorthin zu senden. Prüfen Sie den privaten Entwurf vor der Freigabe. KI ändert keine berechneten Zeitsummen. Reale Anbieter müssen auf Ihrer Infrastruktur konfiguriert und geprüft werden; ein Abonnement ist nicht enthalten. Im eigenständigen Modus stehen manuelle Notizen und Arbeitsberichte zur Verfügung; diese KI-Integrationen verwenden den Teamserver.
+Ein Administrator kann unter **Integrationen** Ollama, vLLM oder Claude konfigurieren. Prüfen Sie unter **Mit KI vorbereiten** die angezeigte Adresse, bevor Sie der Übermittlung Ihrer Beschreibungen und Notizen einschließlich privater Notizen zustimmen. Wenn sich die Anbietereinstellungen ändern, öffnen Sie das Formular erneut und bestätigen Sie den Empfänger. Prüfen Sie den privaten Entwurf vor der Freigabe. KI ändert keine berechneten Zeitsummen. Im eigenständigen Modus können Sie Notizen und Arbeitsberichte manuell verfassen.
 
 ## 10. Monatsberichte und Exporte
 
@@ -149,6 +149,8 @@ Unter **Einstellungen** finden Sie Passwort, Serveradresse und als Administrator
 ## 13. Sichern und Fehler beheben
 
 Für Server gelten [Sicherung/Wiederherstellung](../../../infra/backup/README.md) und [Selbsthosting](../../AUTOHEBERGEMENT.md). Sichern Sie Datenbank und Schlüssel zusammen. Für den eigenständigen Client beenden Sie die Anwendung und kopieren den gesamten Konfigurationsordner einschließlich `offline-*.json`, `.bak` und `connection.json`. Übliche Pfade: `~/Library/Application Support/app.minutrel.desktop` unter macOS, `%APPDATA%\app.minutrel.desktop` unter Windows und `$XDG_CONFIG_HOME/app.minutrel.desktop` oder `~/.config/app.minutrel.desktop` unter Linux. Eine JSON-Kopie lässt sich zusätzlich in den Einstellungen exportieren; die Wiederherstellung über die Oberfläche ist noch nicht enthalten.
+
+Nach der Wiederherstellung des Teamservers melden sich die Mitglieder erneut an. Erstellen Sie für die verwendeten Integrationen neue MCP- oder Webhook-Tokens.
 
 | Problem | Prüfung |
 | --- | --- |

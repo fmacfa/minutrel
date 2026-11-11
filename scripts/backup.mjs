@@ -1,6 +1,17 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { DatabaseSync, backup } from 'node:sqlite';
-import { mkdir, copyFile, writeFile, readFile, readdir, chmod, lstat } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import {
+  mkdir,
+  mkdtemp,
+  copyFile,
+  writeFile,
+  readFile,
+  readdir,
+  chmod,
+  lstat,
+  rm,
+} from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 
 const args = process.argv.slice(2);
@@ -18,23 +29,44 @@ if (source) {
   await mkdir(data, { recursive: true, mode: 0o700 });
   if ((await readdir(data)).length)
     throw new Error('La restauration exige un dossier de données vide et un serveur arrêté.');
-  for (const name of ['minutrel.sqlite', 'master.key', 'setup-token']) {
-    const file = join(archive, name);
-    try {
-      const info = await lstat(file);
-      if (!info.isFile() || info.isSymbolicLink())
-        throw new Error('Fichier de sauvegarde invalide.');
-      await copyFile(file, join(data, name));
-      await chmod(join(data, name), 0o600);
-    } catch (error) {
-      if (error.code !== 'ENOENT' || name === 'minutrel.sqlite') throw error;
+  const staging = await mkdtemp(join(data, '.restore-'));
+  const staged = [];
+  const published = [];
+  try {
+    for (const name of ['master.key', 'setup-token', 'minutrel.sqlite']) {
+      const file = join(archive, name);
+      try {
+        const info = await lstat(file);
+        if (!info.isFile()) throw new Error('Fichier de sauvegarde invalide.');
+        await copyFile(file, join(staging, name));
+        await chmod(join(staging, name), 0o600);
+        staged.push(name);
+      } catch (error) {
+        if (error.code !== 'ENOENT' || name === 'minutrel.sqlite') throw error;
+      }
     }
+    const database = new DatabaseSync(join(staging, 'minutrel.sqlite'));
+    try {
+      if (database.prepare('PRAGMA integrity_check').get().integrity_check !== 'ok')
+        throw new Error('Le contrôle de la base restaurée a échoué.');
+      database.exec(
+        'PRAGMA journal_mode=DELETE; BEGIN; DELETE FROM sessions; DELETE FROM tokens; COMMIT;',
+      );
+    } finally {
+      database.close();
+    }
+    for (const name of staged) {
+      const destination = join(data, name);
+      await copyFile(join(staging, name), destination, constants.COPYFILE_EXCL);
+      published.push(destination);
+      await chmod(destination, 0o600);
+    }
+  } catch (error) {
+    await Promise.all(published.map((file) => rm(file, { force: true })));
+    throw error;
+  } finally {
+    await rm(staging, { recursive: true, force: true });
   }
-  const database = new DatabaseSync(join(data, 'minutrel.sqlite'), { readOnly: true });
-  const result = database.prepare('PRAGMA integrity_check').get();
-  database.close();
-  if (result.integrity_check !== 'ok')
-    throw new Error('Le contrôle de la base restaurée a échoué.');
   console.log(`Restauration vérifiée : ${data}`);
 } else {
   const output = resolve(

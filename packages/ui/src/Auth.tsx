@@ -23,9 +23,10 @@ export function Auth({
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState('');
   const [server, setServer] = useState(connection.serverUrl);
+  const serverChanged = native && server.trim().replace(/\/$/, '') !== connection.serverUrl;
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     const f = formData(event);
-    if (busy) return;
+    if (busy || serverChanged) return;
     setBusy(true);
     setProblem('');
     try {
@@ -42,7 +43,9 @@ export function Auth({
             }
           : {}),
       };
-      signedIn(await request<Session>(setup ? '/setup' : '/auth/login', 'POST', data));
+      const session = await request<Session>(setup ? '/setup' : '/auth/login', 'POST', data);
+      if (native) await reload();
+      else signedIn(session);
     } catch (e) {
       setProblem(e instanceof Error ? e.message : tr('Connexion impossible.'));
     } finally {
@@ -165,7 +168,12 @@ export function Auth({
             </div>
           ) : (
             <form onSubmit={(e) => void submit(e)} className="stack-form">
-              <fieldset disabled={busy}>
+              {serverChanged && (
+                <p className="micro">
+                  {tr('Appliquez l’adresse du serveur avant de vous connecter.')}
+                </p>
+              )}
+              <fieldset disabled={busy || serverChanged}>
                 {setup && (
                   <>
                     <Field label={tr('Nom de l’espace')}>

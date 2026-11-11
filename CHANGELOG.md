@@ -7,6 +7,9 @@
 - Set an optional hourly rate per person and see estimated amounts in the workload view. Team rates and amounts are restricted to administrators. Standalone users can set a personal rate offline.
 - Add weekly team timesheet submission, approval and return for correction. Lock affected time entries while submitted or approved and filter monthly CSV, PDF and ZIP exports to approved time.
 - Migrate server SQLite databases to schema 3 automatically and include actions, budgets and timesheets in workspace exports.
+- Keep desktop requests and offline work tied to the active server and account. Open an existing team account online once after upgrading the client.
+- Show the AI recipient address before consent, apply project assignments to personal MCP tools and renew team access after restoring a server backup.
+- Update the illustrated English, French and German guides for planning, time approval, team sign-in and recovery.
 - Make GitHub English first: main README, contribution and security guidance, issue/PR templates and workflow labels. Retain the French README and all three user guides.
 - Present the existing optional project task level as custom subcategories. New projects have none; the creation input is empty, with user-defined names and no presets.
 - Retain the chosen subcategory and work description in timer/manual entries and exports. Add a `subcategory` column to local CSV exports and show the subcategory in local PDFs. Server CSV headers now say Subcategory/Sous-catégorie/Unterkategorie; API fields remain `tasks`, `taskId` and `taskName`.

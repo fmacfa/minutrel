@@ -14,7 +14,7 @@ Le chemin dépend d’une empreinte SHA-256 stable du serveur et du membre ; le 
 
 ## Compte d’équipe et coupures
 
-La première connexion prépare le compte, les projets autorisés et le temps courant. En mode relié, toute commande de chronomètre et toute nouvelle saisie manuelle est persistée dans une file locale avant confirmation. La synchronisation conserve les segments et calcule les secondes côté serveur. Un accusé déjà reçu est reconnu de nouveau sans réécriture ; les reçus de synchronisation ne sont pas purgés avec l’idempotence REST courante de 30 jours.
+La première connexion prépare le compte, les projets autorisés et le temps courant. Après une mise à jour depuis un ancien client, ouvrir une fois le compte d’équipe en ligne pour relier le cache à la session. Les journaux locaux sont conservés. En mode relié, toute commande de chronomètre et toute nouvelle saisie manuelle est persistée dans une file locale avant confirmation. La synchronisation conserve les segments et calcule les secondes côté serveur. Un accusé déjà reçu est reconnu de nouveau sans réécriture ; les reçus de synchronisation ne sont pas purgés avec l’idempotence REST courante de 30 jours.
 
 L’horloge du client est ajustée par la dernière heure reçue du serveur. Un recul de l’horloge bloque une nouvelle transition ; le serveur refuse aussi des dates trop éloignées dans le futur. Les heures de travail ne sont ni arrondies à la minute ni inventées par un assistant. Les projets, comptes, corrections de temps serveur et intégrations nécessitent la connexion ; la V0.1 ne synchronise pas hors connexion toutes les entités de gestion.
 

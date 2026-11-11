@@ -33,7 +33,7 @@ Le serveur accepte seulement les hôtes de `APP_AI_ALLOWED_HOSTS` et ne suit pas
 
 ## Générer un compte rendu
 
-Le membre choisit le mois et le fournisseur dans **Le fil du travail**. Le formulaire explique que ses descriptions et notes, y compris privées, seront envoyées au destinataire choisi, puis demande son accord explicite. Les entrées d’autres membres ne sont pas jointes.
+Le membre choisit le mois et le fournisseur dans **Le fil du travail**. Le formulaire affiche l’adresse du destinataire et demande l’accord explicite du membre pour y envoyer ses descriptions et notes, y compris privées. Si le profil du fournisseur change, le membre rouvre le formulaire pour confirmer le destinataire. Les entrées d’autres membres ne sont pas jointes.
 
 Le texte reçu devient un brouillon privé. L’auteur peut le corriger et le valider pour le rapport. Les références des temps sources sont conservées ; les chiffres restent calculés séparément. Les descriptions sont traitées comme des données, et aucun outil n’est fourni au moteur de rédaction pour exécuter leurs éventuelles instructions.
 

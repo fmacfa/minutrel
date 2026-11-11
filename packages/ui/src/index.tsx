@@ -2,7 +2,6 @@
 import { t as tr, locale } from './i18n.ts';
 import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { invoke } from '@tauri-apps/api/core';
 import type {
   Member,
   MonthlyReport,
@@ -117,6 +116,7 @@ export function App() {
   const serverOffset = useRef(0);
   const busy = useRef(false);
   const generation = useRef(0);
+  const bootRevision = useRef(0);
   const refreshing = useRef(false);
   const reloadNeeded = useRef(false);
   const scheduled = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -129,7 +129,6 @@ export function App() {
     setModal(null);
     setNotice(null);
     setPage('dashboard');
-    if (native) void invoke('clear_session');
   }, []);
   const signedIn = (s: Session) => {
     generation.current++;
@@ -140,18 +139,23 @@ export function App() {
     setBootError('');
   };
   const boot = useCallback(async () => {
+    const stamp = ++bootRevision.current;
+    generation.current++;
     setBootError('');
     setReady(false);
     try {
       const c = await connection();
+      if (stamp !== bootRevision.current) return;
       setConn(c);
       const initial = await request<{ required: boolean }>('/setup');
+      if (stamp !== bootRevision.current) return;
       setSetup(initial.required);
       if (!initial.required) {
         try {
           const s = await request<Session>('/me');
-          signedIn(s);
+          if (stamp === bootRevision.current) signedIn(s);
         } catch (e) {
+          if (stamp !== bootRevision.current) return;
           if (!(e instanceof ApiError && e.status === 401)) throw e;
           setSession(null);
           setData(emptyData);
@@ -159,11 +163,12 @@ export function App() {
         }
       }
     } catch (e) {
+      if (stamp !== bootRevision.current) return;
       setBootError(
         e instanceof Error ? e.message : tr('Le serveur est indisponible. Vérifiez son adresse.'),
       );
     } finally {
-      setReady(true);
+      if (stamp === bootRevision.current) setReady(true);
     }
   }, []);
   useEffect(() => {
@@ -308,7 +313,7 @@ export function App() {
       stop?.();
       if (scheduled.current) clearTimeout(scheduled.current);
     };
-  }, [session?.member.id, refresh]);
+  }, [session?.member.id, conn.generation, refresh]);
   useEffect(() => {
     if (!notice || notice.error) return;
     const t = setTimeout(() => setNotice(null), 6500);

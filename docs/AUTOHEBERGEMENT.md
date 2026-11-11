@@ -43,6 +43,8 @@ Puis appliquer la configuration :
 docker compose up -d
 ```
 
+Pour que la limite des tentatives de connexion utilise l’adresse de chaque client, renseigner `APP_TRUSTED_PROXIES` avec les adresses IP des proxys effectivement vus par le serveur. Pour Node et Caddy sur le même hôte en IPv4, c’est généralement `127.0.0.1`. Avec Compose, vérifier l’adresse du proxy ou de la passerelle hôte sur le réseau du conteneur (par exemple avec `docker network inspect minutrel_default`). Le proxy d’entrée doit définir `X-Forwarded-For` à partir de la connexion du client. Garder le port Minutrel accessible uniquement au proxy ou à la machine locale. [Comportement des en-têtes avec Caddy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy#defaults).
+
 Le proxy doit conserver le `Host` public et laisser passer `/api/`, `/mcp` et `/hooks/`. Les événements SSE demandent l’absence de buffering et un délai de lecture long. Un exemple nginx est fourni dans [infra/docker/nginx.conf](../infra/docker/nginx.conf).
 
 Chaque membre ouvre l’adresse HTTPS dans son navigateur et la saisit dans le client ordinateur. Le client natif accepte HTTP uniquement pour `localhost`, `127.0.0.1` ou `::1` ; une instance sur un autre ordinateur utilise HTTPS avec un certificat reconnu par le système.
@@ -54,6 +56,7 @@ Si le proxy est lui-même conteneurisé, le relier au réseau de l’application
 | Variable | Usage |
 | --- | --- |
 | `APP_PUBLIC_URL` | Origine publique exacte autorisée pour les écritures du navigateur |
+| `APP_TRUSTED_PROXIES` | Adresses IP des proxys de confiance, séparées par des virgules. Vide pour un accès direct |
 | `APP_SECURE_COOKIES` | `true` derrière HTTPS ; `false` uniquement pour l’essai HTTP local |
 | `APP_DATA_DIR` | Dossier persistant ; fixé à `/app/data` dans l’image |
 | `APP_SETUP_TOKEN` | Remplace le secret initial généré automatiquement, si l’exploitant le fournit |

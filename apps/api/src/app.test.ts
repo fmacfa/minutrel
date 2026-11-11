@@ -878,6 +878,32 @@ describe('Saisies et rapports', () => {
 });
 
 describe('Synchronisation et limites HTTP', () => {
+  it('identifie le client derrière un proxy de confiance configuré', async () => {
+    const { vi } = await import('vitest');
+    vi.stubEnv('APP_TRUSTED_PROXIES', '192.0.2.1');
+    const proxied = createApp({ path: ':memory:' });
+    try {
+      const ips: string[] = [];
+      proxied.addHook('onRequest', async (request) => {
+        ips.push(request.ip);
+      });
+      const first = await proxied.inject({
+        url: '/api/v1/health/live',
+        remoteAddress: '192.0.2.1',
+        headers: { 'x-forwarded-for': '203.0.113.1' },
+      });
+      const second = await proxied.inject({
+        url: '/api/v1/health/live',
+        remoteAddress: '192.0.2.1',
+        headers: { 'x-forwarded-for': '203.0.113.2' },
+      });
+      expect([first.statusCode, second.statusCode]).toEqual([200, 200]);
+      expect(ips).toEqual(['203.0.113.1', '203.0.113.2']);
+    } finally {
+      vi.unstubAllEnvs();
+      await proxied.close();
+    }
+  });
   it('livre les changements par SSE, contrôle la session et libère la connexion', async () => {
     const address = await app.listen({ port: 0, host: '127.0.0.1' });
     const abort = new AbortController();

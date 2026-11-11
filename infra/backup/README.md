@@ -34,7 +34,7 @@ Arrêter le serveur avant de restaurer. Le script refuse un dossier cible non vi
 node scripts/backup.mjs --restore backups/ma-sauvegarde --data data-restauree
 ```
 
-Le contrôle d’intégrité SQLite est exécuté après copie. Démarrer ensuite avec `APP_DATA_DIR` pointant vers le dossier restauré, dans un environnement utilisant la même version de Minutrel ou une version compatible. Pour Docker, préparer un volume vide, y copier les fichiers restaurés avec les droits de l’utilisateur `node` (UID 1000), puis le monter sur `/app/data`.
+Le script contrôle l’intégrité SQLite avant de publier la copie restaurée. Il invalide les sessions web et ordinateur ainsi que les jetons MCP et webhook. Les membres doivent se reconnecter et recréer les jetons utilisés par leurs intégrations. Vérifier les comptes et rôles qui ont changé depuis la sauvegarde. Démarrer ensuite avec `APP_DATA_DIR` pointant vers le dossier restauré, dans un environnement utilisant la même version de Minutrel ou une version compatible. Pour Docker, préparer un volume vide, y copier les fichiers restaurés avec les droits de l’utilisateur `node` (UID 1000), puis le monter sur `/app/data`.
 
 Les variables externes telles que l’adresse publique, le proxy HTTPS et les noms des moteurs restent des paramètres de déploiement ; les sauvegarder avec la procédure d’exploitation de l’instance.
 

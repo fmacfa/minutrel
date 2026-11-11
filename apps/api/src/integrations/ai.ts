@@ -2,15 +2,18 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import type { Provider } from '@minutrel/contracts';
-import { Store, ensure, id, Problem } from '../store.ts';
+import { Store, ensure, hash, id, Problem } from '../store.ts';
 import { authenticate, requireRole } from '../auth.ts';
 import { monthlyReport, notes, summaries } from '../service.ts';
 import { parse, routeId } from '../routes.ts';
 
-export interface ProviderRow extends Omit<Provider, 'enabled' | 'hasSecret'> {
+export interface ProviderRow extends Omit<Provider, 'enabled' | 'hasSecret' | 'consentRevision'> {
   enabled: number;
   secret: string | null;
 }
+const consentRevision = (p: ProviderRow) =>
+  hash(JSON.stringify([p.id, p.name, p.kind, p.baseUrl, p.model]));
+
 const expose = (p: ProviderRow): Provider => ({
   id: p.id,
   name: p.name,
@@ -19,6 +22,7 @@ const expose = (p: ProviderRow): Provider => ({
   model: p.model,
   enabled: !!p.enabled,
   hasSecret: !!p.secret,
+  consentRevision: consentRevision(p),
 });
 export function validateProviderUrl(
   value: string,
@@ -244,7 +248,14 @@ export function registerAi(app: FastifyInstance, store: Store, fetcher?: typeof 
   app.post('/api/v1/summaries/generate', async (r) => {
     const member = authenticate(store, r, true);
     const data = parse(
-      z.object({ providerId: z.uuid(), month: z.string(), consent: z.literal(true) }).strict(),
+      z
+        .object({
+          providerId: z.uuid(),
+          providerRevision: z.string().regex(/^[a-f0-9]{64}$/),
+          month: z.string(),
+          consent: z.literal(true),
+        })
+        .strict(),
       r.body,
     );
     ensure(
@@ -261,6 +272,11 @@ export function registerAi(app: FastifyInstance, store: Store, fetcher?: typeof 
           data.providerId,
         );
         ensure(provider, 'Ce fournisseur est désactivé ou introuvable.');
+        ensure(
+          data.providerRevision === consentRevision(provider),
+          'Le fournisseur IA a changé. Rouvrez le formulaire pour confirmer le destinataire.',
+          409,
+        );
         validateProviderUrl(provider.baseUrl, provider.kind);
         const report = monthlyReport(store, data.month, [member.id], 500);
         ensure(
