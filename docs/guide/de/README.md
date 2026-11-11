@@ -171,7 +171,7 @@ Diese Funktionen sind in der Entwicklungsversion verfügbar. Die englischen Bild
 
 1. Klicken Sie unter **Projekte** auf den Projektnamen. Unter **Projekt bearbeiten** können Sie ein optionales Zeitbudget wie `40 h` und eine Frist eintragen.
 2. In der **Projektübersicht** sehen Sie die erfasste Zeit und das verbleibende Budget. Filtern Sie Arbeitsbeschreibungen und Summen nach Monat und Unterkategorie. Verantwortliche und Administratoren können auch ein Teammitglied auswählen. Mitarbeitende sehen ihre eigenen Zeiten.
-3. Geben Sie unter **Aufgaben → Neue Aufgabe** einen eigenen Titel ein. Ergänzen Sie bei Bedarf eine Unterkategorie, eine zuständige Person, geplante Termine und den geschätzten Aufwand. Verantwortliche und Administratoren können die Aufgabe bearbeiten. Zugewiesene Mitarbeitende können ihren Status ändern.
+3. Geben Sie unter **Aktionen → Neue Aufgabe** einen eigenen Titel ein. Ergänzen Sie bei Bedarf eine Unterkategorie, eine zuständige Person, geplante Termine und den geschätzten Aufwand. Verantwortliche und Administratoren können die Aufgabe bearbeiten. Zugewiesene Mitarbeitende können ihren Status ändern.
 4. Wählen Sie in der Hauptzeitmessung oder bei der manuellen Eingabe das Projekt und die passende Unterkategorie und dann optional die Aufgabe. Erfassen Sie unter **Arbeitsbeschreibung**, was Sie erledigt haben. Die Aufgabe erscheint beim Zeiteintrag und in Exporten.
 
 ![Projektübersicht mit Zeitbudget, Frist und erfasster Arbeit](../../screenshots/20-project-overview-en.jpg)
