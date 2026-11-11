@@ -66,18 +66,18 @@ export function timeSlices(
       });
     if (!windows.length) return [];
     return store.all<TimeSlice>(
-      `WITH approved AS (
+      `WITH approved AS MATERIALIZED (
         SELECT json_extract(value,'$.memberId') memberId,json_extract(value,'$.start') startDate,
           json_extract(value,'$.end') endDate,json_extract(value,'$.from') startTime,
           json_extract(value,'$.to') endTime FROM json_each(?)
       )
       SELECT * FROM (
-        SELECT ${fields},SUM(CASE WHEN e.kind='duration' THEN
-          CASE WHEN e.workDate>=w.startDate AND e.workDate<w.endDate THEN e.seconds ELSE 0 END
+        SELECT ${fields},SUM(CASE WHEN e.kind='duration' THEN e.seconds
           ELSE COALESCE((SELECT SUM(MIN(s.endedAt,w.endTime)-MAX(s.startedAt,w.startTime))
             FROM segments s WHERE s.entryId=e.id AND s.endedAt>w.startTime AND s.startedAt<w.endTime),0)
           END) reportSeconds
         FROM entries e JOIN approved w ON w.memberId=e.memberId
+          AND (e.kind!='duration' OR (e.workDate>=w.startDate AND e.workDate<w.endDate))
         WHERE ${where.join(' AND ')} GROUP BY e.id
       ) WHERE reportSeconds>0 ORDER BY createdAt DESC,id`,
       JSON.stringify(windows),
