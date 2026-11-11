@@ -162,3 +162,38 @@ For servers, use the [backup/restore procedure](../../../infra/backup/README.md)
 For a bug report, include version, OS, local/team mode, steps and message. Remove passwords, tokens, private notes and team data from screenshots. Report vulnerabilities through the [security channel](../../../SECURITY.md), without posting exploit details publicly.
 
 [Delivered scope](../../ETAT_V0_1.md) · [Recorded validation](../../VALIDATION_CI.md) · [GitHub publication](../../GITHUB.md). Advanced technical documents are currently maintained in French.
+
+## 14. Project planning and timesheets
+
+These features are available in the development version. The screenshots use fictional data.
+
+### Project overview and actions
+
+1. In **Projects**, select the project name. **Edit project** lets you enter an optional time budget such as `40 h` and a deadline.
+2. In **Project overview**, read completed time and remaining budget. Filter the work descriptions and totals by month and subcategory. Managers and administrators can also select a team member. Contributors see their own recorded time.
+3. In **Actions → New action**, enter your own title. Choose a subcategory, assignee, planned dates and estimated duration as needed. Managers and administrators can edit the action. An assigned contributor can update its status.
+4. In the main timer or manual-entry form, choose the project and the matching subcategory, then select the action if desired. Enter what you did in **Work description**. The linked action appears with the entry and in exports.
+
+![Project overview with budget, deadline and completed work](../../screenshots/20-project-overview-en.jpg)
+
+![Project actions with owners, dates and estimates](../../screenshots/21-project-actions-en.jpg)
+
+### Gantt and workload
+
+Open **Gantt** within a project to see actions placed on a six-week timeline. The date selector jumps to the week containing the chosen date. An action with one date appears on that day. Actions without dates are listed below the chart.
+
+Open **Projects → Workload** to see estimated time for open actions by person and week. Estimates are spread over the planned Monday-to-Friday days. An action scheduled only for the weekend keeps its estimate in that week. Enter an optional weekly capacity to highlight overloaded weeks. Actions that need a date or estimate appear under **Actions to schedule**.
+
+![Six-week Gantt timeline](../../screenshots/22-project-gantt-en.jpg)
+
+![Weekly workload and capacity threshold](../../screenshots/23-workload-en.jpg)
+
+### Weekly review and monthly exports
+
+1. In a team workspace, open **Time entries → Timesheets** and select a week. Finish any timer touching that week and sync pending desktop entries. Select **Submit timesheet** to lock the week's entries for review.
+2. As a manager or administrator, select the member and check the entries. Choose **Approve timesheet** or **Return for correction**, with a reason for the return. Returning a submitted or approved sheet reopens its time entries. The member can then edit and submit again.
+3. As an administrator, open **Reports**, select the month and optionally the members. Enable **Approved time only**, then download CSV, PDF or ZIP. An entry that spans a week or month boundary contributes only the approved seconds within the selected month. The full report includes shared notes and approved work summaries.
+
+![Reviewing a submitted team timesheet](../../screenshots/24-timesheet-review-en.jpg)
+
+Standalone desktop supports project planning and action links offline. A linked desktop can attach cached actions to offline time entries. Editing team plans, submitting timesheets and reviewing them require the team server.

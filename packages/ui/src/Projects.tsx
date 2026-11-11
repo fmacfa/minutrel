@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { t as tr } from './i18n.ts';
-import { useState, type FormEvent } from 'react';
+import { lazy, Suspense, useState, type FormEvent } from 'react';
 import type { Member, Project, Session } from '@minutrel/contracts';
+import { formatDuration, parseDuration } from '@minutrel/domain';
 import {
   Avatar,
   Badge,
@@ -14,6 +15,11 @@ import {
   type Actions,
 } from './components.tsx';
 import { request } from './transport.ts';
+
+const ProjectPlanning = lazy(() =>
+  import('./ProjectPlanning.tsx').then((m) => ({ default: m.ProjectPlanning })),
+);
+const Workload = lazy(() => import('./Workload.tsx').then((m) => ({ default: m.Workload })));
 
 function ProjectForm({
   project,
@@ -28,14 +34,29 @@ function ProjectForm({
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     const f = formData(e);
     const ok = await actions.act(
-      () =>
-        request(project ? `/projects/${project.id}` : '/projects', project ? 'PATCH' : 'POST', {
-          name: val(f, 'name'),
-          description: val(f, 'description'),
-          color: val(f, 'color'),
-          memberIds: ids,
-          ...(project ? { archived: f.has('archived'), version: project.version } : {}),
-        }),
+      async () => {
+        const budget = val(f, 'budget').trim();
+        const currentBudget = project?.budgetSeconds;
+        const budgetSeconds = budget
+          ? currentBudget && budget === formatDuration(currentBudget)
+            ? currentBudget
+            : parseDuration(budget)
+          : null;
+        const dueOn = val(f, 'dueOn') || null;
+        return request(
+          project ? `/projects/${project.id}` : '/projects',
+          project ? 'PATCH' : 'POST',
+          {
+            name: val(f, 'name'),
+            description: val(f, 'description'),
+            color: val(f, 'color'),
+            memberIds: ids,
+            ...(budgetSeconds || currentBudget ? { budgetSeconds } : {}),
+            ...(dueOn || project?.dueOn ? { dueOn } : {}),
+            ...(project ? { archived: f.has('archived'), version: project.version } : {}),
+          },
+        );
+      },
       project ? tr('Projet mis à jour.') : tr('Projet créé.'),
     );
     if (ok) actions.close();
@@ -56,6 +77,18 @@ function ProjectForm({
       <Field label={tr('Couleur')}>
         <input name="color" type="color" defaultValue={project?.color ?? '#087f75'} />
       </Field>
+      <div className="form-grid">
+        <Field label={tr('Budget horaire')} hint={tr('Facultatif · Ex. 40 h ou 120 min')}>
+          <input
+            name="budget"
+            maxLength={60}
+            defaultValue={project?.budgetSeconds ? formatDuration(project.budgetSeconds) : ''}
+          />
+        </Field>
+        <Field label={tr('Échéance du projet')}>
+          <input type="date" name="dueOn" defaultValue={project?.dueOn ?? ''} />
+        </Field>
+      </div>
       <div className="field">
         <span>{tr('Membres affectés')}</span>
         <div className="checklist">
@@ -163,21 +196,69 @@ export function Projects({
   session,
   totals,
   actions,
+  initialMonth,
+  revision,
+  local,
 }: {
   projects: Project[];
   members: Member[];
   session: Session;
   totals: { id: string; seconds: number }[];
   actions: Actions;
+  initialMonth: string;
+  revision: number;
+  local: boolean;
 }) {
   const [search, setSearch] = useState('');
   const [archived, setArchived] = useState(false);
+  const [view, setView] = useState('');
   const manage = session.member.role !== 'contributor';
+  const current = projects.find((p) => p.id === view);
+  const edit = (p: Project) =>
+    actions.open(
+      tr('Modifier le projet'),
+      <ProjectForm project={p} members={members} actions={actions} />,
+    );
+  const categories = (p: Project) =>
+    actions.open(
+      tr('Sous-catégories · {0}', p.name),
+      <Subcategories project={p} actions={actions} />,
+    );
   const visible = projects.filter(
     (p) =>
       p.archived === archived &&
       p.name.toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')),
   );
+  if (current || view === 'workload') {
+    const goBack = () => setView('');
+    return (
+      <Suspense fallback={<p className="loading">{tr('Chargement…')}</p>}>
+        {current ? (
+          <ProjectPlanning
+            key={current.id}
+            project={current}
+            members={members}
+            session={session}
+            local={local}
+            initialMonth={initialMonth}
+            revision={revision}
+            actions={actions}
+            goBack={goBack}
+            edit={manage ? () => edit(current) : undefined}
+            categories={manage ? () => categories(current) : undefined}
+          />
+        ) : (
+          <Workload
+            projects={projects}
+            today={session.serverNow}
+            timezone={session.workspace.timezone}
+            revision={revision}
+            goBack={goBack}
+          />
+        )}
+      </Suspense>
+    );
+  }
   return (
     <>
       <div className="page-heading">
@@ -189,20 +270,25 @@ export function Projects({
           </h1>
           <p className="quiet">{tr('Les espaces où le travail prend forme.')}</p>
         </div>
-        {manage && (
-          <button
-            className="button primary"
-            onClick={() =>
-              actions.open(
-                tr('Nouveau projet'),
-                <ProjectForm members={members} actions={actions} />,
-              )
-            }
-          >
-            <Icon name="plus" />
-            {tr('Nouveau projet')}
+        <div className="button-group">
+          <button className="button secondary" onClick={() => setView('workload')}>
+            {tr('Plan de charge')}
           </button>
-        )}
+          {manage && (
+            <button
+              className="button primary"
+              onClick={() =>
+                actions.open(
+                  tr('Nouveau projet'),
+                  <ProjectForm members={members} actions={actions} />,
+                )
+              }
+            >
+              <Icon name="plus" />
+              {tr('Nouveau projet')}
+            </button>
+          )}
+        </div>
       </div>
       <div className="toolbar">
         <div className="segmented">
@@ -235,19 +321,18 @@ export function Projects({
                 {manage && (
                   <button
                     className="icon-button"
-                    onClick={() =>
-                      actions.open(
-                        tr('Modifier le projet'),
-                        <ProjectForm project={p} members={members} actions={actions} />,
-                      )
-                    }
+                    onClick={() => edit(p)}
                     aria-label={tr('Modifier {0}', p.name)}
                   >
                     <Icon name="edit" size={18} />
                   </button>
                 )}
               </div>
-              <h2>{p.name}</h2>
+              <h2>
+                <button className="project-title-link" onClick={() => setView(p.id)}>
+                  {p.name}
+                </button>
+              </h2>
               <p className="project-description quiet">
                 {p.description || tr('Un espace pour avancer ensemble.')}
               </p>
@@ -277,15 +362,7 @@ export function Projects({
                   </span>
                 </div>
                 {manage && (
-                  <button
-                    className="text-button"
-                    onClick={() =>
-                      actions.open(
-                        tr('Sous-catégories · {0}', p.name),
-                        <Subcategories project={p} actions={actions} />,
-                      )
-                    }
-                  >
+                  <button className="text-button" onClick={() => categories(p)}>
                     {tr('Sous-catégories')}
                     <Icon name="chevron" size={15} />
                   </button>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { t as tr, locale } from './i18n.ts';
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { invoke } from '@tauri-apps/api/core';
 import type {
@@ -47,9 +47,18 @@ import { Work } from './Work.tsx';
 import { Settings } from './Settings.tsx';
 import { leavePersonal, syncStatus } from './local.ts';
 import { LanguagePicker } from './LanguagePicker.tsx';
+const Timesheets = lazy(() => import('./Timesheets.tsx').then((m) => ({ default: m.Timesheets })));
 
 type Page =
-  'dashboard' | 'times' | 'projects' | 'work' | 'reports' | 'team' | 'integrations' | 'settings';
+  | 'dashboard'
+  | 'times'
+  | 'timesheets'
+  | 'projects'
+  | 'work'
+  | 'reports'
+  | 'team'
+  | 'integrations'
+  | 'settings';
 const pages: { id: Page; name: string; icon: IconName }[] = [
   { id: 'dashboard', name: tr('Vue d’ensemble'), icon: 'clock' },
   { id: 'times', name: tr('Les temps'), icon: 'report' },
@@ -477,7 +486,10 @@ export function App() {
       (p.id !== 'team' || session.member.role !== 'contributor') &&
       (!conn.local || !['team', 'integrations'].includes(p.id)),
   );
-  const currentPage = shownPages.some((p) => p.id === page) ? page : 'dashboard';
+  const currentPage =
+    (page === 'timesheets' && !conn.local) || shownPages.some((p) => p.id === page)
+      ? page
+      : 'dashboard';
   return (
     <div className="app-layout">
       <a className="skip-link" href="#main">
@@ -538,7 +550,12 @@ export function App() {
         <header className="topbar">
           <span className="breadcrumb">
             {tr('Mon espace ')}
-            <span>/</span> <strong>{pages.find((p) => p.id === currentPage)?.name}</strong>
+            <span>/</span>{' '}
+            <strong>
+              {currentPage === 'timesheets'
+                ? tr('Feuilles de temps')
+                : pages.find((p) => p.id === currentPage)?.name}
+            </strong>
           </span>
           <div className="topbar-actions">
             <LanguagePicker />
@@ -655,6 +672,7 @@ export function App() {
                 offset={serverOffset.current}
                 actions={actions}
                 offline={!connected && !native}
+                revision={revision}
               />
               <div className="section-heading month-heading">
                 <h2>{tr('Votre mois, en un regard')}</h2>
@@ -774,7 +792,18 @@ export function App() {
               actions={actions}
               revision={revision}
               initialMonth={month}
+              openTimesheets={conn.local ? undefined : () => setPage('timesheets')}
             />
+          )}
+          {currentPage === 'timesheets' && (
+            <Suspense fallback={<p className="loading">{tr('Chargement…')}</p>}>
+              <Timesheets
+                session={session}
+                actions={actions}
+                revision={revision}
+                goBack={() => setPage('times')}
+              />
+            </Suspense>
           )}
           {currentPage === 'projects' && (
             <Projects
@@ -783,6 +812,9 @@ export function App() {
               members={data.members}
               actions={actions}
               totals={data.report?.projects ?? []}
+              initialMonth={month}
+              revision={revision}
+              local={Boolean(conn.local)}
             />
           )}
           {currentPage === 'work' && (
@@ -803,6 +835,7 @@ export function App() {
               initialMonth={month}
               revision={revision}
               actions={actions}
+              local={Boolean(conn.local)}
             />
           )}
           {currentPage === 'team' && (

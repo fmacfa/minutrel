@@ -24,12 +24,28 @@ export interface Project {
   version: number;
   memberIds: string[];
   tasks: Task[];
+  budgetSeconds?: number | null;
+  dueOn?: string | null;
 }
 export interface Task {
   id: string;
   projectId: string;
   name: string;
   archived: boolean;
+}
+export type ActionStatus = 'todo' | 'in_progress' | 'done';
+export interface ProjectAction {
+  id: string;
+  projectId: string;
+  taskId: string | null;
+  title: string;
+  status: ActionStatus;
+  assigneeId: string | null;
+  assigneeName: string | null;
+  startOn: string | null;
+  dueOn: string | null;
+  estimateSeconds: number | null;
+  version: number;
 }
 export interface Segment {
   startedAt: number;
@@ -43,6 +59,8 @@ export interface TimeEntry {
   projectName: string;
   projectColor: string;
   taskName: string | null;
+  actionId?: string | null;
+  actionName?: string | null;
   memberName: string;
   kind: 'timer' | 'duration' | 'interval';
   state: 'running' | 'paused' | 'finished' | 'deleted';
@@ -53,6 +71,34 @@ export interface TimeEntry {
   createdAt: number;
   updatedAt: number;
   segments: Segment[];
+}
+export type ReportEntry = TimeEntry & { reportSeconds: number };
+export interface ProjectOverview {
+  scope: 'personal' | 'team';
+  totalSeconds: number;
+  filteredSeconds: number;
+  entryCount: number;
+  categories: { taskId: string | null; seconds: number }[];
+  entries: ReportEntry[];
+}
+export type TimesheetStatus = 'draft' | 'submitted' | 'approved' | 'returned';
+export interface Timesheet {
+  memberId: string;
+  memberName: string;
+  weekStart: string;
+  status: TimesheetStatus;
+  version: number;
+  seconds: number;
+  hasActiveTime: boolean;
+  submittedAt: number | null;
+  reviewedAt: number | null;
+  reviewerName: string | null;
+  reason: string;
+}
+export interface TimesheetDetail {
+  sheet: Timesheet;
+  entries: ReportEntry[];
+  entryCount: number;
 }
 export interface WorkNote {
   id: string;
@@ -68,6 +114,7 @@ export interface WorkNote {
 }
 export interface MonthlyReport {
   language?: 'fr' | 'en' | 'de';
+  approvedOnly?: boolean;
   month: string;
   timezone: string;
   generatedAt: number;
@@ -77,7 +124,7 @@ export interface MonthlyReport {
   entryCount: number;
   members: { id: string; name: string; email: string; seconds: number }[];
   projects: { id: string; name: string; color: string; seconds: number }[];
-  entries: (TimeEntry & { reportSeconds: number })[];
+  entries: ReportEntry[];
   notes: WorkNote[];
   summaries: WorkSummary[];
 }

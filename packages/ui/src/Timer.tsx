@@ -3,6 +3,7 @@ import { t as tr } from './i18n.ts';
 import { useEffect, useState } from 'react';
 import type { Project, TimeEntry } from '@minutrel/contracts';
 import { Icon, clockText, type Actions } from './components.tsx';
+import { ActionPicker } from './ActionPicker.tsx';
 import { request } from './transport.ts';
 import { syncStatus } from './local.ts';
 
@@ -40,6 +41,7 @@ export function TimerPanel({
   actions,
   compact = false,
   offline = false,
+  revision,
 }: {
   projects: Project[];
   timer: TimeEntry | null;
@@ -47,15 +49,18 @@ export function TimerPanel({
   actions: Actions;
   compact?: boolean;
   offline?: boolean;
+  revision?: number;
 }) {
   const [projectId, setProjectId] = useState('');
   const [taskId, setTaskId] = useState('');
+  const [actionId, setActionId] = useState('');
   const [description, setDescription] = useState('');
   const available = projects.filter((p) => !p.archived);
   useEffect(() => {
     if (!available.some((p) => p.id === projectId)) {
       setProjectId(available[0]?.id ?? '');
       setTaskId('');
+      setActionId('');
     }
   }, [projects, projectId]);
   const selected = available.find((p) => p.id === projectId);
@@ -66,7 +71,7 @@ export function TimerPanel({
           `/timer/${action}`,
           'POST',
           action === 'start'
-            ? { projectId, taskId: taskId || null, description }
+            ? { projectId, taskId: taskId || null, description, ...(actionId ? { actionId } : {}) }
             : { version: timer!.version },
         ),
       action === 'stop' ? tr('Temps enregistré.') : undefined,
@@ -103,6 +108,7 @@ export function TimerPanel({
             <span className="project-dot" style={{ background: timer.projectColor }} />
             <strong>{timer.projectName}</strong>
             {timer.taskName && <span className="quiet"> / {timer.taskName}</span>}
+            {timer.actionName && <span className="quiet"> / {timer.actionName}</span>}
           </div>
           {timer.description && <p className="timer-description">{timer.description}</p>}
         </>
@@ -117,6 +123,7 @@ export function TimerPanel({
             onChange={(e) => {
               setProjectId(e.target.value);
               setTaskId('');
+              setActionId('');
             }}
             disabled={actions.pending || offline || !available.length}
           >
@@ -137,7 +144,10 @@ export function TimerPanel({
               <select
                 id={compact ? 'quick-task' : 'timer-task'}
                 value={taskId}
-                onChange={(e) => setTaskId(e.target.value)}
+                onChange={(e) => {
+                  setTaskId(e.target.value);
+                  setActionId('');
+                }}
                 disabled={actions.pending || offline}
               >
                 <option value="">{tr('Sans sous-catégorie')}</option>
@@ -150,6 +160,16 @@ export function TimerPanel({
                   ))}
               </select>
             </>
+          )}
+          {!compact && (
+            <ActionPicker
+              projectId={projectId}
+              taskId={taskId}
+              value={actionId}
+              onChange={setActionId}
+              disabled={actions.pending || offline}
+              revision={revision}
+            />
           )}
           {!compact && (
             <input

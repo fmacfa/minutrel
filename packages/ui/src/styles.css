@@ -992,6 +992,18 @@ tr:last-child td {
   font-size: 17px;
   margin-bottom: 10px;
 }
+.project-title-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-weight: inherit;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.project-title-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .project-description {
   font-size: 11px;
   min-height: 40px;
@@ -1018,6 +1030,176 @@ tr:last-child td {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+}
+.planning-page {
+  min-width: 0;
+}
+.planning-page .back-button {
+  margin-bottom: 14px;
+}
+.planning-page > .panel,
+.planning-page > .action-grid {
+  margin-bottom: 20px;
+}
+.planning-page .table-project {
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+.planning-page .table-description {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.project-intro,
+.action-card h2,
+.planning-list,
+.sheet-heading h2 {
+  overflow-wrap: anywhere;
+}
+.planning-nav {
+  justify-content: space-between;
+}
+.planning-stats {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+}
+.planning-stats .stat-card > strong {
+  font-size: clamp(16px, 2.2vw, 25px);
+}
+.category-totals,
+.status-legend,
+.schedule-window {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.category-totals .button[aria-pressed='true'],
+.selected-sheet {
+  background: #e6f3ed;
+}
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: 14px;
+}
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.action-card h2 {
+  font-size: 16px;
+}
+.action-card .badge {
+  flex-shrink: 0;
+}
+.action-card dl {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 14px;
+  margin: 12px 0 18px;
+  font-size: 12px;
+}
+.action-card dt {
+  color: var(--color-muted);
+}
+.action-card dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.action-card .button,
+.action-card > .inline-field {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.schedule-window .button {
+  min-width: 40px;
+  font-size: 18px;
+  line-height: 1;
+}
+.gantt-table,
+.workload-table {
+  min-width: 690px;
+  table-layout: fixed;
+}
+.gantt-name {
+  width: 29%;
+}
+.gantt-table th,
+.workload-table th,
+.workload-table td {
+  padding-inline: 12px;
+}
+.workload-table th:first-child {
+  width: 25%;
+}
+.planning-page tbody th {
+  font-size: 12px;
+  color: var(--color-ink);
+  white-space: normal;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid #eef0e9;
+}
+.selected-sheet th {
+  background: transparent;
+}
+.gantt-timeline {
+  position: relative;
+  min-height: 48px;
+  background-image: linear-gradient(to right, var(--color-border) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+}
+.gantt-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 16px;
+  border-radius: 4px;
+  background: #667d8d;
+}
+.gantt-bar[data-status='in_progress'] {
+  background: #b57d17;
+}
+.gantt-bar[data-status='done'] {
+  background: var(--color-primary-dark);
+}
+.planning-list {
+  display: grid;
+  gap: 6px;
+  padding-inline-start: 20px;
+  margin-bottom: 0;
+}
+.planning-list li > .quiet {
+  display: block;
+}
+.capacity-input {
+  width: 80px;
+}
+.capacity-over {
+  color: #922e1f;
+}
+.page-controls,
+.sheet-heading {
+  padding: 12px 20px;
+}
+.sheet-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sheet-heading .section-heading {
+  margin-bottom: 4px;
+}
+.sheet-heading p {
+  margin-bottom: 0;
+}
+.sheet-note {
+  margin: 0 20px 14px;
+}
+.sheets-table {
+  min-width: 290px;
 }
 .notice {
   display: flex;

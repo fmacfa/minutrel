@@ -2,8 +2,15 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { authenticate } from './auth.ts';
-import { activeTimer, createManual, entryById, projectAccess } from './service.ts';
+import {
+  activeTimer,
+  checkEntryAction,
+  createManual,
+  entryById,
+  projectAccess,
+} from './service.ts';
 import { ensure, hash, id, Store } from './store.ts';
+import { requireOpenWeek } from './time-slices.ts';
 
 const snapshot = z
   .object({
@@ -14,6 +21,7 @@ const snapshot = z
         id: z.uuid(),
         projectId: z.uuid(),
         taskId: z.uuid().nullable(),
+        actionId: z.uuid().nullable().optional(),
         description: z.string().trim().max(2000),
         state: z.enum(['running', 'paused', 'finished', 'deleted']),
         segments: z
@@ -42,6 +50,7 @@ export function registerOffline(app: FastifyInstance, store: Store) {
           .object({
             projectId: z.uuid(),
             taskId: z.uuid().nullable().optional(),
+            actionId: z.uuid().nullable().optional(),
             description: z.string().max(2000),
             kind: z.enum(['duration', 'interval']),
             duration: z.string().max(60).optional(),
@@ -108,6 +117,7 @@ export function registerOffline(app: FastifyInstance, store: Store) {
         state: string;
         projectId: string;
         taskId: string | null;
+        actionId: string | null;
       }>('SELECT * FROM entries WHERE id=?', e.id);
       ensure(
         !previous || previous.memberId === member.id,
@@ -129,6 +139,13 @@ export function registerOffline(app: FastifyInstance, store: Store) {
         'Le chronomètre a changé sur un autre appareil. Actualisez.',
         409,
       );
+      const actionId = e.actionId === undefined ? (previous?.actionId ?? null) : e.actionId;
+      ensure(
+        !previous || previous.actionId === actionId,
+        'Le chronomètre a changé sur un autre appareil. Actualisez.',
+        409,
+      );
+      checkEntryAction(store, e.projectId, e.taskId, actionId);
       const open = e.segments.filter((s) => s.endedAt === null);
       ensure(
         e.state === 'running'
@@ -168,6 +185,7 @@ export function registerOffline(app: FastifyInstance, store: Store) {
         );
       }
       const current = activeTimer(store, member.id);
+      requireOpenWeek(store, member.id, null, e.segments);
       ensure(
         !['running', 'paused'].includes(e.state) || !current || current.id === e.id,
         'Un autre chronomètre est actif sur le serveur. Terminez-le avant de synchroniser.',
@@ -202,11 +220,12 @@ export function registerOffline(app: FastifyInstance, store: Store) {
         store.run('DELETE FROM segments WHERE entryId=?', e.id);
       } else
         store.run(
-          "INSERT INTO entries VALUES (?,?,?,?,'timer',?,?,NULL,?,1,?,?)",
+          "INSERT INTO entries(id,memberId,projectId,taskId,actionId,kind,state,description,workDate,seconds,version,createdAt,updatedAt) VALUES (?,?,?,?,?,'timer',?,?,NULL,?,1,?,?)",
           e.id,
           member.id,
           e.projectId,
           e.taskId,
+          actionId,
           state,
           e.description,
           seconds,

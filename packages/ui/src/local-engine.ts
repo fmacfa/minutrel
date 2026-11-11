@@ -1,12 +1,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { t as tr } from './i18n.ts';
 import { invoke } from '@tauri-apps/api/core';
-import type { Project, Session, TimeEntry, WorkNote, WorkSummary } from '@minutrel/contracts';
+import type {
+  Project,
+  ProjectAction,
+  Session,
+  TimeEntry,
+  WorkNote,
+  WorkSummary,
+} from '@minutrel/contracts';
 import { parseDuration } from '@minutrel/domain';
 import { dateInZone, instantSeconds, validDate, validTimezone } from '@minutrel/domain/reports';
 import {
   acknowledge,
   currentTimer,
+  localEntryAction,
+  localOverview,
   localReport,
   localSpace,
   timerMutation,
@@ -124,6 +133,7 @@ export async function flush(remote: Remote) {
           id: item.entry.id,
           projectId: item.entry.projectId,
           taskId: item.entry.taskId,
+          ...(item.entry.actionId ? { actionId: item.entry.actionId } : {}),
           description: item.entry.description,
           state: item.entry.state,
           segments: item.entry.segments,
@@ -222,6 +232,18 @@ async function cacheGet(path: string, result: unknown) {
     await change(
       (d) => {
         d.projects = result as Project[];
+      },
+      false,
+      false,
+    );
+  else if (path === '/project-actions' || path.startsWith('/project-actions?'))
+    await change(
+      (d) => {
+        const projectId = new URLSearchParams(path.split('?')[1]).get('projectId');
+        const retained = projectId
+          ? (d.projectActions ?? []).filter((a) => a.projectId !== projectId)
+          : [];
+        d.projectActions = [...retained, ...(result as ProjectAction[])];
       },
       false,
       false,
@@ -329,6 +351,15 @@ export async function nativeRequest<T>(
     void flush(remote).catch(() => {});
     return result as T;
   }
+  if (
+    method === 'PATCH' &&
+    path.startsWith('/timesheets/') &&
+    (input as { status?: string })?.status === 'submitted'
+  ) {
+    await flush(remote);
+    if ((await read(false)).data?.pending.length)
+      throw new Error(tr('Synchronisez vos temps avant de soumettre la feuille.'));
+  }
   try {
     // La file part avant la lecture canonique, sans écraser un état local en attente.
     if (path === '/timer') {
@@ -365,6 +396,7 @@ function manualPayload(e: TimeEntry) {
   return {
     projectId: e.projectId,
     taskId: e.taskId,
+    ...(e.actionId ? { actionId: e.actionId } : {}),
     description: e.description,
     kind: e.kind,
     ...(e.kind === 'duration'
@@ -387,6 +419,15 @@ function cachedRequest(d: LocalData, path: string): unknown {
   if (p === '/setup') return { required: false };
   if (p === '/me') return { ...d.session, serverNow: now(d) };
   if (p === '/projects') return d.projects;
+  if (p === '/project-actions') {
+    const projectId = url.searchParams.get('projectId');
+    const allowed = new Set(d.projects.map((p) => p.id));
+    return (d.projectActions ?? []).filter(
+      (a) => allowed.has(a.projectId) && (!projectId || projectId === a.projectId),
+    );
+  }
+  if (/^\/projects\/[^/]+\/overview$/.test(p))
+    return localOverview(d, p.split('/')[2]!, url.searchParams);
   if (p === '/timer') return { timer: currentTimer(d), serverNow: now(d) };
   if (p === '/members') return [d.session.member];
   if (p === '/time-entries') {
@@ -405,7 +446,7 @@ function cachedRequest(d: LocalData, path: string): unknown {
     const limit = Number(url.searchParams.get('limit') ?? 50);
     return { items: all.slice(offset, offset + limit), total: all.length, serverNow: now(d) };
   }
-  if (p === '/reports/monthly')
+  if (p === '/reports/monthly' && url.searchParams.get('approvedOnly') !== 'true')
     return localReport(
       d,
       url.searchParams.get('month') ?? dateInZone(now(d), d.session.workspace.timezone).slice(0, 7),
@@ -423,6 +464,11 @@ function manual(d: LocalData, b: Record<string, unknown>, entry?: TimeEntry): Ti
   if (!p) throw new Error(tr('Projet introuvable ou archivé.'));
   const task = p.tasks.find((t) => t.id === b.taskId && !t.archived);
   if (b.taskId && !task) throw new Error(tr('Sous-catégorie introuvable ou archivée.'));
+  const actionId =
+    b.actionId === undefined && entry?.projectId === p.id && entry.taskId === (task?.id ?? null)
+      ? entry.actionId
+      : b.actionId;
+  const action = localEntryAction(d, p.id, task?.id ?? null, actionId);
   let seconds: number;
   const segments: TimeEntry['segments'] = [];
   if (b.kind === 'duration') {
@@ -460,6 +506,7 @@ function manual(d: LocalData, b: Record<string, unknown>, entry?: TimeEntry): Ti
     projectColor: p.color,
     taskId: task?.id ?? null,
     taskName: task?.name ?? null,
+    ...(action ? { actionId: action.id, actionName: action.title } : {}),
     description: String(b.description ?? ''),
     kind: b.kind as 'duration' | 'interval',
     state: 'finished',
@@ -470,6 +517,74 @@ function manual(d: LocalData, b: Record<string, unknown>, entry?: TimeEntry): Ti
     createdAt: entry?.createdAt ?? now(d),
     updatedAt: now(d),
   };
+}
+function optionalDate(value: unknown) {
+  if (value === null || value === undefined) return null;
+  if (typeof value !== 'string' || !validDate(value)) throw new Error(tr('Date invalide.'));
+  return value;
+}
+function optionalSeconds(value: unknown) {
+  if (value === null || value === undefined) return null;
+  if (typeof value !== 'number' || !Number.isInteger(value) || value <= 0 || value > 360_000_000)
+    throw new Error(tr('La durée doit être comprise entre une seconde et 100 000 heures.'));
+  return value;
+}
+function saveLocalAction(
+  d: LocalData,
+  projectId: string,
+  b: Record<string, unknown>,
+  actionId?: string,
+) {
+  const all = (d.projectActions ??= []);
+  const previous = all.find((a) => a.id === actionId);
+  if (actionId && (!previous || b.version !== previous.version))
+    throw new Error(tr('Cette action a changé. Actualisez.'));
+  const p = d.projects.find((p) => p.id === (previous?.projectId ?? projectId) && !p.archived);
+  if (!p) throw new Error(tr('Projet introuvable ou archivé.'));
+  const title = String(b.title ?? previous?.title ?? '').trim();
+  if (!title || title.length > 200)
+    throw new Error(tr('Saisissez un intitulé de 1 à 200 caractères.'));
+  const status = b.status ?? previous?.status ?? 'todo';
+  if (status !== 'todo' && status !== 'in_progress' && status !== 'done')
+    throw new Error(tr('Statut invalide.'));
+  const startOn = optionalDate('startOn' in b ? b.startOn : previous?.startOn);
+  const dueOn = optionalDate('dueOn' in b ? b.dueOn : previous?.dueOn);
+  if (startOn && dueOn && startOn > dueOn) throw new Error(tr('La fin prévue précède le début.'));
+  const taskId = 'taskId' in b ? (b.taskId ? String(b.taskId) : null) : (previous?.taskId ?? null);
+  if (taskId !== previous?.taskId && taskId && !p.tasks.some((t) => t.id === taskId && !t.archived))
+    throw new Error(tr('Sous-catégorie introuvable ou archivée.'));
+  if (
+    previous &&
+    taskId !== previous.taskId &&
+    d.entries.some((e) => e.actionId === previous.id && e.state !== 'deleted')
+  )
+    throw new Error(tr('Des temps sont associés à cette action. Sa sous-catégorie est conservée.'));
+  const assigneeId =
+    'assigneeId' in b
+      ? b.assigneeId
+        ? String(b.assigneeId)
+        : null
+      : (previous?.assigneeId ?? null);
+  if (assigneeId && assigneeId !== d.session.member.id)
+    throw new Error(tr('Choisissez un membre actif affecté au projet.'));
+  const next: ProjectAction = {
+    id: previous?.id ?? crypto.randomUUID(),
+    projectId: p.id,
+    title,
+    taskId,
+    status,
+    assigneeId,
+    assigneeName: assigneeId ? d.session.member.name : null,
+    startOn,
+    dueOn,
+    estimateSeconds: optionalSeconds(
+      'estimateSeconds' in b ? b.estimateSeconds : previous?.estimateSeconds,
+    ),
+    version: (previous?.version ?? 0) + 1,
+  };
+  d.projectActions = [...all.filter((a) => a.id !== next.id), next];
+  for (const e of d.entries) if (e.actionId === next.id) e.actionName = next.title;
+  return next;
 }
 async function personalRequest(
   path: string,
@@ -496,6 +611,10 @@ async function personalRequest(
       const parts = path.split('/');
       const objectId = parts[2];
       if (parts[1] === 'timer') return timerMutation(d, parts[2] as 'start', b, now(d), false);
+      if (parts[1] === 'projects' && parts[3] === 'actions' && method === 'POST')
+        return saveLocalAction(d, objectId!, b);
+      if (parts[1] === 'project-actions' && objectId && method === 'PATCH')
+        return saveLocalAction(d, '', b, objectId);
       if (path === '/workspace' && method === 'PATCH') {
         if (!validTimezone(String(b.timezone))) throw new Error(tr('Fuseau horaire invalide.'));
         if (d.entries.length && d.session.workspace.timezone !== b.timezone)
@@ -536,6 +655,10 @@ async function personalRequest(
           version: (old?.version ?? 0) + 1,
           memberIds: [d.session.member.id],
           tasks: old?.tasks ?? [],
+          budgetSeconds: optionalSeconds(
+            'budgetSeconds' in b ? b.budgetSeconds : old?.budgetSeconds,
+          ),
+          dueOn: optionalDate('dueOn' in b ? b.dueOn : old?.dueOn),
         };
         if (!p.name) throw new Error(tr('Précisez le nom du projet.'));
         d.projects = d.projects.filter((p) => p.id !== old?.id);

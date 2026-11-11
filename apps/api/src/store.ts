@@ -46,7 +46,7 @@ export class Store {
       'PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000; PRAGMA trusted_schema=OFF;',
     );
     const currentVersion = this.get<{ user_version: number }>('PRAGMA user_version')!.user_version;
-    if (currentVersion > 1) {
+    if (currentVersion > 2) {
       this.db.close();
       throw new Problem(500, 'Cette base provient d’une version plus récente de Minutrel.');
     }
@@ -107,8 +107,35 @@ export class Store {
         expiresAt INTEGER NOT NULL, format TEXT NOT NULL, snapshot TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS sync_receipts(memberId TEXT NOT NULL REFERENCES members(id), mutationId TEXT NOT NULL,
         fingerprint TEXT NOT NULL, response TEXT NOT NULL, PRIMARY KEY(memberId,mutationId));
-      PRAGMA user_version=1;
     `);
+    if (currentVersion < 2) {
+      this.tx(() => {
+        if (this.get<{ user_version: number }>('PRAGMA user_version')!.user_version >= 2) return;
+        this.db.exec(`
+          ALTER TABLE projects ADD COLUMN budgetSeconds INTEGER CHECK(budgetSeconds>0);
+          ALTER TABLE projects ADD COLUMN dueOn TEXT;
+          CREATE TABLE project_actions(
+            id TEXT PRIMARY KEY, projectId TEXT NOT NULL REFERENCES projects(id), taskId TEXT REFERENCES tasks(id),
+            title TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('todo','in_progress','done')),
+            assigneeId TEXT REFERENCES members(id), startOn TEXT, dueOn TEXT,
+            estimateSeconds INTEGER CHECK(estimateSeconds>0), version INTEGER NOT NULL DEFAULT 1
+          );
+          CREATE INDEX project_actions_project ON project_actions(projectId);
+          ALTER TABLE entries ADD COLUMN actionId TEXT REFERENCES project_actions(id);
+          CREATE INDEX entries_project_state ON entries(projectId,state);
+          CREATE INDEX entries_action ON entries(actionId) WHERE actionId IS NOT NULL;
+          CREATE TABLE timesheets(
+            memberId TEXT NOT NULL REFERENCES members(id), weekStart TEXT NOT NULL,
+            status TEXT NOT NULL CHECK(status IN ('submitted','approved','returned')),
+            version INTEGER NOT NULL, submittedAt INTEGER NOT NULL, reviewedAt INTEGER,
+            reviewerId TEXT REFERENCES members(id), reason TEXT NOT NULL DEFAULT '',
+            PRIMARY KEY(memberId,weekStart)
+          );
+          CREATE INDEX timesheets_week ON timesheets(weekStart,status);
+          PRAGMA user_version=2;
+        `);
+      });
+    }
   }
   get<T>(sql: string, ...params: SQLInputValue[]): T | undefined {
     return this.db.prepare(sql).get(...params) as T | undefined;

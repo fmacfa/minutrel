@@ -276,6 +276,7 @@ export function registerAi(app: FastifyInstance, store: Store, fetcher?: typeof 
             id: e.id,
             project: e.projectName,
             task: e.taskName,
+            ...(e.actionName ? { action: e.actionName } : {}),
             description: e.description,
           })),
           notes: workNotes.map((n) => ({ id: n.id, text: n.text })),

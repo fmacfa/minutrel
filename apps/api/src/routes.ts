@@ -2,8 +2,9 @@
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { mcpScopes, type Workspace } from '@minutrel/contracts';
-import { monthBounds, validTimezone } from '@minutrel/domain/reports';
+import { monthBounds, validDate, validTimezone } from '@minutrel/domain/reports';
 import { Store, ensure, id, hash, secret } from './store.ts';
+import { requireOpenWeek } from './time-slices.ts';
 import {
   authenticate,
   newSession,
@@ -50,12 +51,15 @@ const projectInput = z
       .regex(/^#[0-9a-f]{6}$/i)
       .default('#087F75'),
     memberIds: z.array(uuid).max(1000).default([]),
+    budgetSeconds: z.int().positive().max(360_000_000).nullable().optional(),
+    dueOn: z.string().refine(validDate).nullable().optional(),
   })
   .strict();
 const timerInput = z
   .object({
     projectId: uuid,
     taskId: uuid.nullable().optional(),
+    actionId: uuid.nullable().optional(),
     description: z.string().trim().max(2000).default(''),
   })
   .strict();
@@ -380,11 +384,13 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
     const projectId = id();
     store.tx(() => {
       store.run(
-        'INSERT INTO projects VALUES (?,?,?,?,0,1)',
+        'INSERT INTO projects(id,name,description,color,budgetSeconds,dueOn) VALUES (?,?,?,?,?,?)',
         projectId,
         data.name,
         data.description,
         data.color,
+        data.budgetSeconds ?? null,
+        data.dueOn ?? null,
       );
       for (const memberId of new Set(data.memberIds))
         store.run('INSERT INTO assignments VALUES (?,?)', projectId, memberId);
@@ -423,11 +429,13 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
         409,
       );
       store.run(
-        'UPDATE projects SET name=?,description=?,color=?,archived=?,version=version+1 WHERE id=?',
+        'UPDATE projects SET name=?,description=?,color=?,archived=?,budgetSeconds=?,dueOn=?,version=version+1 WHERE id=?',
         data.name,
         data.description,
         data.color,
         data.archived ? 1 : 0,
+        data.budgetSeconds === undefined ? (previous.budgetSeconds ?? null) : data.budgetSeconds,
+        data.dueOn === undefined ? (previous.dueOn ?? null) : data.dueOn,
         projectId,
       );
       store.run('DELETE FROM assignments WHERE projectId=?', projectId);
@@ -559,6 +567,7 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
           403,
         );
         ensure(previous.version === data.version, 'Ce temps a changé. Actualisez.', 409);
+        requireOpenWeek(store, previous.memberId, previous.workDate, previous.segments);
         store.run(
           'UPDATE entries SET description=?,version=version+1,updatedAt=? WHERE id=?',
           data.description,
@@ -685,7 +694,13 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
   app.get('/api/v1/reports/monthly', async (r) => {
     const m = actor(r);
     const q = parse(
-      z.object({ month: z.string(), memberIds: z.string().optional() }).strict(),
+      z
+        .object({
+          month: z.string(),
+          memberIds: z.string().optional(),
+          approvedOnly: z.enum(['true', 'false']).optional(),
+        })
+        .strict(),
       r.query,
     );
     const ids = q.memberIds ? parse(z.array(uuid).max(1000), q.memberIds.split(',')) : undefined;
@@ -695,7 +710,13 @@ export function registerRoutes(app: FastifyInstance, store: Store) {
         'Les rapports de l’équipe sont réservés aux administrateurs.',
         403,
       );
-    return monthlyReport(store, q.month, m.role === 'admin' ? ids : [m.id]);
+    return monthlyReport(
+      store,
+      q.month,
+      m.role === 'admin' ? ids : [m.id],
+      100,
+      q.approvedOnly === 'true',
+    );
   });
   app.get('/api/v1/audit', async (r) => {
     admin(r);

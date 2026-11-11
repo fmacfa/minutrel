@@ -28,11 +28,17 @@ Un jeton MCP est différent d’une session d’application : il ouvre `/mcp` et
 | PATCH | `/projects/{id}` | Modifier, archiver, affecter les membres ; responsable/administrateur avec version |
 | POST | `/projects/{id}/tasks` | Ajouter une sous-catégorie ; responsable/administrateur |
 | PATCH | `/tasks/{id}` | Renommer/archiver une sous-catégorie ; responsable/administrateur |
+| GET | `/projects/{id}/overview` | Temps finalisé du projet et détail paginé. Un contributeur voit ses propres temps |
+| GET | `/project-actions?projectId={id}` | Actions des projets accessibles. Omettre `projectId` pour tous les projets accessibles |
+| POST | `/projects/{id}/actions` | Créer une action avec `Idempotency-Key`. Responsable ou administrateur |
+| PATCH | `/project-actions/{id}` | Modifier l’action avec sa version. Le contributeur affecté peut changer son statut |
 | GET | `/timer` | Chronomètre personnel et heure serveur |
 | POST | `/timer/start`, `/timer/pause`, `/timer/resume`, `/timer/stop` | Écritures personnelles idempotentes, contrôlées par version |
 | GET, POST | `/time-entries` | Liste paginée et saisie personnelle manuelle |
 | PATCH, DELETE | `/time-entries/{id}` | Correction ou retrait d’un temps finalisé, version et motif obligatoires |
 | PATCH | `/time-entries/{id}/description` | Modifier le texte sans remplacer les segments |
+| GET | `/timesheets?weekStart=AAAA-MM-JJ` | Feuilles de la semaine. Les contributeurs voient leur feuille |
+| GET, PATCH | `/timesheets/{memberId}` | Détail et transitions de la feuille d’un membre |
 | GET, POST | `/notes` | Notes personnelles ; création humaine privée ou partagée |
 | PATCH, DELETE | `/notes/{id}` | Relire/partager ou supprimer sa note |
 | GET, POST | `/summaries` | Comptes rendus personnels, création d’un brouillon manuel |
@@ -80,6 +86,18 @@ La correction complète reprend le formulaire manuel avec `version` et `reason`.
 Le rapport contient `totalSeconds`, `entryCount`, les agrégats par membre/projet, un aperçu de 100 `entries`, les notes partagées et les comptes rendus validés. Chaque ligne d’aperçu porte `reportSeconds` pour la portion du mois concerné.
 
 `POST /exports` reçoit `month`, `format` (`csv`, `pdf`, `zip`), `language` (`fr`, `en`, `de`, français par défaut) et les `memberIds` facultatifs. La réponse contient `id`, `url`, `filename` et `expiresAt`. Le snapshot est privé au créateur et conserve le même contenu et la même langue lors d’une modification ultérieure des temps.
+
+Ajoutez `approvedOnly=true` au rapport GET ou `"approvedOnly": true` au corps de l’export pour limiter les secondes aux semaines approuvées dans le mois. Les notes et comptes rendus sont disponibles dans le rapport complet. Pour une entrée à cheval sur plusieurs semaines ou mois, `reportSeconds` correspond à la portion approuvée dans le mois demandé.
+
+## Planification et feuilles de temps
+
+Les projets acceptent `budgetSeconds` (entier positif) et `dueOn` (date ISO sans heure). Les deux sont facultatifs et acceptent `null` pour effacer la valeur. L’omission en modification conserve les valeurs existantes. La fiche projet accepte `month`, `taskId` (UUID ou `none`), `memberId` et `offset`. Elle expose `scope`, `totalSeconds` sur toute la durée du projet, `filteredSeconds`, `categories` et 50 `entries` maximum par page.
+
+Une action contient `title`, `status` (`todo`, `in_progress`, `done`), `taskId`, `assigneeId`, `startOn`, `dueOn` et `estimateSeconds`. Le responsable doit être un membre actif affecté au projet. Si les deux dates sont renseignées, le début précède ou égale la fin. Un `actionId` facultatif rattache un chronomètre, une saisie ou un temps synchronisé à une action du même projet et de la même sous-catégorie. Les réponses des temps incluent `actionId` et `actionName`.
+
+Pour lire une feuille, passez `weekStart` dans la requête GET. Le détail accepte aussi `offset` et renvoie `sheet`, `entryCount` et `entries`, chacune avec `reportSeconds`. Une semaine débute un lundi dans le fuseau de l’espace. En l’absence de soumission, son état est `draft` et sa version vaut `0`.
+
+Le `PATCH` reçoit `weekStart`, `version` et `status`. Le membre peut passer sa feuille de `draft` ou `returned` à `submitted` une fois ses chronomètres finalisés. Un responsable ou administrateur peut l’approuver (`approved`) ou la retourner (`returned`) avec `reason`. Le retour rouvre aussi une feuille approuvée. Les écritures de temps qui touchent une semaine soumise ou approuvée renvoient `409`.
 
 ## Synchronisation ordinateur
 

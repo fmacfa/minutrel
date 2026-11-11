@@ -88,6 +88,10 @@ When recording time, choose a project and optional subcategory, then describe wh
 
 Real AI providers and credentials must be configured on your infrastructure. Adapters have protocol tests; no paid subscription or model is supplied. Standalone mode supports manual notes and summaries; these AI integrations use the team server.
 
+## Project planning and weekly timesheets
+
+The development version adds project time budgets, deadlines, actions, a Gantt chart and a weekly workload view. Planning works in team workspaces and in the standalone desktop workspace. Team members can submit weekly timesheets, managers can approve or return them, and administrators can export a month of approved time in CSV, PDF or ZIP. See the [illustrated planning and timesheet guide](docs/guide/en/README.md#14-project-planning-and-timesheets).
+
 ## Checks and backups
 
 ```sh

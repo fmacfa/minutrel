@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { t as tr, locale } from './i18n.ts';
 import { useEffect, useState, type FormEvent } from 'react';
-import type { Project, Member, TimeEntry, Session } from '@minutrel/contracts';
+import type { Project, Member, ReportEntry, TimeEntry, Session } from '@minutrel/contracts';
 import {
   Badge,
   Empty,
@@ -13,6 +13,7 @@ import {
   type Actions,
 } from './components.tsx';
 import { request } from './transport.ts';
+import { ActionPicker } from './ActionPicker.tsx';
 
 export function dateString(seconds: number, timezone: string): string {
   const parts = new Intl.DateTimeFormat('en-CA', {
@@ -42,6 +43,7 @@ export function ManualForm({
   );
   const project = projects.find((p) => p.id === projectId);
   const [taskId, setTaskId] = useState(entry?.taskId ?? '');
+  const [actionId, setActionId] = useState(entry?.actionId ?? '');
   const [submissionKey] = useState(() => crypto.randomUUID());
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     const f = formData(e);
@@ -56,6 +58,7 @@ export function ManualForm({
             ...common,
             projectId,
             taskId: taskId || null,
+            ...(actionId || entry?.actionId ? { actionId: actionId || null } : {}),
             kind,
             ...(kind === 'duration'
               ? { duration: val(f, 'duration'), workDate: val(f, 'workDate') }
@@ -121,6 +124,7 @@ export function ManualForm({
               onChange={(e) => {
                 setProjectId(e.target.value);
                 setTaskId('');
+                setActionId('');
               }}
               required
             >
@@ -138,7 +142,13 @@ export function ManualForm({
           </Field>
           {!!project?.tasks.length && (
             <Field label={tr('Sous-catégorie facultative')}>
-              <select value={taskId} onChange={(e) => setTaskId(e.target.value)}>
+              <select
+                value={taskId}
+                onChange={(e) => {
+                  setTaskId(e.target.value);
+                  setActionId('');
+                }}
+              >
                 <option value="">{tr('Sans sous-catégorie')}</option>
                 {project.tasks
                   .filter((t) => !t.archived || t.id === entry?.taskId)
@@ -150,6 +160,13 @@ export function ManualForm({
               </select>
             </Field>
           )}
+          <ActionPicker
+            projectId={projectId}
+            taskId={taskId}
+            value={actionId}
+            onChange={setActionId}
+            existingTitle={entry?.actionName}
+          />
           {kind === 'duration' ? (
             <div className="form-grid">
               <Field label={tr('Date de travail')} hint={session.workspace.timezone}>
@@ -301,7 +318,7 @@ export function TimeTable({
   remove,
   withMember = false,
 }: {
-  entries: TimeEntry[];
+  entries: (TimeEntry | ReportEntry)[];
   timezone: string;
   edit?: (entry: TimeEntry) => void;
   remove?: (entry: TimeEntry) => void;
@@ -331,6 +348,7 @@ export function TimeTable({
                   <span className="project-dot" style={{ background: e.projectColor }} />
                   <strong>{e.projectName}</strong>
                   {e.taskName && <span className="quiet">/ {e.taskName}</span>}
+                  {e.actionName && <span className="quiet">/ {e.actionName}</span>}
                 </div>
                 <p className="table-description">
                   {e.description || <span className="quiet">{tr('Sans description')}</span>}
@@ -354,11 +372,13 @@ export function TimeTable({
                     ? tr('Chronomètre')
                     : e.kind === 'duration'
                       ? tr('Durée manuelle')
-                      : 'Intervalle'}
+                      : tr('Intervalle')}
                 </small>
               </td>
               <td className="numeric">
-                <strong className="duration">{clockText(e.seconds)}</strong>
+                <strong className="duration">
+                  {clockText('reportSeconds' in e ? e.reportSeconds : e.seconds)}
+                </strong>
                 {e.state !== 'finished' && (
                   <Badge tone="green">
                     {e.state === 'paused' ? tr('En pause') : tr('En cours')}
@@ -403,6 +423,7 @@ export function Times({
   actions,
   revision,
   initialMonth,
+  openTimesheets,
 }: {
   session: Session;
   projects: Project[];
@@ -410,6 +431,7 @@ export function Times({
   actions: Actions;
   revision: number;
   initialMonth: string;
+  openTimesheets?: () => void;
 }) {
   const [month, setMonth] = useState(initialMonth);
   const [memberId, setMemberId] = useState('me');
@@ -450,19 +472,26 @@ export function Times({
           </h1>
           <p className="quiet">{tr('Chaque session, au bon endroit.')}</p>
         </div>
-        <button
-          className="button primary"
-          disabled={!projects.some((p) => !p.archived)}
-          onClick={() =>
-            actions.open(
-              tr('Ajouter un temps'),
-              <ManualForm projects={projects} session={session} actions={actions} />,
-            )
-          }
-        >
-          <Icon name="plus" />
-          {tr('Ajouter un temps')}
-        </button>
+        <div className="button-group">
+          {openTimesheets && (
+            <button className="button secondary" onClick={openTimesheets}>
+              {tr('Feuilles de temps')}
+            </button>
+          )}
+          <button
+            className="button primary"
+            disabled={!projects.some((p) => !p.archived)}
+            onClick={() =>
+              actions.open(
+                tr('Ajouter un temps'),
+                <ManualForm projects={projects} session={session} actions={actions} />,
+              )
+            }
+          >
+            <Icon name="plus" />
+            {tr('Ajouter un temps')}
+          </button>
+        </div>
       </div>
       <div className="toolbar">
         <label className="inline-field">

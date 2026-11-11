@@ -2,7 +2,7 @@
 
 Dans l’interface, les anciennes tâches sont nommées **sous-catégories**. Les noms techniques `tasks`, `taskId` et `taskName` restent inchangés. Aucun intitulé n’est imposé ou créé par défaut ; la description du travail appartient au temps enregistré.
 
-SQLite est stocké sur le serveur commun. Le schéma exécuté se trouve dans [store.ts](../apps/api/src/store.ts). Il porte `PRAGMA user_version=1` ; le code refuse une base d’une version ultérieure. Les clés étrangères et WAL sont activés.
+SQLite est stocké sur le serveur commun. La version de développement migre le schéma de `PRAGMA user_version=1` à `2` dans une transaction. Les projets et temps existants gardent leurs identifiants et leurs valeurs. Les clés étrangères et WAL sont activés. Le serveur refuse une base d’une version ultérieure. [Schéma exécuté](../apps/api/src/store.ts).
 
 Les identifiants des entités sont des UUID, les instants sont des secondes Unix entières, les dates de travail sont des chaînes ISO `AAAA-MM-JJ`. Les durées sont des secondes entières, sans nombre flottant d’heures.
 
@@ -11,11 +11,13 @@ Les identifiants des entités sont des UUID, les instants sont des secondes Unix
 | `workspace` | Espace unique : identité, nom et fuseau des rapports |
 | `members` | Identité, e-mail unique sans distinction de casse, rôle, état actif et mot de passe scrypt |
 | `sessions` | Empreinte de session, propriétaire, CSRF, type navigateur/natif et expiration |
-| `projects` | Nom, description, couleur, archivage et version |
+| `projects` | Nom, description, couleur, archivage, budget horaire et échéance facultatifs, version |
 | `assignments` | Association unique projet/membre |
-| `tasks` | Tâches d’un projet, nom et archivage |
-| `entries` | Membre, projet, tâche facultative, origine, état, description, date déclarée, secondes, version et dates de mise à jour |
+| `tasks` | Sous-catégories d’un projet, nom et archivage |
+| `project_actions` | Projet, sous-catégorie et responsable facultatifs, titre, statut, dates, estimation et version |
+| `entries` | Membre, projet, sous-catégorie et action facultatives, origine, état, description, date déclarée, secondes, version et dates de mise à jour |
 | `segments` | Début et fin d’une portion de chronomètre ou d’un intervalle manuel |
+| `timesheets` | Membre et lundi de la semaine, état de soumission, version, dates de soumission et revue, relecteur et motif de retour |
 | `notes` | Texte, auteur, projet, date, état privé/partagé et origine humaine/assistant |
 | `summaries` | Compte rendu mensuel, origine, état brouillon/validé et références de temps |
 | `tokens` | Empreinte de jeton MCP personnel, droits, nom et expiration |
@@ -33,6 +35,8 @@ Les opérations composées utilisent une transaction synchrone courte. Le verrou
 
 Une suppression de temps est logique et auditée. L’archivage d’un projet garde ses relations et bloque les nouveaux démarrages. Un projet, une affectation ou une tâche encore utilisé par un chronomètre ne peut pas être retiré de façon à rendre ce temps inaccessible.
 
+Une feuille soumise ou approuvée verrouille les temps qui touchent sa semaine. Les intervalles sont répartis entre les semaines au moment de la lecture. Un retour pour correction rouvre la feuille. Les anciennes soumissions et décisions restent dans le journal.
+
 ## Protection des secrets
 
 Le mot de passe est stocké sous forme `sel:clé_dérivée`, jamais en clair. Les jetons de session et MCP sont stockés par empreinte. Les clés de fournisseurs sont chiffrées avec AES-256-GCM et une clé serveur de 32 octets, qui doit accompagner la sauvegarde.
@@ -44,5 +48,7 @@ Le client possède aussi des fichiers locaux `LocalData.schema=1`, enveloppés p
 ## Portabilité
 
 L’export JSON `schema_version: 2` contient l’espace, les identités nécessaires à l’association des membres, les projets, affectations, tâches, temps finalisés, segments, notes partagées et comptes rendus validés. Il ne contient ni mots de passe, ni sessions, ni clés de fournisseurs, ni notes privées. Les identifiants de segments y sont opaques et déterministes.
+
+La version de développement ajoute les champs `budget_seconds`, `due_on` et `action_id` ainsi que les collections `project_actions` et `timesheets` à cet export. Le format local conserve `LocalData.schema=1` et accepte les nouveaux champs optionnels à côté des anciens.
 
 La sauvegarde SQLite est la voie de restauration complète de la V0.1. L’import JSON avec association des comptes est prévu pour la version suivante. Le fichier [d’exemple historique v1](../examples/exports/donnees-exemple.json) demeure une fixture de calcul ; il ne constitue pas une route d’import implémentée.

@@ -4,10 +4,11 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { DatabaseSync } from 'node:sqlite';
 import { createApp } from './app.ts';
 import { Store } from './store.ts';
 
-it('retrouve un temps en cours après redémarrage et restaure une sauvegarde cohérente avec sa clé', async () => {
+it('migre le schéma 1 en conservant le chronomètre, puis restaure la sauvegarde et sa clé', async () => {
   const temp = await mkdtemp(join(tmpdir(), 'minutrel-persistence-'));
   const path = join(temp, 'original', 'minutrel.sqlite');
   let now = Math.floor(Date.now() / 1000);
@@ -49,11 +50,28 @@ it('retrouve un temps en cours après redémarrage et restaure une sauvegarde co
     const originalKey = app.store.key.toString('base64url');
     await app.close();
     closed = true;
+    const legacy = new DatabaseSync(path);
+    legacy.exec(`
+      DROP INDEX entries_action;
+      DROP INDEX entries_project_state;
+      ALTER TABLE entries DROP COLUMN actionId;
+      DROP TABLE project_actions;
+      DROP TABLE timesheets;
+      ALTER TABLE projects DROP COLUMN budgetSeconds;
+      ALTER TABLE projects DROP COLUMN dueOn;
+      PRAGMA user_version=1;
+    `);
+    legacy.close();
     now += 120;
     app = createApp({ path, now: () => now });
     closed = false;
     expect(app.store.key.toString('base64url')).toBe(originalKey);
     expect(app.store.decrypt(encrypted)).toBe('clé-fournisseur-fictive');
+    expect(app.store.get('PRAGMA user_version')).toMatchObject({ user_version: 2 });
+    expect(app.store.get('SELECT budgetSeconds,dueOn FROM projects')).toMatchObject({
+      budgetSeconds: null,
+      dueOn: null,
+    });
     const active = await app.inject({ url: '/api/v1/timer', headers });
     expect(active.statusCode).toBe(200);
     expect(active.json().timer.state).toBe('running');
@@ -100,16 +118,15 @@ it('retrouve un temps en cours après redémarrage et restaure une sauvegarde co
 });
 
 it('refuse une base plus récente sans en rétrograder le numéro de schéma', async () => {
-  const { DatabaseSync } = await import('node:sqlite');
   const temp = await mkdtemp(join(tmpdir(), 'minutrel-version-'));
   const path = join(temp, 'future.sqlite');
   try {
     const future = new DatabaseSync(path);
-    future.exec('PRAGMA user_version=2');
+    future.exec('PRAGMA user_version=3');
     future.close();
     expect(() => new Store({ path })).toThrow('plus récente');
     const check = new DatabaseSync(path);
-    expect(check.prepare('PRAGMA user_version').get()!.user_version).toBe(2);
+    expect(check.prepare('PRAGMA user_version').get()!.user_version).toBe(3);
     check.close();
   } finally {
     await rm(temp, { recursive: true, force: true });

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import { beforeEach, expect, it, vi } from 'vitest';
-import type { TimeEntry } from '@minutrel/contracts';
+import type { Project, ProjectAction, ProjectOverview, TimeEntry } from '@minutrel/contracts';
 import { localSpace, timerMutation, type LocalData } from './local-core.ts';
 const memory = vi.hoisted(() => ({
   records: new Map<boolean, { revision: number; data: unknown }>(),
@@ -46,6 +46,102 @@ beforeEach(() => {
   memory.records.clear();
   setMode(false);
   vi.setSystemTime(new Date('2026-11-06T12:00:00Z'));
+});
+it('conserve budget, action et temps associé en mode personnel après réouverture', async () => {
+  await startPersonal('Alex');
+  const project = await nativeRequest<Project>(unavailable, '/projects', 'POST', {
+    name: 'Personnel',
+    budgetSeconds: 36000,
+    dueOn: '2026-11-30',
+  });
+  expect(project).toMatchObject({ budgetSeconds: 36000, dueOn: '2026-11-30' });
+  const action = await nativeRequest<ProjectAction>(
+    unavailable,
+    `/projects/${project.id}/actions`,
+    'POST',
+    {
+      title: 'Écrire la présentation',
+      assigneeId: project.memberIds[0],
+      startOn: '2026-11-05',
+      dueOn: '2026-11-06',
+      estimateSeconds: 7200,
+    },
+  );
+  const entry = await nativeRequest<TimeEntry>(unavailable, '/time-entries', 'POST', {
+    projectId: project.id,
+    actionId: action.id,
+    kind: 'duration',
+    duration: '1h30',
+    workDate: '2026-11-06',
+    description: 'Premier texte',
+  });
+  expect(entry).toMatchObject({ actionId: action.id, actionName: action.title });
+  await nativeRequest(unavailable, `/project-actions/${action.id}`, 'PATCH', {
+    version: action.version,
+    status: 'done',
+    title: 'Rédiger la présentation',
+  });
+  setMode(true);
+  const overview = await nativeRequest<ProjectOverview>(
+    unavailable,
+    `/projects/${project.id}/overview?month=2026-11`,
+  );
+  expect(overview).toMatchObject({
+    scope: 'personal',
+    totalSeconds: 5400,
+    filteredSeconds: 5400,
+    entries: [{ description: 'Premier texte', actionName: 'Rédiger la présentation' }],
+  });
+  expect(
+    await nativeRequest(unavailable, `/project-actions?projectId=${project.id}`),
+  ).toMatchObject([{ id: action.id, status: 'done', estimateSeconds: 7200 }]);
+});
+
+it('envoie l’action mise en cache avec le chronomètre hors ligne et attend la synchronisation avant soumission', async () => {
+  const d = ready();
+  const project = d.projects[0]!;
+  delete d.projectActions;
+  memory.records.set(false, { revision: 1, data: d });
+  const action: ProjectAction = {
+    id: crypto.randomUUID(),
+    projectId: project.id,
+    taskId: null,
+    title: 'Analyse',
+    status: 'todo',
+    assigneeId: null,
+    assigneeName: null,
+    startOn: null,
+    dueOn: null,
+    estimateSeconds: null,
+    version: 1,
+  };
+  const loaded = async <T>(): Promise<T> => [action] as T;
+  await nativeRequest(loaded, `/project-actions?projectId=${project.id}`);
+  expect(await nativeRequest(unavailable, `/project-actions?projectId=${project.id}`)).toEqual([
+    action,
+  ]);
+  const timer = await nativeRequest<TimeEntry>(unavailable, '/timer/start', 'POST', {
+    projectId: project.id,
+    actionId: action.id,
+  });
+  vi.setSystemTime(new Date('2026-11-06T12:02:00Z'));
+  await nativeRequest(unavailable, '/timer/stop', 'POST', { version: timer.version });
+  await expect(
+    nativeRequest(unavailable, `/timesheets/${d.session.member.id}`, 'PATCH', {
+      status: 'submitted',
+    }),
+  ).rejects.toThrow('Synchronisez vos temps');
+  const remote = async <T>(path: string, _method?: string, input?: unknown): Promise<T> => {
+    expect(path).toBe('/sync/time-entry');
+    expect(input).toMatchObject({ entry: { actionId: action.id, state: 'finished' } });
+    return { entry: data(false).pending[0]!.entry, serverNow: Math.floor(Date.now() / 1000) } as T;
+  };
+  await flush(remote);
+  expect(data(false).pending).toHaveLength(0);
+  expect(data(false).entries[0]).toMatchObject({ actionId: action.id, seconds: 120 });
+  await expect(
+    nativeRequest(unavailable, '/reports/monthly?month=2026-11&approvedOnly=true'),
+  ).rejects.toThrow('Cette vue nécessite le serveur');
 });
 it('fonctionne sans aucun serveur : projets, saisies, notes et comptes rendus locaux', async () => {
   await startPersonal('Moi');

@@ -39,6 +39,7 @@ export function reportCsv(report: MonthlyReport): string {
         'Version',
         'Compte rendu validé',
         'Notes partagées',
+        'Action',
       ].map((label) => reportText(report, label)),
     ),
   ];
@@ -64,6 +65,7 @@ export function reportCsv(report: MonthlyReport): string {
           .filter((n) => n.memberId === e.memberId && n.projectId === e.projectId)
           .map((n) => `${n.workDate} : ${n.text}`)
           .join('\n'),
+        e.actionName ?? '',
       ]),
     );
   rows.push(
@@ -78,6 +80,7 @@ export function reportCsv(report: MonthlyReport): string {
       '',
       report.totalSeconds,
       formatDuration(report.totalSeconds),
+      '',
       '',
       '',
       '',
@@ -130,11 +133,11 @@ export function reportPdf(report: MonthlyReport): Promise<Buffer> {
     doc.font('Bold').fontSize(24).fillColor('#142C38').text(report.month);
     doc.moveDown(0.6);
     paragraph(
-      `${tr('Temps finalisé')} : ${formatDuration(report.totalSeconds)} (${report.totalSeconds} ${tr('secondes')})`,
+      `${tr(report.approvedOnly ? 'Temps approuvé' : 'Temps finalisé')} : ${formatDuration(report.totalSeconds)} (${report.totalSeconds} ${tr('secondes')})`,
       14,
     );
     paragraph(
-      `${tr('Fuseau')} : ${report.timezone} · ${tr('Instantané')} ${new Date(report.generatedAt * 1000).toISOString()}\n${tr('Les durées sont limitées au mois affiché. Pauses et chronomètres en cours exclus.')} ${report.activeTimers} ${tr('chronomètre(s) actif(s) au moment de l’export.')}`,
+      `${tr('Fuseau')} : ${report.timezone} · ${tr('Instantané')} ${new Date(report.generatedAt * 1000).toISOString()}\n${tr('Les durées sont limitées au mois affiché. Pauses et chronomètres en cours exclus.')} ${report.approvedOnly ? tr('Seules les feuilles approuvées sont incluses.') : `${report.activeTimers} ${tr('chronomètre(s) actif(s) au moment de l’export.')}`}`,
       9,
       '#536570',
     );
@@ -167,7 +170,10 @@ export function reportPdf(report: MonthlyReport): Promise<Buffer> {
         .fontSize(10)
         .fillColor('#142C38')
         .text(
-          `${entry.memberName} · ${entry.projectName}${entry.taskName ? ` / ${entry.taskName}` : ''}`,
+          [
+            entry.memberName,
+            [entry.projectName, entry.taskName, entry.actionName].filter(Boolean).join(' / '),
+          ].join(' · '),
           44,
           doc.y,
           { width },
@@ -184,27 +190,29 @@ export function reportPdf(report: MonthlyReport): Promise<Buffer> {
         .stroke();
       doc.moveDown(0.7);
     }
-    heading(tr('Comptes rendus validés'));
-    if (!report.summaries.length) paragraph(tr('Aucun compte rendu validé pour ce mois.'));
-    for (const summary of report.summaries) {
-      room(70);
-      paragraph(
-        `${report.members.find((m) => m.id === summary.memberId)?.name ?? tr('Membre')} · ${summary.source === 'ai' ? tr('Brouillon IA relu et validé') : tr('Rédaction manuelle validée')}`,
-        10,
-        '#087F75',
-      );
-      paragraph(summary.text);
-    }
-    heading(tr('Notes partagées'));
-    if (!report.notes.length) paragraph(tr('Aucune note partagée pour ce mois.'));
-    for (const note of report.notes) {
-      room(70);
-      paragraph(
-        `${note.workDate} · ${report.members.find((m) => m.id === note.memberId)?.name ?? 'Membre'} · ${note.projectName ?? 'Projet'}`,
-        9,
-        '#536570',
-      );
-      paragraph(note.text);
+    if (!report.approvedOnly) {
+      heading(tr('Comptes rendus validés'));
+      if (!report.summaries.length) paragraph(tr('Aucun compte rendu validé pour ce mois.'));
+      for (const summary of report.summaries) {
+        room(70);
+        paragraph(
+          `${report.members.find((m) => m.id === summary.memberId)?.name ?? tr('Membre')} · ${summary.source === 'ai' ? tr('Brouillon IA relu et validé') : tr('Rédaction manuelle validée')}`,
+          10,
+          '#087F75',
+        );
+        paragraph(summary.text);
+      }
+      heading(tr('Notes partagées'));
+      if (!report.notes.length) paragraph(tr('Aucune note partagée pour ce mois.'));
+      for (const note of report.notes) {
+        room(70);
+        paragraph(
+          `${note.workDate} · ${report.members.find((m) => m.id === note.memberId)?.name ?? 'Membre'} · ${note.projectName ?? 'Projet'}`,
+          9,
+          '#536570',
+        );
+        paragraph(note.text);
+      }
     }
     paragraph(
       `Minutrel 0.1.0 · ${tr('Données déclarées. Les durées sont calculées par le serveur, indépendamment des textes des comptes rendus.')}`,
@@ -238,7 +246,7 @@ export async function reportZip(report: MonthlyReport): Promise<Buffer> {
   const files: Record<string, Uint8Array> = {
     'temps.csv': strToU8(reportCsv(report)),
     'totaux-projets.csv': strToU8(
-      `\uFEFF${[csvRow(['Projet', 'Secondes', 'Durée']), ...report.projects.map((p) => csvRow([p.name, p.seconds, formatDuration(p.seconds)]))].join('\r\n')}`,
+      `\uFEFF${[csvRow(['Projet', 'Secondes', 'Durée'].map((key) => reportText(report, key))), ...report.projects.map((p) => csvRow([p.name, p.seconds, formatDuration(p.seconds)]))].join('\r\n')}`,
     ),
     'rapport-equipe.pdf': await reportPdf(report),
   };
@@ -265,6 +273,8 @@ export async function reportZip(report: MonthlyReport): Promise<Buffer> {
 }
 export function registerExports(app: FastifyInstance, store: Store) {
   const queue = new SerialQueue();
+  const filename = (report: MonthlyReport, format: string) =>
+    `minutrel-${report.month}${report.approvedOnly ? '-approved' : ''}.${format}`;
   app.post('/api/v1/exports', async (r) => {
     const member = authenticate(store, r, true);
     requireRole(member, 'admin');
@@ -275,11 +285,14 @@ export function registerExports(app: FastifyInstance, store: Store) {
           memberIds: z.array(z.uuid()).min(1).max(100).optional(),
           format: z.enum(['csv', 'pdf', 'zip']),
           language: z.enum(['fr', 'en', 'de']).default('fr'),
+          approvedOnly: z.boolean().default(false),
         })
         .strict(),
       r.body,
     );
-    const report = store.tx(() => monthlyReport(store, data.month, data.memberIds, 20000));
+    const report = store.tx(() =>
+      monthlyReport(store, data.month, data.memberIds, 20000, data.approvedOnly),
+    );
     report.language = data.language;
     ensure(
       report.members.length <= 100 && report.entryCount <= 20000,
@@ -301,12 +314,13 @@ export function registerExports(app: FastifyInstance, store: Store) {
       format: data.format,
       memberIds: report.members.map((m) => m.id),
       totalSeconds: report.totalSeconds,
+      approvedOnly: data.approvedOnly,
     });
     return {
       id: exportId,
       expiresAt,
       url: `/api/v1/exports/${exportId}`,
-      filename: `minutrel-${data.month}.${data.format}`,
+      filename: filename(report, data.format),
     };
   });
   app.get('/api/v1/exports/:id', async (r, reply) => {
@@ -331,7 +345,7 @@ export function registerExports(app: FastifyInstance, store: Store) {
     store.audit(member.id, 'report.download', routeId(r), { format: item.format });
     reply.header(
       'Content-Disposition',
-      `attachment; filename="minutrel-${snapshot.month}.${item.format}"`,
+      `attachment; filename="${filename(snapshot, item.format)}"`,
     );
     return reply
       .type(

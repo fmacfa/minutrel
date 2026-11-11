@@ -12,6 +12,8 @@ import { registerAi } from './integrations/ai.ts';
 import { registerMcp } from './integrations/mcp.ts';
 import { registerPortability } from './portability.ts';
 import { registerOffline } from './offline.ts';
+import { registerPlanning } from './planning.ts';
+import { registerTimesheets } from './timesheets.ts';
 
 export function createApp(
   options: StoreOptions & {
@@ -91,6 +93,8 @@ export function createApp(
     registerMcp(app, store);
     registerPortability(app, store);
     registerOffline(app, store);
+    registerPlanning(app, store);
+    registerTimesheets(app, store);
   });
   app.get('/api/v1/events', async (request, reply) => {
     authenticate(store, request);

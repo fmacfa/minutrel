@@ -10,9 +10,13 @@ Le serveur additionne les secondes des temps finalisés, sans les pauses ni les 
 
 Le rapport affiche total général, projets, membres, nombre de temps et aperçu de 100 lignes. Le total ne se limite pas à cet aperçu. CSV/PDF/ZIP acceptent jusqu’à 100 membres et 20 000 temps par export ; une sélection trop grande doit être réduite.
 
+Dans la version de développement, **Temps approuvés uniquement** limite l’aperçu et les téléchargements aux heures couvertes par des feuilles approuvées. Un intervalle à cheval sur deux semaines est retenu à hauteur de la portion approuvée dans le mois choisi. Les notes partagées et comptes rendus restent disponibles avec le rapport complet. [Guide de validation hebdomadaire](guide/fr/README.md#14-planification-et-feuilles-de-temps).
+
 ## Travail décrit
 
 Les descriptions accompagnent les temps. Les notes apparaissent uniquement après partage par l’auteur, et les comptes rendus uniquement après validation. Les notes privées et les brouillons IA ne sont pas transmis à l’administrateur par le rapport.
+
+La sous-catégorie et l’action associées figurent dans le détail et les exports de la version de développement.
 
 La génération IA est facultative. Elle prépare du texte à partir des descriptions et notes personnelles consenties, sans écrire sur les temps. Les chiffres du rapport ne proviennent jamais de cette réponse. Un membre peut rédiger un compte rendu manuellement.
 

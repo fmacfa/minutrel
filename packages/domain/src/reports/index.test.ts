@@ -7,6 +7,12 @@ import {
   monthBounds,
   instantSeconds,
   secondsInMonth,
+  addDays,
+  daysBetween,
+  mondayOf,
+  weekRange,
+  scheduledSpan,
+  plannedSeconds,
 } from './index.ts';
 
 describe('Calendriers et durées de rapport', () => {
@@ -66,5 +72,26 @@ describe('Calendriers et durées de rapport', () => {
     expect(instantSeconds('2026-10-25T02:30:00+02:00') + 3600).toBe(
       instantSeconds('2026-10-25T02:30:00+01:00'),
     );
+  });
+  it('délimite la semaine dans le fuseau de l’espace, y compris lors du passage à l’heure d’hiver', () => {
+    const monday = mondayOf('2026-10-25');
+    expect(monday).toBe('2026-10-19');
+    const week = weekRange(monday, 'Europe/Paris');
+    expect(week.end).toBe('2026-10-26');
+    expect(week.to - week.from).toBe(169 * 3600);
+    expect(daysBetween(week.end, monday)).toBe(-7);
+    expect(() => weekRange('2026-10-20', 'Europe/Paris')).toThrow();
+  });
+  it('répartit exactement une estimation entre semaines sur les jours ouvrés', () => {
+    expect(scheduledSpan({ startOn: null, dueOn: null })).toBeNull();
+    const span = scheduledSpan({ startOn: '2026-11-06', dueOn: '2026-11-10' })!;
+    expect(span.end).toBe('2026-11-11');
+    expect(plannedSeconds(span, 1001, '2026-10-26', '2026-11-02')).toBe(0);
+    expect(plannedSeconds(span, 1001, '2026-11-02', '2026-11-09')).toBe(333);
+    expect(plannedSeconds(span, 1001, '2026-11-09', '2026-11-16')).toBe(668);
+    expect(plannedSeconds(span, 1001, '2026-11-11', '2026-11-16')).toBe(0);
+    const weekend = scheduledSpan({ startOn: null, dueOn: '2026-11-07' })!;
+    expect(plannedSeconds(weekend, 60, '2026-11-02', '2026-11-09')).toBe(60);
+    expect(addDays('2026-12-31', 1)).toBe('2027-01-01');
   });
 });

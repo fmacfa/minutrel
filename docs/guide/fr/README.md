@@ -179,3 +179,38 @@ Pour le serveur, suivez [sauvegarde/restauration](../../../infra/backup/README.m
 Pour un signalement, indiquez la version, le système, le mode local/équipe, les étapes et le message. Masquez mots de passe, jetons, notes privées et données d’équipe dans les captures. Une vulnérabilité se signale par le [canal de sécurité](../../../SECURITY.md), pas dans une issue publique détaillée.
 
 [État livré](../../ETAT_V0_1.md) · [Validation réellement exécutée](../../VALIDATION_CI.md) · [Préparer une publication GitHub](../../GITHUB.md).
+
+## 14. Planification et feuilles de temps
+
+Ces fonctions sont disponibles dans la version de développement. Les captures en anglais montrent des données fictives.
+
+### Fiche projet et actions
+
+1. Dans **Les projets**, cliquez sur le nom du projet. **Modifier le projet** permet de saisir un budget horaire facultatif, par exemple `40 h`, et une échéance.
+2. Dans **Fiche projet**, consultez le temps enregistré et le budget restant. Filtrez les descriptions et les totaux par mois et par sous-catégorie. Les responsables et administrateurs peuvent choisir un membre. Les contributeurs voient leurs propres temps.
+3. Dans **Actions → Nouvelle action**, saisissez votre intitulé. Ajoutez au besoin une sous-catégorie, un responsable, des dates prévues et une estimation. Les responsables et administrateurs peuvent modifier l’action. Le contributeur affecté peut mettre à jour son statut.
+4. Dans le chronomètre principal ou la saisie manuelle, choisissez le projet et la sous-catégorie correspondante, puis l’action facultative. Décrivez le travail dans **Description du travail**. L’action reste visible sur l’entrée et dans les exports.
+
+![Fiche projet avec budget, échéance et travail effectué](../../screenshots/20-project-overview-en.jpg)
+
+![Actions avec responsables, dates et estimations](../../screenshots/21-project-actions-en.jpg)
+
+### Gantt et plan de charge
+
+Ouvrez **Gantt** dans le projet pour afficher les actions sur six semaines. Le sélecteur ouvre la semaine de la date choisie. Une action qui n’a qu’une date occupe cette journée. Les actions sans dates figurent sous le diagramme.
+
+Dans **Les projets → Plan de charge**, consultez les estimations des actions ouvertes par personne et par semaine. Les estimations sont réparties sur les jours prévus du lundi au vendredi. Une action prévue uniquement le week-end conserve son estimation dans la semaine correspondante. Vous pouvez saisir une capacité hebdomadaire pour repérer les dépassements. Les actions auxquelles il manque une date ou une estimation figurent dans **Actions à planifier**.
+
+![Diagramme de Gantt sur six semaines](../../screenshots/22-project-gantt-en.jpg)
+
+![Charge hebdomadaire et dépassement de capacité](../../screenshots/23-workload-en.jpg)
+
+### Validation hebdomadaire et exports mensuels
+
+1. En équipe, ouvrez **Les temps → Feuilles de temps** et choisissez une semaine. Terminez les chronomètres de la période et synchronisez vos temps en attente sur ordinateur. Cliquez sur **Soumettre la feuille** pour verrouiller ses temps pendant la revue.
+2. Le responsable ou l’administrateur sélectionne le membre et vérifie les entrées. **Approuver la feuille** valide les heures. **Renvoyer pour correction** demande un motif et rouvre une feuille soumise ou approuvée. Le membre peut alors corriger et soumettre à nouveau.
+3. Dans **Les rapports**, l’administrateur choisit le mois et éventuellement les membres. Cochez **Temps approuvés uniquement**, puis téléchargez le CSV, PDF ou ZIP. Pour un intervalle qui chevauche deux semaines ou deux mois, seules les secondes approuvées du mois choisi sont comptées. Les notes partagées et comptes rendus validés figurent dans le rapport complet.
+
+![Revue de la feuille d’un membre](../../screenshots/24-timesheet-review-en.jpg)
+
+Sur ordinateur, l’espace autonome permet de planifier et de rattacher des temps aux actions hors connexion. Dans un espace d’équipe connecté, une action déjà chargée peut être rattachée à un temps saisi hors ligne. La modification de la planification d’équipe, la soumission et la validation des feuilles utilisent le serveur.

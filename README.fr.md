@@ -85,6 +85,10 @@ Choisir ensuite un projet et, facultativement, une sous-catégorie dans le chron
 
 Les modèles réels et leurs identifiants sont à configurer sur votre infrastructure. Les adaptateurs ont des tests de protocole ; aucun abonnement ni modèle payant n’est fourni.
 
+## Planification et feuilles de temps
+
+La version de développement ajoute les budgets horaires et échéances de projet, les actions, le Gantt et le plan de charge hebdomadaire. La planification fonctionne en équipe et dans l’espace autonome sur ordinateur. Les membres peuvent soumettre leur feuille hebdomadaire, les responsables l’approuver ou la renvoyer et les administrateurs exporter le mois en CSV, PDF ou ZIP avec les heures approuvées. [Guide illustré de la planification et des feuilles de temps](docs/guide/fr/README.md#14-planification-et-feuilles-de-temps).
+
 ## Vérifications et sauvegardes
 
 ```sh

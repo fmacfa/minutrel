@@ -10,10 +10,17 @@ import type {
   Workspace,
 } from '@minutrel/contracts';
 import { parseDuration, sumDurations } from '@minutrel/domain';
-import { dateInZone, instantSeconds, monthBounds, validDate } from '@minutrel/domain/reports';
+import {
+  dateInZone,
+  instantSeconds,
+  monthBounds,
+  monthRange,
+  validDate,
+} from '@minutrel/domain/reports';
 import { Store, ensure, hash, id } from './store.ts';
 import type { SQLInputValue } from 'node:sqlite';
 import { publicMember, type MemberRow } from './auth.ts';
+import { requireOpenWeek, timeSlices } from './time-slices.ts';
 
 type ProjectRow = Omit<Project, 'memberIds' | 'tasks' | 'archived'> & { archived: number };
 export function projects(store: Store, member: MemberRow): Project[] {
@@ -63,8 +70,26 @@ export function projectAccess(
   }
   return p;
 }
-const entrySelect = `SELECT e.*,p.name projectName,p.color projectColor,t.name taskName,m.name memberName
-  FROM entries e JOIN projects p ON p.id=e.projectId JOIN members m ON m.id=e.memberId LEFT JOIN tasks t ON t.id=e.taskId`;
+export function checkEntryAction(
+  store: Store,
+  projectId: string,
+  taskId?: string | null,
+  actionId?: string | null,
+) {
+  if (!actionId) return;
+  const action = store.get<{ taskId: string | null }>(
+    'SELECT taskId FROM project_actions WHERE id=? AND projectId=?',
+    actionId,
+    projectId,
+  );
+  ensure(
+    action && action.taskId === (taskId ?? null),
+    'Cette action ne correspond pas au projet et à la sous-catégorie.',
+  );
+}
+const entrySelect = `SELECT e.*,p.name projectName,p.color projectColor,t.name taskName,m.name memberName,a.title actionName
+  FROM entries e JOIN projects p ON p.id=e.projectId JOIN members m ON m.id=e.memberId
+  LEFT JOIN tasks t ON t.id=e.taskId LEFT JOIN project_actions a ON a.id=e.actionId`;
 function hydrate(store: Store, rows: Omit<TimeEntry, 'segments'>[]): TimeEntry[] {
   const segments = new Map<string, Segment[]>();
   for (let start = 0; start < rows.length; start += 500) {
@@ -134,11 +159,7 @@ export function entries(store: Store, memberId?: string): TimeEntry[] {
   return queryEntries(store, memberId).items;
 }
 export function entryById(store: Store, entryId: string): TimeEntry {
-  const e = store.get<Omit<TimeEntry, 'segments'>>(
-    `SELECT e.*,p.name projectName,p.color projectColor,t.name taskName,m.name memberName
-    FROM entries e JOIN projects p ON p.id=e.projectId JOIN members m ON m.id=e.memberId LEFT JOIN tasks t ON t.id=e.taskId WHERE e.id=?`,
-    entryId,
-  );
+  const e = store.get<Omit<TimeEntry, 'segments'>>(`${entrySelect} WHERE e.id=?`, entryId);
   ensure(e, 'Temps introuvable.', 404);
   return {
     ...e,
@@ -198,9 +219,15 @@ export function idempotent<T>(
 export function startTimer(
   store: Store,
   member: MemberRow,
-  data: { projectId: string; taskId?: string | null; description?: string },
+  data: {
+    projectId: string;
+    taskId?: string | null;
+    actionId?: string | null;
+    description?: string;
+  },
 ): TimeEntry {
   projectAccess(store, member, data.projectId, data.taskId);
+  checkEntryAction(store, data.projectId, data.taskId, data.actionId);
   ensure(
     !activeTimer(store, member.id),
     'Un chronomètre est déjà actif sur un de vos appareils.',
@@ -208,12 +235,14 @@ export function startTimer(
   );
   const entryId = id();
   const now = store.now();
+  requireOpenWeek(store, member.id, null, [{ startedAt: now, endedAt: null }]);
   store.run(
-    "INSERT INTO entries VALUES (?,?,?,?, 'timer','running',?,NULL,0,1,?,?)",
+    "INSERT INTO entries(id,memberId,projectId,taskId,actionId,kind,state,description,workDate,seconds,version,createdAt,updatedAt) VALUES (?,?,?,?,?,'timer','running',?,NULL,0,1,?,?)",
     entryId,
     member.id,
     data.projectId,
     data.taskId ?? null,
+    data.actionId ?? null,
     data.description ?? '',
     now,
     now,
@@ -258,8 +287,10 @@ export function changeTimer(
     seconds += now - segment.startedAt;
     store.run('UPDATE segments SET endedAt=? WHERE entryId=? AND endedAt IS NULL', now, timer.id);
   }
-  if (action === 'resume')
+  if (action === 'resume') {
+    requireOpenWeek(store, member.id, null, [{ startedAt: now, endedAt: null }]);
     store.run('INSERT INTO segments VALUES (?,?,?,NULL)', id(), timer.id, now);
+  }
   const state =
     action === 'stop'
       ? seconds
@@ -281,6 +312,7 @@ export function changeTimer(
 export interface ManualInput {
   projectId: string;
   taskId?: string | null;
+  actionId?: string | null;
   description: string;
   kind: 'duration' | 'interval';
   duration?: string;
@@ -335,15 +367,18 @@ export function manualValues(store: Store, memberId: string, input: ManualInput,
 }
 export function createManual(store: Store, member: MemberRow, input: ManualInput): TimeEntry {
   projectAccess(store, member, input.projectId, input.taskId);
+  checkEntryAction(store, input.projectId, input.taskId, input.actionId);
   const values = manualValues(store, member.id, input);
+  requireOpenWeek(store, member.id, values.workDate, values.segment ? [values.segment] : []);
   const entryId = id();
   const now = store.now();
   store.run(
-    "INSERT INTO entries VALUES (?,?,?,?,?,'finished',?,?,?,1,?,?)",
+    "INSERT INTO entries(id,memberId,projectId,taskId,actionId,kind,state,description,workDate,seconds,version,createdAt,updatedAt) VALUES (?,?,?,?,?,?,'finished',?,?,?,1,?,?)",
     entryId,
     member.id,
     input.projectId,
     input.taskId ?? null,
+    input.actionId ?? null,
     input.kind,
     input.description,
     values.workDate,
@@ -385,6 +420,7 @@ export function editTime(
     'Ce temps a changé. Actualisez avant de le corriger.',
     409,
   );
+  requireOpenWeek(store, previous.memberId, previous.workDate, previous.segments);
   if (remove)
     store.run(
       "UPDATE entries SET state='deleted',version=version+1,updatedAt=? WHERE id=?",
@@ -393,13 +429,19 @@ export function editTime(
     );
   else {
     const owner = store.get<MemberRow>('SELECT * FROM members WHERE id=?', previous.memberId)!;
-    if (input.projectId !== previous.projectId || (input.taskId ?? null) !== previous.taskId)
-      projectAccess(store, owner, input.projectId, input.taskId);
+    const moved =
+      input.projectId !== previous.projectId || (input.taskId ?? null) !== previous.taskId;
+    if (moved) projectAccess(store, owner, input.projectId, input.taskId);
+    const actionId =
+      input.actionId === undefined ? (moved ? null : (previous.actionId ?? null)) : input.actionId;
+    checkEntryAction(store, input.projectId, input.taskId, actionId);
     const values = manualValues(store, owner.id, input, entryId);
+    requireOpenWeek(store, owner.id, values.workDate, values.segment ? [values.segment] : []);
     store.run(
-      'UPDATE entries SET projectId=?,taskId=?,kind=?,description=?,workDate=?,seconds=?,version=version+1,updatedAt=? WHERE id=?',
+      'UPDATE entries SET projectId=?,taskId=?,actionId=?,kind=?,description=?,workDate=?,seconds=?,version=version+1,updatedAt=? WHERE id=?',
       input.projectId,
       input.taskId ?? null,
+      actionId,
       input.kind,
       input.description,
       values.workDate,
@@ -474,34 +516,20 @@ export function monthlyReport(
   month: string,
   memberIds?: string[],
   detailLimit = 100,
+  approvedOnly = false,
 ): MonthlyReport {
   const workspace = store.get<Workspace>('SELECT * FROM workspace')!;
-  const { from, to } = monthBounds(month, workspace.timezone);
+  const range = monthRange(month, workspace.timezone);
   const selected = new Set(
     memberIds ?? store.all<{ id: string }>('SELECT id FROM members').map((m) => m.id),
   );
   const selectedIds = [...selected];
-  const selectedSql = selectedIds.length
-    ? `e.memberId IN (${selectedIds.map(() => '?').join(',')})`
-    : '0';
-  const times = store.all<{
-    id: string;
-    memberId: string;
-    projectId: string;
-    reportSeconds: number;
-  }>(
-    `SELECT * FROM (
-    SELECT e.id,e.memberId,e.projectId,e.createdAt, CASE WHEN e.kind='duration' THEN CASE WHEN e.workDate>=? AND e.workDate<? THEN e.seconds ELSE 0 END
-    ELSE COALESCE((SELECT SUM(MAX(0,MIN(s.endedAt,?)-MAX(s.startedAt,?))) FROM segments s WHERE s.entryId=e.id AND s.endedAt IS NOT NULL AND s.startedAt<? AND s.endedAt>?),0) END reportSeconds
-    FROM entries e WHERE e.state='finished' AND ${selectedSql}) WHERE reportSeconds>0 ORDER BY createdAt DESC,id`,
-    `${month}-01`,
-    dateInZone(to, workspace.timezone),
-    to,
-    from,
-    to,
-    from,
-    ...selectedIds,
-  );
+  const times = timeSlices(store, {
+    memberIds: selectedIds,
+    range,
+    timezone: workspace.timezone,
+    approved: approvedOnly,
+  });
   const byMember = new Map<string, number>();
   const byProject = new Map<string, number>();
   for (const e of times) {
@@ -521,6 +549,7 @@ export function monthlyReport(
   const previewIds = times.slice(0, detailLimit).map((e) => e.id);
   const durations = new Map(times.map((t) => [t.id, t.reportSeconds]));
   return {
+    ...(approvedOnly ? { approvedOnly: true } : {}),
     month,
     timezone: workspace.timezone,
     workspaceName: workspace.name,
@@ -533,15 +562,21 @@ export function monthlyReport(
       ...e,
       reportSeconds: durations.get(e.id)!,
     })),
-    activeTimers: store.get<{ n: number }>(
-      `SELECT COUNT(*) n FROM entries e WHERE ${selectedSql} AND e.state IN ('running','paused')`,
-      ...selectedIds,
-    )!.n,
-    notes: notes(store, undefined, true).filter(
-      (n) => selected.has(n.memberId) && n.workDate.startsWith(`${month}-`),
-    ),
-    summaries: summaries(store, undefined, true).filter(
-      (s) => selected.has(s.memberId) && s.month === month,
-    ),
+    activeTimers: approvedOnly
+      ? 0
+      : store.get<{ n: number }>(
+          `SELECT COUNT(*) n FROM entries e WHERE e.state IN ('running','paused') AND e.memberId IN (SELECT value FROM json_each(?))`,
+          JSON.stringify(selectedIds),
+        )!.n,
+    notes: approvedOnly
+      ? []
+      : notes(store, undefined, true).filter(
+          (n) => selected.has(n.memberId) && n.workDate.startsWith(`${month}-`),
+        ),
+    summaries: approvedOnly
+      ? []
+      : summaries(store, undefined, true).filter(
+          (s) => selected.has(s.memberId) && s.month === month,
+        ),
   };
 }

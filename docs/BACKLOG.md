@@ -14,8 +14,8 @@ L’[état livré](ETAT_V0_1.md) fait foi pour la V0.1. Les travaux ci-dessous c
 | CT-073 | Politique de conservation, anonymisation et suppression pilotées par administrateur | Moyenne |
 | CT-074 | OAuth pour MCP, SSO/OIDC et gestion avancée des sessions | Moyenne |
 | CT-075 | Validation des modèles IA réellement déployés et gestion des changements de sources après rédaction | Moyenne |
-| CT-076 | Filtres de rapports avancés, verrouillage des périodes et rapprochement d’exports | Moyenne |
-| CT-077 | Budgets, facturation et tarifs sans mélanger temps déclarés et montants | Ultérieure |
+| CT-076 | Filtres de rapports avancés et rapprochement d’exports | Moyenne |
+| CT-077 | Facturation et tarifs | Ultérieure |
 | CT-078 | Hooks facultatifs d’assistants, avec validation explicite des notes proposées | Ultérieure |
 | CT-079 | Recette linguistique terrain FR/EN/DE, autres langues, distributions Linux et accessibilité approfondie | Continue |
 | CT-080 | Webhooks sortants signés, abonnements et reprises d’événements avec protection des destinataires | Moyenne |

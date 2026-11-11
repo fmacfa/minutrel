@@ -162,3 +162,38 @@ Für Server gelten [Sicherung/Wiederherstellung](../../../infra/backup/README.md
 Melden Sie Fehler mit Version, Betriebssystem, lokalem/Teammodus, Schritten und Meldung. Entfernen Sie Passwörter, Tokens, private Notizen und Teamdaten aus Aufnahmen. Schwachstellen über den [Sicherheitskanal](../../../SECURITY.md) melden, ohne Ausnutzungsdetails öffentlich zu posten.
 
 [Gelieferter Umfang](../../ETAT_V0_1.md) · [Dokumentierte Prüfungen](../../VALIDATION_CI.md) · [GitHub-Veröffentlichung](../../GITHUB.md). Weiterführende technische Dokumente werden derzeit auf Französisch gepflegt.
+
+## 14. Projektplanung und Stundenzettel
+
+Diese Funktionen sind in der Entwicklungsversion verfügbar. Die englischen Bildschirmfotos zeigen Beispieldaten.
+
+### Projektübersicht und Aufgaben
+
+1. Klicken Sie unter **Projekte** auf den Projektnamen. Unter **Projekt bearbeiten** können Sie ein optionales Zeitbudget wie `40 h` und eine Frist eintragen.
+2. In der **Projektübersicht** sehen Sie die erfasste Zeit und das verbleibende Budget. Filtern Sie Arbeitsbeschreibungen und Summen nach Monat und Unterkategorie. Verantwortliche und Administratoren können auch ein Teammitglied auswählen. Mitarbeitende sehen ihre eigenen Zeiten.
+3. Geben Sie unter **Aufgaben → Neue Aufgabe** einen eigenen Titel ein. Ergänzen Sie bei Bedarf eine Unterkategorie, eine zuständige Person, geplante Termine und den geschätzten Aufwand. Verantwortliche und Administratoren können die Aufgabe bearbeiten. Zugewiesene Mitarbeitende können ihren Status ändern.
+4. Wählen Sie in der Hauptzeitmessung oder bei der manuellen Eingabe das Projekt und die passende Unterkategorie und dann optional die Aufgabe. Erfassen Sie unter **Arbeitsbeschreibung**, was Sie erledigt haben. Die Aufgabe erscheint beim Zeiteintrag und in Exporten.
+
+![Projektübersicht mit Zeitbudget, Frist und erfasster Arbeit](../../screenshots/20-project-overview-en.jpg)
+
+![Projektaufgaben mit Zuständigkeiten, Terminen und Aufwand](../../screenshots/21-project-actions-en.jpg)
+
+### Gantt und Auslastungsplanung
+
+Öffnen Sie **Gantt** im Projekt, um die Aufgaben auf einer Zeitachse von sechs Wochen zu sehen. Die Datumsauswahl öffnet die Woche des gewählten Tages. Eine Aufgabe mit einem Termin erscheint an diesem Tag. Aufgaben ohne Termine stehen unter dem Diagramm.
+
+Unter **Projekte → Auslastungsplanung** sehen Sie den geschätzten Aufwand offener Aufgaben pro Person und Woche. Die Schätzungen verteilen sich auf die geplanten Tage von Montag bis Freitag. Eine Aufgabe, die nur am Wochenende geplant ist, zählt zu der entsprechenden Woche. Geben Sie bei Bedarf eine Wochenkapazität ein, um Überschreitungen hervorzuheben. Aufgaben ohne Termin oder Schätzung stehen unter **Zu planende Aufgaben**.
+
+![Gantt-Diagramm für sechs Wochen](../../screenshots/22-project-gantt-en.jpg)
+
+![Wöchentliche Auslastung und Kapazitätsgrenze](../../screenshots/23-workload-en.jpg)
+
+### Wöchentliche Freigabe und Monatsexporte
+
+1. Öffnen Sie im Teamarbeitsbereich **Zeiteinträge → Stundenzettel** und wählen Sie eine Woche. Beenden Sie die laufenden Zeitmessungen dieser Woche und synchronisieren Sie ausstehende Desktop-Einträge. **Stundenzettel einreichen** sperrt die Zeiten der Woche bis zur Wiederöffnung.
+2. Verantwortliche und Administratoren wählen ein Mitglied aus und prüfen die Zeiten. **Stundenzettel freigeben** bestätigt die Stunden. **Zur Korrektur zurückgeben** erfordert einen Grund und öffnet eingereichte oder freigegebene Stundenzettel wieder. Das Mitglied kann die Zeiten bearbeiten und erneut einreichen.
+3. Administratoren wählen unter **Berichte** den Monat und bei Bedarf die Mitglieder. Aktivieren Sie **Nur freigegebene Zeiten** und laden Sie CSV, PDF oder ZIP herunter. Bei einem Zeiteintrag über eine Wochen- oder Monatsgrenze zählen die freigegebenen Sekunden im gewählten Monat. Der vollständige Bericht enthält auch geteilte Notizen und freigegebene Arbeitsberichte.
+
+![Prüfung eines eingereichten Stundenzettels](../../screenshots/24-timesheet-review-en.jpg)
+
+Der eigenständige Desktop-Client unterstützt die Projektplanung und die Zuordnung von Zeiten zu Aufgaben offline. Im verbundenen Client können bereits geladene Aufgaben auch offline ausgewählt werden. Änderungen an der Teamplanung sowie Einreichen und Freigeben von Stundenzetteln benötigen den Teamserver.

@@ -42,15 +42,18 @@ export function Reports({
   initialMonth,
   revision,
   actions,
+  local,
 }: {
   session: Session;
   members: Member[];
   initialMonth: string;
   revision: number;
   actions: Actions;
+  local: boolean;
 }) {
   const [month, setMonth] = useState(initialMonth);
   const [selected, setSelected] = useState<string[]>([]);
+  const [approvedOnly, setApprovedOnly] = useState(false);
   const [report, setReport] = useState<MonthlyReport | null>(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -60,7 +63,7 @@ export function Reports({
     let cancelled = false;
     setLoading(true);
     void request<MonthlyReport>(
-      `/reports/monthly?month=${month}${memberFilter ? `&memberIds=${memberFilter}` : ''}`,
+      `/reports/monthly?month=${month}${memberFilter ? `&memberIds=${memberFilter}` : ''}${approvedOnly ? '&approvedOnly=true' : ''}`,
     )
       .then((data) => {
         if (!cancelled) {
@@ -77,7 +80,7 @@ export function Reports({
     return () => {
       cancelled = true;
     };
-  }, [month, memberFilter, revision]);
+  }, [month, memberFilter, revision, approvedOnly]);
   const exportReport = async (format: 'csv' | 'pdf' | 'zip') => {
     await actions.act(async () => {
       const item = await request<{ url: string; filename: string }>('/exports', 'POST', {
@@ -85,6 +88,7 @@ export function Reports({
         format,
         language: getLanguage(),
         ...(selected.length ? { memberIds: selected } : {}),
+        ...(approvedOnly ? { approvedOnly } : {}),
       });
       await download(item.url, item.filename);
     }, tr('Téléchargement préparé.'));
@@ -174,6 +178,16 @@ export function Reports({
             </div>
           </details>
         )}
+        {!local && (
+          <label className="check-row">
+            <input
+              type="checkbox"
+              checked={approvedOnly}
+              onChange={(e) => setApprovedOnly(e.target.checked)}
+            />
+            {tr('Temps approuvés uniquement')}
+          </label>
+        )}
         <span className="quiet toolbar-end">{session.workspace.timezone}</span>
       </div>
       {error && (
@@ -184,11 +198,12 @@ export function Reports({
       {loading ? (
         <p className="loading">{tr('Préparation du rapport…')}</p>
       ) : (
-        report && (
+        report &&
+        !error && (
           <>
             <div className="stats-grid">
               <article className="stat-card">
-                <span>{tr('Temps finalisé')}</span>
+                <span>{report.approvedOnly ? tr('Temps approuvé') : tr('Temps finalisé')}</span>
                 <strong>{shortDuration(report.totalSeconds)}</strong>
                 <small>
                   {report.totalSeconds.toLocaleString(locale())} {tr('secondes exactes')}
@@ -237,39 +252,41 @@ export function Reports({
                 </div>
               </section>
             </div>
-            <section className="panel padded">
-              <div className="section-heading">
-                <h2>{tr('Le travail effectué')}</h2>
-                <span className="quiet">{tr('Comptes rendus validés & notes partagées')}</span>
-              </div>
-              {!report.summaries.length && !report.notes.length ? (
-                <p className="quiet">
-                  {tr(
-                    'Les notes partagées et les comptes rendus validés apparaîtront ici. Les temps peuvent être exportés dès maintenant.',
-                  )}
-                </p>
-              ) : (
-                <div className="report-notes">
-                  {report.summaries.map((s) => (
-                    <article key={s.id}>
-                      <span className="eyebrow">
-                        {report.members.find((m) => m.id === s.memberId)?.name}{' '}
-                        {tr('· COMPTE RENDU VALIDÉ')}
-                      </span>
-                      <p className="prose">{s.text}</p>
-                    </article>
-                  ))}
-                  {report.notes.map((n) => (
-                    <article key={n.id}>
-                      <span className="quiet">
-                        {n.workDate} · {report.members.find((m) => m.id === n.memberId)?.name}
-                      </span>
-                      <p className="prose">{n.text}</p>
-                    </article>
-                  ))}
+            {!report.approvedOnly && (
+              <section className="panel padded">
+                <div className="section-heading">
+                  <h2>{tr('Le travail effectué')}</h2>
+                  <span className="quiet">{tr('Comptes rendus validés & notes partagées')}</span>
                 </div>
-              )}
-            </section>
+                {!report.summaries.length && !report.notes.length ? (
+                  <p className="quiet">
+                    {tr(
+                      'Les notes partagées et les comptes rendus validés apparaîtront ici. Les temps peuvent être exportés dès maintenant.',
+                    )}
+                  </p>
+                ) : (
+                  <div className="report-notes">
+                    {report.summaries.map((s) => (
+                      <article key={s.id}>
+                        <span className="eyebrow">
+                          {report.members.find((m) => m.id === s.memberId)?.name}{' '}
+                          {tr('· COMPTE RENDU VALIDÉ')}
+                        </span>
+                        <p className="prose">{s.text}</p>
+                      </article>
+                    ))}
+                    {report.notes.map((n) => (
+                      <article key={n.id}>
+                        <span className="quiet">
+                          {n.workDate} · {report.members.find((m) => m.id === n.memberId)?.name}
+                        </span>
+                        <p className="prose">{n.text}</p>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
             <section className="panel">
               <div className="section-heading padded-heading">
                 <h2>{tr('Les temps du mois')}</h2>
@@ -279,9 +296,7 @@ export function Reports({
               </div>
               {report.entries.length ? (
                 <TimeTable
-                  entries={report.entries
-                    .slice(0, 100)
-                    .map((e) => ({ ...e, seconds: e.reportSeconds }))}
+                  entries={report.entries.slice(0, 100)}
                   timezone={report.timezone}
                   withMember={administrator}
                 />
