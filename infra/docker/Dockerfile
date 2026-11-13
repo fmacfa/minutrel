@@ -27,7 +27,7 @@ EXPOSE 8081
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD ["node", "-e", "require('node:http').get('http://127.0.0.1:8081/api/v1/health/live',r=>{r.resume();process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1))"]
 CMD ["node", "dist/server.js"]
 
-FROM nginx:stable-alpine@sha256:0e52bd054126cdc040b1276c0af347aeb02a41b9cfe305d6094767ac30e97949 AS web
+FROM nginx:stable-alpine@sha256:583b7f2fce1cdb8da5ad5c39ebd3c33b98b87d493190e548bdee1fa8c619c311 AS web
 COPY --from=build /app/apps/web/dist /usr/share/nginx/html
 COPY infra/docker/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8080
