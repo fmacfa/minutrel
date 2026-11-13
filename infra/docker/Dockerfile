@@ -1,4 +1,4 @@
-FROM node:24.22.1-bookworm-slim@sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c AS build
+FROM node:26.13.0-bookworm-slim@sha256:add5c17c14752c54d2f3d519ec46a3815684d41c33f198bcb09fb998f7dcbf68 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY apps/api/package.json apps/api/package.json
@@ -12,7 +12,7 @@ COPY . .
 RUN npm run build
 RUN npm prune --omit=dev --ignore-scripts
 
-FROM node:24.22.1-bookworm-slim@sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c AS api
+FROM node:26.13.0-bookworm-slim@sha256:add5c17c14752c54d2f3d519ec46a3815684d41c33f198bcb09fb998f7dcbf68 AS api
 WORKDIR /app
 ENV NODE_ENV=production APP_HOST=0.0.0.0 APP_PORT=8081 APP_DATA_DIR=/app/data APP_WEB_DIR=/app/web
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
