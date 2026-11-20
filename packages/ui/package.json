@@ -15,7 +15,7 @@
     "@minutrel/contracts": "0.1.0",
     "@minutrel/domain": "0.1.0",
     "@pdf-lib/fontkit": "1.1.1",
-    "@tauri-apps/api": "2.12.4",
+    "@tauri-apps/api": "2.12.5",
     "fflate": "0.8.3",
     "pdf-lib": "1.17.1"
   }
