@@ -1,0 +1,60 @@
+name: Verify published macOS installer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/verify-macos-installer.yml'
+
+permissions: {}
+
+jobs:
+  open:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-26, macos-15-intel]
+    steps:
+      - name: Check the published disk image and install the app
+        working-directory: ${{ runner.temp }}
+        env:
+          EXPECTED_SHA256: daf35e480256f9e71b6da0b901117c5857a9a432db838c7f68a8d3b54f42df72
+        run: |
+          curl --fail --location --retry 2 --output Minutrel.dmg https://minutrel.com/downloads/desktop/Minutrel-0.1.0-macOS-Universal.dmg
+          echo "$EXPECTED_SHA256  Minutrel.dmg" | shasum -a 256 --check
+          hdiutil verify Minutrel.dmg
+          mkdir minutrel-volume
+          hdiutil attach -readonly -noautoopen -nobrowse -mountpoint "$PWD/minutrel-volume" Minutrel.dmg
+          ditto minutrel-volume/Minutrel.app Minutrel.app
+          hdiutil detach "$PWD/minutrel-volume"
+          lipo Minutrel.app/Contents/MacOS/minutrel -verify_arch arm64 x86_64
+          codesign --verify --deep --strict --all-architectures --verbose=2 Minutrel.app
+      - name: Open the app and check for its main window
+        working-directory: ${{ runner.temp }}
+        run: |
+          open "$PWD/Minutrel.app"
+          swift - <<'SWIFT'
+          import AppKit
+          import CoreGraphics
+          let deadline = Date().addingTimeInterval(45)
+          repeat {
+              let apps = NSRunningApplication.runningApplications(withBundleIdentifier: "app.minutrel.desktop")
+              let windows = CGWindowListCopyWindowInfo([.optionAll, .excludeDesktopElements], kCGNullWindowID) as? [[String: Any]] ?? []
+              for app in apps where app.isFinishedLaunching && !app.isTerminated {
+                  let hasMainWindow = windows.contains { window in
+                      guard let owner = window[kCGWindowOwnerPID as String] as? Int32,
+                            let layer = window[kCGWindowLayer as String] as? Int,
+                            let bounds = window[kCGWindowBounds as String] as? [String: Double] else { return false }
+                      return owner == app.processIdentifier && layer == 0 && (bounds["Width"] ?? 0) >= 360 && (bounds["Height"] ?? 0) >= 400
+                  }
+                  if hasMainWindow {
+                      print("Minutrel opened its main window")
+                      exit(0)
+                  }
+              }
+              Thread.sleep(forTimeInterval: 1)
+          } while Date() < deadline
+          fatalError("Minutrel did not open a main window")
+          SWIFT
