@@ -39,42 +39,38 @@ jobs:
       - name: Open the app and connect it to a team server
         working-directory: ${{ runner.temp }}
         run: |
-          cat > team_server.py <<'PYTHON'
-          import json
-          from http.server import BaseHTTPRequestHandler, HTTPServer
-          from pathlib import Path
-
-          class TeamServer(BaseHTTPRequestHandler):
-              def do_GET(self):
-                  if self.path != '/api/v1/setup':
-                      self.send_error(404)
-                      return
-                  body = b'{"required":false}'
-                  self.send_response(200)
-                  self.send_header('Content-Type', 'application/json')
-                  self.send_header('Content-Length', str(len(body)))
-                  self.end_headers()
-                  self.wfile.write(body)
-                  Path('app-checked-team-server').touch()
-
-          server = HTTPServer(('127.0.0.1', 0), TeamServer)
-          prefs = Path.home() / 'Library/Application Support/app.minutrel.desktop'
-          prefs.mkdir(parents=True, exist_ok=True)
-          (prefs / 'connection.json').write_text(json.dumps({
-              'serverUrl': 'http://127.0.0.1:' + str(server.server_port),
-              'local': False, 'language': 'fr'
-          }))
-          Path('team-server-ready').touch()
-          server.serve_forever()
-          PYTHON
-          python3 team_server.py &
+          cat > team_server.cjs <<'NODE'
+          const http = require('node:http');
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const prefs = path.join(require('node:os').homedir(), 'Library/Application Support/app.minutrel.desktop');
+          const marker = name => path.join(process.env.RUNNER_TEMP, name);
+          const server = http.createServer((req, res) => {
+            if (req.url !== '/api/v1/setup') {
+              res.writeHead(404).end();
+              return;
+            }
+            res.writeHead(200, {'Content-Type': 'application/json'}).end('{"required":false}');
+            fs.writeFileSync(marker('app-checked-team-server'), '');
+            console.log('Received the native startup request');
+          });
+          server.listen(0, '127.0.0.1', () => {
+            fs.mkdirSync(prefs, {recursive: true});
+            const serverUrl = 'http://127.0.0.1:' + server.address().port;
+            fs.writeFileSync(path.join(prefs, 'connection.json'), JSON.stringify({serverUrl, local: false, language: 'fr'}));
+            fs.writeFileSync(marker('team-server-ready'), '');
+            console.log('Disposable team server ready');
+          });
+          NODE
+          node "$RUNNER_TEMP/team_server.cjs" > "$RUNNER_TEMP/team-server.log" 2>&1 &
           server_pid=$!
-          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
-          for attempt in {1..20}; do
-            test -f team-server-ready && break
+          trap 'cat "$RUNNER_TEMP/team-server.log"; kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..90}; do
+            test -f "$RUNNER_TEMP/team-server-ready" && break
+            kill -0 "$server_pid" || exit 1
             sleep 1
           done
-          test -f team-server-ready
+          test -f "$RUNNER_TEMP/team-server-ready" || { echo 'The test server did not start'; exit 1; }
           open "$PWD/Minutrel.app"
           swift - <<'SWIFT'
           import AppKit
@@ -100,8 +96,8 @@ jobs:
           fatalError("Minutrel did not open a main window")
           SWIFT
           for attempt in {1..50}; do
-            test -f app-checked-team-server && break
+            test -f "$RUNNER_TEMP/app-checked-team-server" && break
             sleep 1
           done
-          test -f app-checked-team-server
+          test -f "$RUNNER_TEMP/app-checked-team-server"
           echo "The installed Minutrel app reached its configured team server"
