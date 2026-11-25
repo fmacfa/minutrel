@@ -3,7 +3,7 @@ import { t as tr } from './i18n.ts';
 import { useState, type FormEvent } from 'react';
 import type { Session } from '@minutrel/contracts';
 import { Field, Icon, Logo, formData, val } from './components.tsx';
-import { configureServer, native, request, type Connection } from './transport.ts';
+import { configureServer, native, remoteRequest, request, type Connection } from './transport.ts';
 import { startPersonal } from './local.ts';
 import { LanguagePicker } from './LanguagePicker.tsx';
 
@@ -22,19 +22,31 @@ export function Auth({
 }) {
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState('');
+  const [verified, setVerified] = useState(false);
   const [server, setServer] = useState(connection.serverUrl);
   const serverChanged = native && server.trim().replace(/\/$/, '') !== connection.serverUrl;
+  const creating = setup && !serverChanged && !error;
+  const showProblem = (reason: unknown) =>
+    setProblem(reason instanceof Error ? reason.message : tr(String(reason)));
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     const f = formData(event);
-    if (busy || serverChanged) return;
+    if (busy) return;
     setBusy(true);
     setProblem('');
     try {
+      const team = native ? await configureServer(server) : undefined;
+      if (team) {
+        setServer(team.selected.serverUrl);
+        if (team.selected.authenticated || team.required !== creating) {
+          await reload();
+          return;
+        }
+      }
       const data = {
         email: val(f, 'email'),
         password: val(f, 'password'),
         native,
-        ...(setup
+        ...(creating
           ? {
               name: val(f, 'name'),
               workspaceName: val(f, 'workspace'),
@@ -43,11 +55,14 @@ export function Auth({
             }
           : {}),
       };
-      const session = await request<Session>(setup ? '/setup' : '/auth/login', 'POST', data);
+      const route = creating ? '/setup' : '/auth/login';
+      const session = team
+        ? await remoteRequest<Session>(route, 'POST', data, undefined, team.selected.generation)
+        : await request<Session>(route, 'POST', data);
       if (native) await reload();
       else signedIn(session);
     } catch (e) {
-      setProblem(e instanceof Error ? e.message : tr('Connexion impossible.'));
+      showProblem(e);
     } finally {
       setBusy(false);
     }
@@ -93,9 +108,9 @@ export function Auth({
             <Logo />
           </span>
           <span className="eyebrow">{tr('VOTRE ESPACE MINUTREL')}</span>
-          <h2>{setup ? tr('Bienvenue chez vous.') : tr('Bon retour.')}</h2>
+          <h2>{creating ? tr('Bienvenue chez vous.') : tr('Bon retour.')}</h2>
           <p className="quiet">
-            {setup
+            {creating
               ? tr('Créez votre espace et son premier compte administrateur.')
               : tr('Retrouvez vos projets et reprenez le fil de votre journée.')}
           </p>
@@ -104,11 +119,8 @@ export function Auth({
               <p>{tr('Sans serveur ni compte en ligne')}</p>
               <button
                 className="button secondary full"
-                onClick={() =>
-                  void startPersonal()
-                    .then(reload)
-                    .catch((e) => setProblem(String(e)))
-                }
+                disabled={busy}
+                onClick={() => void startPersonal().then(reload).catch(showProblem)}
               >
                 {tr('Utiliser sur cet ordinateur')}
               </button>
@@ -119,12 +131,17 @@ export function Auth({
               className="connection-form"
               onSubmit={async (e) => {
                 e.preventDefault();
+                if (busy) return;
                 setBusy(true);
+                setProblem('');
+                setVerified(false);
                 try {
-                  await configureServer(server);
+                  const { selected } = await configureServer(server);
+                  setServer(selected.serverUrl);
                   await reload();
+                  setVerified(true);
                 } catch (err) {
-                  setProblem(String(err));
+                  showProblem(err);
                 } finally {
                   setBusy(false);
                 }
@@ -133,23 +150,31 @@ export function Auth({
               <Field label={tr('Serveur de votre équipe')}>
                 <div className="input-action">
                   <input
-                    type="url"
+                    type="text"
+                    inputMode="url"
+                    autoCapitalize="none"
+                    spellCheck={false}
                     value={server}
-                    onChange={(e) => setServer(e.target.value)}
+                    onChange={(e) => {
+                      setServer(e.target.value);
+                      setProblem('');
+                      setVerified(false);
+                    }}
                     placeholder="https://temps.votre-equipe.fr"
                     required
                     disabled={busy}
                   />
-                  <button
-                    className="icon-button"
-                    type="submit"
-                    disabled={busy}
-                    aria-label={tr('Se connecter à ce serveur')}
-                  >
-                    <Icon name="arrow" />
+                  <button className="button secondary" type="submit" disabled={busy}>
+                    {tr('Vérifier')}
                   </button>
                 </div>
               </Field>
+              <small className="quiet">
+                {tr(
+                  'Collez l’adresse que vous utilisez pour accéder à votre espace d’équipe dans le navigateur.',
+                )}
+              </small>
+              {verified && !error && <p role="status">{tr('Serveur d’équipe vérifié.')}</p>}
               {!connection.persistent && (
                 <small className="quiet">
                   {tr(
@@ -159,22 +184,20 @@ export function Auth({
               )}
             </form>
           )}
-          {error ? (
+          {(problem || (error && !serverChanged)) && (
             <div className="notice error" role="alert">
-              <p>{error}</p>
-              <button className="button secondary" type="button" onClick={() => void reload()}>
-                {tr('Réessayer')}
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={(e) => void submit(e)} className="stack-form">
-              {serverChanged && (
-                <p className="micro">
-                  {tr('Appliquez l’adresse du serveur avant de vous connecter.')}
-                </p>
+              <p>{problem || error}</p>
+              {!native && error && (
+                <button className="button secondary" type="button" onClick={() => void reload()}>
+                  {tr('Réessayer')}
+                </button>
               )}
-              <fieldset disabled={busy || serverChanged}>
-                {setup && (
+            </div>
+          )}
+          {(native || !error) && (
+            <form onSubmit={(e) => void submit(e)} className="stack-form">
+              <fieldset disabled={busy}>
+                {creating && (
                   <>
                     <Field label={tr('Nom de l’espace')}>
                       <input
@@ -208,18 +231,18 @@ export function Auth({
                 </Field>
                 <Field
                   label={tr('Mot de passe')}
-                  hint={setup ? tr('Au moins 12 caractères.') : undefined}
+                  hint={creating ? tr('Au moins 12 caractères.') : undefined}
                 >
                   <input
                     name="password"
                     type="password"
-                    autoComplete={setup ? 'new-password' : 'current-password'}
+                    autoComplete={creating ? 'new-password' : 'current-password'}
                     required
-                    minLength={setup ? 12 : undefined}
+                    minLength={creating ? 12 : undefined}
                     maxLength={256}
                   />
                 </Field>
-                {setup && (
+                {creating && (
                   <>
                     <Field
                       label={tr('Fuseau de l’équipe')}
@@ -243,15 +266,10 @@ export function Auth({
                     </Field>
                   </>
                 )}
-                {problem && (
-                  <p className="notice error" role="alert">
-                    {problem}
-                  </p>
-                )}
                 <button className="button primary full" type="submit">
                   {busy
                     ? 'Connexion…'
-                    : setup
+                    : creating
                       ? tr('Créer mon espace')
                       : tr('Entrer dans mon espace')}
                   <Icon name="arrow" />
@@ -259,7 +277,7 @@ export function Auth({
               </fieldset>
             </form>
           )}
-          {!setup && (
+          {!creating && (
             <p className="auth-help">
               {tr('Besoin d’un accès ou d’un nouveau mot de passe ?')}
               <br />

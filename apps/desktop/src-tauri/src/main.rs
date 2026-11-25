@@ -166,14 +166,49 @@ async fn configure_server(
     app: AppHandle,
     state: State<'_, NativeState>,
     server_url: String,
-) -> Result<(), String> {
+) -> Result<bool, String> {
     let server = valid_server(server_url.trim())?;
+    let generation = state
+        .credentials
+        .lock()
+        .map_err(|_| "Session indisponible.")?
+        .generation;
+    // Probe only the public setup endpoint, without credentials, before remembering a new origin.
+    let invalid = "Cette adresse ne répond pas comme un serveur Minutrel. Utilisez l’adresse web de votre équipe.";
+    let mut response = state
+        .client
+        .get(format!("{server}/api/v1/setup"))
+        .header("Accept", "application/json")
+        .timeout(Duration::from_secs(10))
+        .send()
+        .await
+        .map_err(|_| "Serveur injoignable. Vérifiez votre connexion et l’adresse du serveur.")?;
+    if !response.status().is_success() {
+        return Err(invalid.into());
+    }
+    let mut bytes = Vec::new();
+    while let Some(chunk) = response.chunk().await.map_err(|_| invalid)? {
+        if bytes.len() + chunk.len() > 8192 {
+            return Err(invalid.into());
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+    let required = serde_json::from_slice::<Value>(&bytes)
+        .ok()
+        .and_then(|v| v["required"].as_bool())
+        .ok_or(invalid)?;
     let _update = state.session_update.lock().await;
     {
         let c = state
             .credentials
             .lock()
             .map_err(|_| "Session indisponible.")?;
+        if c.generation != generation {
+            return Err(SESSION_CHANGED.into());
+        }
+        if c.server_url == server && !c.local {
+            return Ok(required);
+        }
         if c.token.is_some() {
             return Err("Déconnectez-vous avant de changer de serveur.".into());
         }
@@ -209,7 +244,7 @@ async fn configure_server(
     }
     abort_events(&state);
     let _ = app.emit("session-changed", ());
-    Ok(())
+    Ok(required)
 }
 
 #[tauri::command]

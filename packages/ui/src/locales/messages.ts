@@ -1,5 +1,30 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 export const messages: Record<string, readonly [string, string]> = {
+  'Adresse du serveur invalide.': ['Invalid server address.', 'Ungültige Serveradresse.'],
+  'Cette adresse ne répond pas comme un serveur Minutrel. Utilisez l’adresse web de votre équipe.':
+    [
+      'This address did not respond as a Minutrel server. Use your team’s web address.',
+      'Diese Adresse antwortet nicht als Minutrel-Server. Verwenden Sie die Webadresse Ihres Teams.',
+    ],
+  Vérifier: ['Check server', 'Prüfen'],
+  'Collez l’adresse que vous utilisez pour accéder à votre espace d’équipe dans le navigateur.': [
+    'Paste the address you use to access your team workspace in the browser.',
+    'Fügen Sie die Adresse ein, mit der Sie im Browser auf Ihren Teambereich zugreifen.',
+  ],
+  'Serveur d’équipe vérifié.': ['Team server verified.', 'Teamserver bestätigt.'],
+  'Serveur injoignable. Vérifiez votre connexion et l’adresse du serveur.': [
+    'Cannot reach the server. Check the address and your network connection.',
+    'Server nicht erreichbar. Prüfen Sie die Adresse und Ihre Netzwerkverbindung.',
+  ],
+  'Utilisez l’adresse HTTPS du serveur, sans chemin. HTTP est accepté uniquement sur cet ordinateur.':
+    [
+      'Use the server’s HTTPS address. HTTP is allowed only for a server on this computer.',
+      'Verwenden Sie die HTTPS-Adresse des Servers. HTTP ist nur für einen Server auf diesem Computer erlaubt.',
+    ],
+  'Le serveur a renvoyé une réponse illisible.': [
+    'The server returned an unreadable response. Check your team server address.',
+    'Der Server hat eine unlesbare Antwort zurückgegeben. Prüfen Sie die Adresse Ihres Teamservers.',
+  ],
   '6 semaines': ['6 weeks', '6 Wochen'],
   '3 mois': ['3 months', '3 Monate'],
   '6 mois': ['6 months', '6 Monate'],

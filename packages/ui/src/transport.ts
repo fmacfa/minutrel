@@ -42,8 +42,21 @@ export async function connection(): Promise<Connection> {
     widget: false,
   };
 }
-export async function configureServer(serverUrl: string) {
-  return invoke('configure_server', { serverUrl });
+export async function configureServer(address: string) {
+  let url: URL;
+  try {
+    const value = address.trim();
+    url = new URL(value.includes('://') ? value : `https://${value}`);
+    if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password)
+      throw new Error();
+  } catch {
+    throw new Error(tr('Adresse du serveur invalide.'));
+  }
+  const required = await invoke<boolean>('configure_server', { serverUrl: url.origin });
+  const selected = await connection();
+  if (selected.local || selected.serverUrl !== url.origin)
+    throw new Error(tr('Le compte actif a changé. Réessayez.'));
+  return { selected, required };
 }
 export async function request<T>(
   path: string,

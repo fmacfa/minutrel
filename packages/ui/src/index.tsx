@@ -17,6 +17,7 @@ import {
   connection,
   native,
   onSessionChange,
+  remoteRequest,
   request,
   setCsrf,
   showMain,
@@ -147,10 +148,29 @@ export function App() {
       const c = await connection();
       if (stamp !== bootRevision.current) return;
       setConn(c);
-      const initial = await request<{ required: boolean }>('/setup');
+      const anonymousDesktop = native && !c.local && !c.authenticated;
+      if (anonymousDesktop) {
+        signedOut();
+        setSetup(false);
+      }
+      const initial = anonymousDesktop
+        ? await remoteRequest<{ required: boolean }>(
+            '/setup',
+            'GET',
+            undefined,
+            undefined,
+            c.generation,
+          )
+        : await request<{ required: boolean }>('/setup');
       if (stamp !== bootRevision.current) return;
+      if (typeof initial?.required !== 'boolean')
+        throw new Error(
+          tr(
+            'Cette adresse ne répond pas comme un serveur Minutrel. Utilisez l’adresse web de votre équipe.',
+          ),
+        );
       setSetup(initial.required);
-      if (!initial.required) {
+      if (!initial.required && !anonymousDesktop) {
         try {
           const s = await request<Session>('/me');
           if (stamp === bootRevision.current) signedIn(s);
@@ -165,12 +185,16 @@ export function App() {
     } catch (e) {
       if (stamp !== bootRevision.current) return;
       setBootError(
-        e instanceof Error ? e.message : tr('Le serveur est indisponible. Vérifiez son adresse.'),
+        e instanceof Error
+          ? e.message
+          : typeof e === 'string'
+            ? tr(e)
+            : tr('Le serveur est indisponible. Vérifiez son adresse.'),
       );
     } finally {
       if (stamp === bootRevision.current) setReady(true);
     }
-  }, []);
+  }, [signedOut]);
   useEffect(() => {
     void boot();
   }, [boot]);
@@ -426,7 +450,8 @@ export function App() {
       </button>
     </div>
   );
-  if (!ready)
+  // Keep the sign-in form and its typed fields visible while an anonymous desktop probes a server.
+  if (!ready && (!native || !conn.serverUrl || conn.local || conn.authenticated || session))
     return (
       <div className="boot">
         <Logo />
