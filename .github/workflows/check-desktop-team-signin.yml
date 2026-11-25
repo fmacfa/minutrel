@@ -1,0 +1,57 @@
+name: Verify desktop team sign-in
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/check-desktop-team-signin.yml'
+      - 'scripts/check-installed-windows-login.mjs'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Get the Windows installer built by CI for this branch
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $run = gh run list --repo $env:GITHUB_REPOSITORY --workflow repository-check.yml --branch $env:GITHUB_REF_NAME --limit 1 --json databaseId,headSha | ConvertFrom-Json
+          if (-not $run) { throw 'No installer build for this branch' }
+          Write-Output "Installer CI $($run.databaseId), source $($run.headSha)"
+          $deadline = [DateTime]::UtcNow.AddMinutes(12)
+          do {
+            $artifact = gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$($run.databaseId)/artifacts" --jq '.artifacts[] | select(.name=="minutrel-test-windows-2022" and .expired==false) | .id'
+            if ($artifact) { break }
+            Start-Sleep -Seconds 10
+          } while ([DateTime]::UtcNow -lt $deadline)
+          if (-not $artifact) { throw 'No completed Windows installer artifact' }
+          gh run download $run.databaseId --repo $env:GITHUB_REPOSITORY --name minutrel-test-windows-2022 --dir package
+      - name: Install and sign into a disposable team
+        shell: pwsh
+        run: |
+          $installers = @(Get-ChildItem package -Recurse -Filter '*.exe')
+          if ($installers.Count -ne 1) { throw 'Expected one Windows installer' }
+          $setupPath = $installers[0].FullName
+          Write-Output "Installer SHA-256 $((Get-FileHash $setupPath).Hash)"
+          $destination = Join-Path $env:RUNNER_TEMP 'Minutrel-signin-test'
+          $setup = Start-Process -FilePath $setupPath -ArgumentList "/S /D=$destination" -PassThru
+          if (-not $setup.WaitForExit(120000) -or $setup.ExitCode -ne 0) { throw 'Installation failed' }
+          $tools = Join-Path $env:RUNNER_TEMP 'desktop-test-tools'
+          npm install --prefix $tools --ignore-scripts --no-audit --no-fund playwright-core@1.65.0
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to install the WebView test driver' }
+          $env:MINUTREL_TEST_PLAYWRIGHT = Join-Path $tools 'node_modules/playwright-core'
+          node scripts/check-installed-windows-login.mjs (Join-Path $destination 'minutrel.exe')

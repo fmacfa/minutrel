@@ -11,3 +11,7 @@ En développement, démarrer `npm run dev:web` et l’API, puis `npm run dev:des
 [Commande rapide](../../docs/COMMANDE_RAPIDE.md) · [Limites de la V0.1](../../docs/ETAT_V0_1.md).
 
 [Guides FR/EN/DE](../../docs/guide/README.md) · [Fonctionnement local et synchronisation](../../docs/SYNCHRONISATION.md).
+
+## DMG de distribution
+
+Construire le client pour `universal-apple-darwin` avec la cible Tauri `app`. Depuis la racine, lancer `python3 scripts/package_macos_installer.py /chemin/vers/Minutrel.app /chemin/vers/Minutrel.dmg` dans un environnement Python avec dmgbuild 1.6.7 et Pillow. Le DMG inclut le guide bilingue et les étapes de première ouverture dans la fenêtre du Finder.

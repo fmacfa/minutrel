@@ -56,7 +56,7 @@ Ouvrir **http://127.0.0.1:8080**. La configuration par défaut expose le service
 
 ## Application ordinateur
 
-Saisir l’adresse du serveur de l’équipe et l’appliquer avec la flèche à côté du champ avant de se connecter. Le compte, les projets, les temps et les droits sont les mêmes que sur le web.
+Coller l’adresse web de l’équipe dans « Serveur de votre équipe », puis saisir l’e-mail et le mot de passe. Le bouton « Vérifier » permet de tester l’adresse. Le compte, les projets, les temps et les droits sont les mêmes que sur le web.
 
 Pour travailler seul sans serveur, choisir **Utiliser sur cet ordinateur**. Créer vos projets, chronométrer, noter le travail et exporter directement. Pour rejoindre ensuite une équipe, choisir **Ouvrir un espace d’équipe** ; le transfert des temps personnels demande une correspondance explicite de projets.
 

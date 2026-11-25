@@ -58,7 +58,7 @@ Open **http://127.0.0.1:8080**. By default, the service is exposed only on the h
 
 ## Desktop app and offline work
 
-For a team, enter the server address and apply it with the arrow next to the field before signing in. Use the same account to share projects, entries and permissions with the web app.
+To join a team, paste its web address, enter your email and password, and sign in. Use Check server to test the address separately. Use the same account to share projects, entries and permissions with the web app.
 
 To work independently, choose **Use on this computer**. Create projects, record time, write notes and export locally, without a server or online account. You can later choose **Open a team workspace** and explicitly map personal projects before transferring completed time entries.
 
