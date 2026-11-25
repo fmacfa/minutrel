@@ -1,0 +1,59 @@
+name: Verify Windows installer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/verify-windows-installer.yml'
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-2022
+    timeout-minutes: 8
+    steps:
+      - name: Download the Windows build from the last successful main CI
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $run = gh run list --repo $env:GITHUB_REPOSITORY --workflow repository-check.yml --branch main --event push --status success --limit 1 --json databaseId,headSha | ConvertFrom-Json
+          if (-not $run) { throw "No successful CI build on main" }
+          Write-Output "Testing source $($run.headSha) from CI run $($run.databaseId)"
+          gh run download $run.databaseId --repo $env:GITHUB_REPOSITORY --name minutrel-test-windows-2022 --dir package
+          if ($LASTEXITCODE -ne 0) { throw "Could not download the CI installer" }
+      - name: Install the package and open the desktop window
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installers = @(Get-ChildItem package -Recurse -Filter '*.exe')
+          if ($installers.Count -ne 1) { throw "Expected one installer in the artifact" }
+          $installer = $installers[0].FullName
+          Write-Output "Installer SHA-256 $((Get-FileHash -Algorithm SHA256 $installer).Hash)"
+          Write-Output "Authenticode $((Get-AuthenticodeSignature $installer).Status)"
+          $destination = Join-Path $env:RUNNER_TEMP 'Minutrel-desktop-check'
+          $setup = Start-Process -FilePath $installer -ArgumentList "/S /D=$destination" -PassThru
+          if (-not $setup.WaitForExit(120000)) { throw "Installer timed out" }
+          if ($setup.ExitCode -ne 0) { throw "Installer returned $($setup.ExitCode)" }
+          $binary = Join-Path $destination 'minutrel.exe'
+          $bytes = [IO.File]::ReadAllBytes($binary)
+          $pe = [BitConverter]::ToInt32($bytes, 0x3c)
+          if ([BitConverter]::ToUInt32($bytes, $pe) -ne 0x4550 -or [BitConverter]::ToUInt16($bytes, $pe + 4) -ne 0x8664) {
+            throw "Installed application is not a Windows x64 executable"
+          }
+          $app = Start-Process -FilePath $binary -PassThru
+          try {
+            $deadline = [DateTime]::UtcNow.AddSeconds(45)
+            do {
+              Start-Sleep -Seconds 1
+              $app.Refresh()
+              if ($app.HasExited) { throw "Application exited before opening a window" }
+            } until (($app.MainWindowHandle -ne 0 -and $app.MainWindowTitle -like '*Minutrel*') -or [DateTime]::UtcNow -ge $deadline)
+            if ($app.MainWindowHandle -eq 0 -or $app.MainWindowTitle -notlike '*Minutrel*') { throw "Minutrel window did not appear" }
+            Write-Output "Windows x64 application opened its window: $($app.MainWindowTitle)"
+          } finally {
+            if (-not $app.HasExited) { Stop-Process -Id $app.Id }
+          }
