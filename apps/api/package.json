@@ -11,7 +11,7 @@
   "dependencies": {
     "@fastify/cookie": "11.1.5",
     "@fastify/rate-limit": "11.2.2",
-    "@fastify/static": "10.1.10",
+    "@fastify/static": "10.1.12",
     "@minutrel/contracts": "0.1.0",
     "@minutrel/domain": "0.1.0",
     "@modelcontextprotocol/sdk": "1.32.2",
